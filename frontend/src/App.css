@@ -36,3 +36,26 @@
     transform: rotate(360deg);
   }
 }
+
+#LogoHeader{
+  width: 100px;
+  margin-right: 10px;
+ 
+}
+
+.Cartitem{
+  padding-right: 20px;
+}
+
+.bi{
+  padding-right: 5px;
+}
+
+#search_btn{
+  background-color: #febd69
+}
+.navbar-brand{
+  font-family: Sans-serif;
+  font-size: large;
+  font-weight: 400;
+}
