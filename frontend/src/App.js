@@ -19,6 +19,7 @@ function App() {
           <Route path='/register' element={<Register />} caseSensitive={true} />
           <Route path='/login' element={<Login />} caseSensitive={true} />
           <Route path="/product/:id" element={<ProductDetails />} exact="true" />
+          <Route path="/login" element={<Login />} exact="true" />
           {/* <Route path="/product/:id" element={<ProductDetails cartItems={state.cartItems} addItemToCart={addItemToCart} />} exact="true" /> */}
         </Routes>
         <Footer />

@@ -1,17 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../App.css";
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from "react-router-dom";
+import { getUser, logout } from "../../utils/helpers";
+import Search from "./Search";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-import Search from './Search'
 const Header = () => {
+  const [user, setUser] = useState("");
+  const navigate = useNavigate();
+
+  const logoutUser = async () => {
+    try {
+      await axios.get(`${process.env.REACT_APP_API}/api/v1/logout`);
+      setUser("");
+      logout(() => navigate("/"));
+      toast.success("Logged out", {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  useEffect(() => {
+    setUser(getUser());
+  }, []);
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
-      <Link to="/" style={{ textDecoration: 'none' }} >
-        <div className="navbar-brand">
-          <img id="LogoHeader" alt="Logo" src="../images/Logo.PNG"></img>
-          Rapier Tech Shop
-        </div>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <div className="navbar-brand">
+            <img id="LogoHeader" alt="Logo" src="../images/Logo.PNG" />
+            Rapier Tech Shop
+          </div>
         </Link>
         <button
           className="navbar-toggler"
@@ -24,31 +47,56 @@ const Header = () => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
+
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <div className="nav-link nav-menu">
-                <i className="bi bi-person-circle"></i>
-                Profile
-              </div>
+              {user ? (
+                <div className="dropdown">
+                  <button
+                    className="btn btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropDownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <figure className="avatar avatar-nav">
+                      <img
+                        src={user.avatar && user.avatar.url}
+                        alt={user && user.name}
+                        className="rounded-circle"
+                      />
+                    </figure>
+                    <span>{user && user.name}</span>
+                  </button>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="dropDownMenuButton"
+                  >
+                    <Link
+                      className="dropdown-item text-danger"
+                      to="/"
+                      onClick={logoutUser}
+                    >
+                      Logout
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <Link to="/login" className="btn ml-4" id="login_btn">
+                  Login
+                </Link>
+              )}
             </li>
           </ul>
 
-          <div className="Cartitem"><i class="bi bi-cart"></i></div>
-          <Search/>
-            {/* <form className="d-flex" role="search">
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form> */}
+          <div className="Cartitem">
+            <i className="bi bi-cart"></i>
           </div>
+          <Search />
         </div>
+      </div>
     </nav>
   );
 };
