@@ -5,7 +5,7 @@ import { Carousel } from 'react-bootstrap'
 import Loader from '../Layout/Loader'
 import MetaData from '../Layout/Metadata'
 import { getUser, getToken, successMsg, errMsg } from '../../utils/helpers'
-import ListReviews from '../Review/ListReviews'
+// import ListReviews from '../Review/ListReviews'
 // import { useAlert} from '@blaumaus/react-alert'
 import axios from 'axios'
 
@@ -219,11 +219,11 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
 
                                 </div>
                             </div>
-                            {product.reviews && product.reviews.length > 0 && (
+                            {/* {product.reviews && product.reviews.length > 0 && (
 
                                 <ListReviews reviews={product.reviews} />
 
-                            )}
+                            )} */}
                         </div>
                     </div>
                 </Fragment>
