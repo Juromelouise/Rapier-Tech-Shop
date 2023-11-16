@@ -76,7 +76,7 @@ const Home = () => {
   }, [currentPage, keyword, price, category]);
   // console.log(products)
   return (
-    <div>
+    <div id="body">
       <div className="container container-fluid">
         <h1 id="products_heading">Latest Products</h1>
         <section id="products" className="container mt-5">
