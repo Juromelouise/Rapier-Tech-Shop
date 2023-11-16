@@ -1,15 +1,18 @@
 import React from "react";
 import "../../App.css";
+import { Link, useNavigate } from 'react-router-dom'
 
 import Search from './Search'
 const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
+      <Link to="/" style={{ textDecoration: 'none' }} >
         <div className="navbar-brand">
           <img id="LogoHeader" alt="Logo" src="../images/Logo.PNG"></img>
           Rapier Tech Shop
         </div>
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -24,7 +27,7 @@ const Header = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <div className="nav-link disabled">
+              <div className="nav-link nav-menu">
                 <i className="bi bi-person-circle"></i>
                 Profile
               </div>
