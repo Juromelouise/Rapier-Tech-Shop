@@ -8,7 +8,7 @@ import { getUser, getToken, successMsg, errMsg } from "../../utils/helpers";
 // import { useAlert} from '@blaumaus/react-alert'
 import axios from "axios";
 
-const ProductDetails = () => {
+const ProductDetails = ({ cartItems, addItemToCart }) => {
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState({});
   const [error, setError] = useState("");
@@ -47,9 +47,10 @@ const ProductDetails = () => {
     const qty = count.valueAsNumber - 1;
     setQuantity(qty);
   };
-  // const addToCart = async () => {
-  //     await addItemToCart(id, quantity);
-  // }
+
+  const addToCart = async () => {
+    await addItemToCart(id, quantity);
+  }
   // function setUserRatings() {
   //     const stars = document.querySelectorAll('.star');
   //     stars.forEach((star, index) => {
@@ -121,7 +122,7 @@ const ProductDetails = () => {
     // }
   }, [id, error, errorReview, success]);
 
-  // localStorage.setItem('cartItems', JSON.stringify(cartItems))
+  localStorage.setItem('cartItems', JSON.stringify(cartItems))
 
   return (
     <Fragment>
@@ -196,7 +197,7 @@ const ProductDetails = () => {
                   <h3>Andrew Palmer</h3>
                 </div>
                 <div className="action">
-                  <button type="button">Add to cart</button>
+                  <button type="button" id="cart_btn" className="btn btn-primary d-inline ml-4" disabled={product.stock === 0} onClick={addToCart}>Add to Cart</button>
                 </div>
               </div>
             </div>
