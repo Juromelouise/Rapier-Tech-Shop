@@ -50,7 +50,7 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
 
   const addToCart = async () => {
     await addItemToCart(id, quantity);
-  }
+  };
   // function setUserRatings() {
   //     const stars = document.querySelectorAll('.star');
   //     stars.forEach((star, index) => {
@@ -122,7 +122,7 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
     // }
   }, [id, error, errorReview, success]);
 
-  localStorage.setItem('cartItems', JSON.stringify(cartItems))
+  localStorage.setItem("cartItems", JSON.stringify(cartItems));
 
   return (
     <Fragment>
@@ -197,7 +197,37 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                   <h3>Andrew Palmer</h3>
                 </div>
                 <div className="action">
-                  <button type="button" id="cart_btn" className="btn btn-primary d-inline ml-4" disabled={product.stock === 0} onClick={addToCart}>Add to Cart</button>
+                  <div className="stockCounter d-inline">
+                    <span
+                      className="btn btn-danger minus"
+                      onClick={decreaseQty}
+                    >
+                      -
+                    </span>
+
+                    <input
+                      type="number"
+                      className="form-control count d-inline"
+                      value={quantity}
+                      readOnly
+                    />
+                    {/* <span className="btn btn-primary plus"> +</span> */}
+                    <span
+                      className="btn btn-primary plus"
+                      onClick={increaseQty}
+                    >
+                      +
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    id="cart_btn"
+                    className="btn btn-primary d-inline ml-4"
+                    disabled={product.stock === 0}
+                    onClick={addToCart}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             </div>
