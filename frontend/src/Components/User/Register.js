@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-// import Metadata from '../Layout/Metadata'
+import Metadata from '../Layout/Metadata'
 import axios from 'axios'
 
 const Register = () => {
@@ -101,8 +101,8 @@ const Register = () => {
     return (
         <Fragment>
 
-            {/* <Metadata title={'Register User'} /> */}
-            <title>Register User</title>
+            <Metadata title={'Register User'} />
+            {/* <title>Register User</title> */}
 
             <div className="row wrapper">
                 <div className="col-10 col-lg-5">
