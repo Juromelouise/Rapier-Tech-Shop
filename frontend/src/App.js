@@ -37,10 +37,10 @@ function App() {
 
       const isItemExist = state.cartItems.find(i => i.product === item.product)
       console.log(isItemExist, state)
-      setState({
-        ...state,
-        cartItems: [...state.cartItems, item]
-      })
+      // setState({
+      //   ...state,
+      //   cartItems: [...state.cartItems, item]
+      // })
       if (isItemExist) {
         setState({
           ...state,
