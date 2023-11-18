@@ -164,9 +164,8 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                     <div style={{textDecoration: "underline", fontWeight: "700"}}>Description</div>
                     <p>{product.description}</p>
                   </div>
-                  <span className="stock">
-                    <i className="fa fa-pen"></i> In stock {product.stock}
-                  </span>
+                  
+                  <p>Status: <span id="stock_status" className={product.stock > 0 ? 'greenColor' : 'redColor'} >{product.stock > 0 ? 'In Stock' : 'Out of Stock'}: {product.stock}</span></p>
                   <div className="reviews">
                     <div className="rating-outer">
                       <div
@@ -217,6 +216,7 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                   >
                     Add to Cart
                   </button>
+                  
                 </div>
               </div>
             </div>
