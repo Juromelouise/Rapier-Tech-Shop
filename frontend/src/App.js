@@ -32,18 +32,12 @@ function App() {
         product: data.product._id,
         name: data.product.name,
         price: data.product.price,
-        
+
         image: data.product.images[0].url,
         stock: data.product.stock,
         quantity: quantity,
       };
-
-      const isItemExist = state.cartItems.find(i => i.product === item.product)
-      console.log(isItemExist, state)
-      // setState({
-      //   ...state,
-      //   cartItems: [...state.cartItems, item]
-      // })
+ 
       const isItemExist = state.cartItems.find(
         (i) => i.product === item.product
       );

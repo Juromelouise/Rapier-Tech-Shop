@@ -167,33 +167,24 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                     <p>{product.description}</p>
                   </div>
                   <span className="stock">
-                    <i className="fa fa-pen"></i> In stock
+                    <i className="bi bi-star"></i> In stock {product.stock}
                   </span>
                   <div className="reviews">
-                    <ul className="stars">
-                      <li>
-                        <i className="fa fa-star"></i>
-                      </li>
-                      <li>
-                        <i className="fa fa-star"></i>
-                      </li>
-                      <li>
-                        <i className="fa fa-star"></i>
-                      </li>
-                      <li>
-                        <i className="fa fa-star"></i>
-                      </li>
-                      <li>
-                        <i className="fa fa-star-o"></i>
-                      </li>
-                    </ul>
+                    <div className="rating-outer">
+                      <div
+                        className="rating-inner"
+                        style={{ width: `${(product.ratings / 5) * 100}%` }}
+                      ></div>
+                    </div>
                     <span>Reviews: {product.numOfReviews}</span>
                   </div>
                 </div>
               </div>
               <div className="card__footer">
                 <div className="recommend">
-                  <p><strong>Seller</strong></p>
+                  <p>
+                    <strong>Seller</strong>
+                  </p>
                   <h3>{product.seller}</h3>
                 </div>
                 <div className="action">
