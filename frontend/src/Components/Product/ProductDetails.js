@@ -167,7 +167,7 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                     <p>{product.description}</p>
                   </div>
                   <span className="stock">
-                    <i className="bi bi-star"></i> In stock {product.stock}
+                    <i className="fa fa-pen"></i> In stock {product.stock}
                   </span>
                   <div className="reviews">
                     <div className="rating-outer">

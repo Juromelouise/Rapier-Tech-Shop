@@ -12,13 +12,13 @@ const { newOrder,
 		customerSales,
 		salesPerMonth,
 	} = require('../controllers/orderController')
-const { isAuthenticatedUser, authorizeRoles } = require('../middlewares/auth')
+const { isAuthenticatedUser, authorizeRoles } = require('../middleware/auth')
 
 router.post('/new/order', isAuthenticatedUser, newOrder);
 router.get('/order/:id', isAuthenticatedUser, getSingleOrder);
 router.get('/orders/me', isAuthenticatedUser, myOrders);
 router.get('/admin/orders/', isAuthenticatedUser,  allOrders);
-
+ 
 router.route('/admin/order/:id').put(isAuthenticatedUser, updateOrder).delete(isAuthenticatedUser,  deleteOrder);
 router.get('/admin/total-orders', totalOrders);
 router.get('/admin/total-sales', totalSales);
