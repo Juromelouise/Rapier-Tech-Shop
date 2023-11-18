@@ -131,21 +131,18 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
       ) : (
         <Fragment>
           <MetaData title={product.name} />
-          <div className="body1"></div>
           <main>
             <div className="card1">
-              <div className="card__title">
-                <div className="icon">
-                  <i className="fa fa-arrow-left"></i>
-                </div>
-                <h3>New products</h3>
-              </div>
               <div className="card__body">
                 <div className="half">
                   <div className="featured_text">
                     <h1>{product.name}</h1>
-                    <p className="sub">{product.category}</p>
-                    <p className="price">${product.price}</p>
+                    <p className="sub">
+                      <strong>Category:</strong> {product.category}
+                    </p>
+                    <p className="price">
+                      <strong>Price: </strong>${product.price}
+                    </p>
                   </div>
                   <div className="image">
                     <Carousel pause="hover">
@@ -164,6 +161,7 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                 </div>
                 <div className="half">
                   <div className="description">
+                    <div style={{textDecoration: "underline", fontWeight: "700"}}>Description</div>
                     <p>{product.description}</p>
                   </div>
                   <span className="stock">

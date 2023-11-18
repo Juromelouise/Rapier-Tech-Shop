@@ -13,6 +13,8 @@ const Profile = () => {
     const [user, setUser] = useState('')
     
     const getProfile = async () => {
+        // console.log(getToken())
+    
         const config = {
             headers: {
                 // 'Content-Type': 'application/json',
