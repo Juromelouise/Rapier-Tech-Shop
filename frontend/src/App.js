@@ -7,6 +7,7 @@ import Home from "./Components/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Register from "./Components/User/Register";
 import Login from "./Components/User/Login";
+import Profile from './Components/User/Profile'
 import ProductDetails from "./Components/Product/ProductDetails";
 import Cart from "./Components/Cart/Cart";
 import { toast, ToastContainer } from "react-toastify";
@@ -96,8 +97,8 @@ function App() {
           <Route path="/" element={<Home />} caseSensitive={true} />
           <Route path="/register" element={<Register />} caseSensitive={true} />
           <Route path="/login" element={<Login />} caseSensitive={true} />
-          <Route path="/login" element={<Login />} exact="true" />
           <Route path="/" element={<Home />} caseSensitive={true} />
+          <Route path="/me" element={<Profile />} exact="true" />
           <Route
             path="/cart"
             element={
