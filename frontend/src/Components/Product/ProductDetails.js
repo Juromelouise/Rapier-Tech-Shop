@@ -193,8 +193,8 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
               </div>
               <div className="card__footer">
                 <div className="recommend">
-                  <p>Recommended by</p>
-                  <h3>Andrew Palmer</h3>
+                  <p><strong>Seller</strong></p>
+                  <h3>{product.seller}</h3>
                 </div>
                 <div className="action">
                   <div className="stockCounter d-inline">
