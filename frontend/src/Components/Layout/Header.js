@@ -95,6 +95,7 @@ const Header = () => {
           <div className="Cartitem">
             <i className="bi bi-cart"></i>
           </div>
+          
           <Search />
         </div>
       </div>

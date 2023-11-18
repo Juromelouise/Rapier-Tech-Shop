@@ -99,6 +99,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} caseSensitive={true} />
+          <Route path="/search/:keyword" element={<Home />} exact="true" />
           <Route path="/register" element={<Register />} caseSensitive={true} />
           <Route path="/login" element={<Login />} caseSensitive={true} />
           <Route path="/" element={<Home />} caseSensitive={true} />
@@ -107,6 +108,7 @@ function App() {
           <Route path="/password/forgot" element={<ForgotPassword />} exact="true" />
           <Route path="/password/reset/:token" element={<NewPassword />} exact="true" />
           <Route path="/password/update" element={<UpdatePassword />} />
+
           
           <Route
             path="/cart"
