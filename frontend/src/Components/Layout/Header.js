@@ -30,10 +30,10 @@ const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
-        <Link to="/" style={{ textDecoration: "none" }}>
+        <Link to="/" style={{textDecoration: "none", fontWeight: "400" }}>
           <div className="navbar-brand">
             <img id="LogoHeader" alt="Logo" src="../images/Logo.PNG" />
-            Rapier Tech Shop
+            <strong>Rapier Tech Shop</strong>
           </div>
         </Link>
         <button
