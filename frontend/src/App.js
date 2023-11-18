@@ -8,6 +8,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Register from "./Components/User/Register";
 import Login from "./Components/User/Login";
 import Profile from './Components/User/Profile'
+import UpdateProfile from './Components/User/UpdateProfile';
+import ForgotPassword from './Components/User/ForgotPassword';
+import UpdatePassword from './Components/User/UpdatePassword';
+import NewPassword from './Components/User/NewPassword';
 import ProductDetails from "./Components/Product/ProductDetails";
 import Cart from "./Components/Cart/Cart";
 import { toast, ToastContainer } from "react-toastify";
@@ -99,6 +103,11 @@ function App() {
           <Route path="/login" element={<Login />} caseSensitive={true} />
           <Route path="/" element={<Home />} caseSensitive={true} />
           <Route path="/me" element={<Profile />} exact="true" />
+          <Route path="/me/update" element={<UpdateProfile />} exact="true"/>
+          <Route path="/password/forgot" element={<ForgotPassword />} exact="true" />
+          <Route path="/password/reset/:token" element={<NewPassword />} exact="true" />
+          <Route path="/password/update" element={<UpdatePassword />} />
+          
           <Route
             path="/cart"
             element={
