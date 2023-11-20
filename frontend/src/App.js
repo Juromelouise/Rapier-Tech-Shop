@@ -15,11 +15,11 @@ import Cart from './Components/Cart/Cart';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
-// import Shipping from './Components/Cart/Shipping';
-// import ConfirmOrder from './Components/Cart/ConfirmOrder';
-// import Payment from './Components/Cart/Payment';
-// import OrderSuccess from './Components/Cart/OrderSuccess';
-// import ListOrders from './Components/Order/ListOrders';
+import Shipping from './Components/Cart/Shipping';
+import ConfirmOrder from './Components/Cart/ConfirmOrder';
+import Payment from './Components/Cart/Payment';
+import OrderSuccess from './Components/Cart/OrderSuccess';
+import ListOrders from './Components/Order/ListOrders';
 // import OrderDetails from './Components/Order/OrderDetails';
 // import Dashboard from './Components/Admin/Dashboard';
 // import NewProduct from './Components/Admin/NewProduct';
@@ -150,6 +150,15 @@ function App() {
             }
             exact="true"
           />
+
+          <Route path="/shipping" element={<Shipping
+            shipping={state.shippingInfo}
+            saveShippingInfo={saveShippingInfo}
+          />}
+          />
+          <Route path="/confirm" element={<ConfirmOrder cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
+          <Route path="/payment" element={<Payment cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
+          <Route path="/success" element={<OrderSuccess />} />
         </Routes>
         <Footer />
       </Router>
