@@ -9,120 +9,119 @@ import { getUser, getToken, successMsg, errMsg } from "../../utils/helpers";
 import axios from "axios";
 
 const ProductDetails = ({ cartItems, addItemToCart }) => {
-  const [loading, setLoading] = useState(true);
-  const [product, setProduct] = useState({});
-  const [error, setError] = useState("");
-  const [quantity, setQuantity] = useState(0);
-  const [user, setUser] = useState(getUser());
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
-  const [errorReview, setErrorReview] = useState("");
-  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(true)
+  const [product, setProduct] = useState({})
+  const [error, setError] = useState('')
+  const [quantity, setQuantity] = useState(0)
+  const [user, setUser] = useState(getUser())
+  const [rating, setRating] = useState(0)
+  const [comment, setComment] = useState('')
+  const [errorReview, setErrorReview] = useState('');
+  const [success, setSuccess] = useState('')
 
-  let { id } = useParams();
+
+  let { id } = useParams()
   // const alert = useAlert();
 
   const productDetails = async (id) => {
-    // let link = `http://localhost:4001/api/v1/product/${id}`
-    // console.log(link)
-    let res = await axios.get(
-      `http://localhost:4001/api/v1/singleProduct/${id}`
-    );
-    console.log(res);
-    if (!res) setError("Product not found");
-    setProduct(res.data.products);
-    setLoading(false);
-  };
+      let link = `${process.env.REACT_APP_API}/api/v1/singleProduct/${id}`
+      console.log(link)
+      let res = await axios.get(link)
+      console.log(res)
+      if (!res)
+          setError('Product not found')
+      setProduct(res.data.products)
+      setLoading(false)
+  }
 
   const increaseQty = () => {
-    const count = document.querySelector(".count");
-    if (count.valueAsNumber >= product.stock) return;
-    const qty = count.valueAsNumber + 1;
-    setQuantity(qty);
-  };
+      const count = document.querySelector('.count')
+      if (count.valueAsNumber >= product.stock) return;
+      const qty = count.valueAsNumber + 1;
+      setQuantity(qty)
+  }
 
   const decreaseQty = () => {
-    const count = document.querySelector(".count");
-    if (count.valueAsNumber <= 1) return;
-    const qty = count.valueAsNumber - 1;
-    setQuantity(qty);
-  };
-
+      const count = document.querySelector('.count')
+      if (count.valueAsNumber <= 1) return;
+      const qty = count.valueAsNumber - 1;
+      setQuantity(qty)
+  }
   const addToCart = async () => {
-    await addItemToCart(id, quantity);
-  };
-  // function setUserRatings() {
-  //     const stars = document.querySelectorAll('.star');
-  //     stars.forEach((star, index) => {
-  //         star.starValue = index + 1;
-  //         ['click', 'mouseover', 'mouseout'].forEach(function (e) {
-  //             star.addEventListener(e, showRatings);
-  //         })
-  //     })
-  //     function showRatings(e) {
-  //         stars.forEach((star, index) => {
-  //             if (e.type === 'click') {
-  //                 if (index < this.starValue) {
-  //                     star.classList.add('orange');
-  //                     setRating(this.starValue)
-  //                 } else {
-  //                     star.classList.remove('orange')
-  //                 }
-  //             }
-  //             if (e.type === 'mouseover') {
-  //                 if (index < this.starValue) {
-  //                     star.classList.add('yellow');
-  //                 } else {
-  //                     star.classList.remove('yellow')
-  //                 }
-  //             }
-  //             if (e.type === 'mouseout') {
-  //                 star.classList.remove('yellow')
-  //             }
-  //         })
-  //     }
-  // }
+      await addItemToCart(id, quantity);
+  }
+  function setUserRatings() {
+      const stars = document.querySelectorAll('.star');
+      stars.forEach((star, index) => {
+          star.starValue = index + 1;
+          ['click', 'mouseover', 'mouseout'].forEach(function (e) {
+              star.addEventListener(e, showRatings);
+          })
+      })
+      function showRatings(e) {
+          stars.forEach((star, index) => {
+              if (e.type === 'click') {
+                  if (index < this.starValue) {
+                      star.classList.add('orange');
+                      setRating(this.starValue)
+                  } else {
+                      star.classList.remove('orange')
+                  }
+              }
+              if (e.type === 'mouseover') {
+                  if (index < this.starValue) {
+                      star.classList.add('yellow');
+                  } else {
+                      star.classList.remove('yellow')
+                  }
+              }
+              if (e.type === 'mouseout') {
+                  star.classList.remove('yellow')
+              }
+          })
+      }
+  }
 
-  // const newReview = async (reviewData) => {
-  //     try {
-  //         const config = {
-  //             headers: {
-  //                 'Content-Type': 'application/json',
-  //                 'Authorization': `Bearer ${getToken()}`
-  //             }
-  //         }
+  const newReview = async (reviewData) => {
+      try {
+          const config = {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${getToken()}`
+              }
+          }
 
-  //         const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/review`, reviewData, config)
-  //         setSuccess(data.success)
+          const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/review`, reviewData, config)
+          setSuccess(data.success)
 
-  //     } catch (error) {
-  //         setErrorReview(error.response.data.message)
-  //     }
-  // }
+      } catch (error) {
+          setErrorReview(error.response.data.message)
+      }
+  }
 
-  // const reviewHandler = () => {
-  //     const formData = new FormData();
-  //     formData.set('rating', rating);
-  //     formData.set('comment', comment);
-  //     formData.set('productId', id);
-  //     newReview(formData)
+  const reviewHandler = () => {
+      const formData = new FormData();
+      formData.set('rating', rating);
+      formData.set('comment', comment);
+      formData.set('productId', id);
+      newReview(formData)
 
-  // }
+  }
 
   useEffect(() => {
-    productDetails(id);
-    // if (errorReview) {
-    //     errMsg(errorReview)
-    //     setErrorReview('')
-    // }
-    // if (success) {
-    //     successMsg('Review posted successfully')
-    //     setSuccess(false)
+      productDetails(id)
+      if (errorReview) {
+          errMsg(errorReview)
+          setErrorReview('')
+      }
+      if (success) {
+          successMsg('Review posted successfully')
+          setSuccess(false)
 
-    // }
+      }
   }, [id, error, errorReview, success]);
 
-  localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  localStorage.setItem('cartItems', JSON.stringify(cartItems))
 
   return (
     <Fragment>
@@ -216,7 +215,6 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                   >
                     Add to Cart
                   </button>
-                  
                 </div>
               </div>
             </div>

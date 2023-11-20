@@ -93,7 +93,7 @@ const Header = () => {
           </ul>
 
           <div className="Cartitem">
-            <i className="bi bi-cart"></i>
+            <Link to="/cart"><i className="bi bi-cart"></i></Link>
           </div>
           
           <Search />

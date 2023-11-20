@@ -1,23 +1,36 @@
-import logo from "./logo.svg";
-import "./App.css";
-import React, { useState } from "react";
-import Header from "./Components/Layout/Header";
-import Footer from "./Components/Layout/Footer";
-import Home from "./Components/Home";
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Register from "./Components/User/Register";
-import Login from "./Components/User/Login";
+import Header from './Components/Layout/Header'
+import Footer from './Components/Layout/Footer'
+import Home from './Components/Home'
+import ProductDetails from './Components/Product/ProductDetails'
+import Login from './Components/User/Login'
+import Register from './Components/User/Register';
 import Profile from './Components/User/Profile'
 import UpdateProfile from './Components/User/UpdateProfile';
 import ForgotPassword from './Components/User/ForgotPassword';
-import UpdatePassword from './Components/User/UpdatePassword';
 import NewPassword from './Components/User/NewPassword';
-import ProductDetails from "./Components/Product/ProductDetails";
-import Cart from "./Components/Cart/Cart";
-import { toast, ToastContainer } from "react-toastify";
+import UpdatePassword from './Components/User/UpdatePassword';
+import Cart from './Components/Cart/Cart';
+import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-
+import axios from 'axios';
+// import Shipping from './Components/Cart/Shipping';
+// import ConfirmOrder from './Components/Cart/ConfirmOrder';
+// import Payment from './Components/Cart/Payment';
+// import OrderSuccess from './Components/Cart/OrderSuccess';
+// import ListOrders from './Components/Order/ListOrders';
+// import OrderDetails from './Components/Order/OrderDetails';
+// import Dashboard from './Components/Admin/Dashboard';
+// import NewProduct from './Components/Admin/NewProduct';
+// import ProductsList from './Components/Admin/ProductsList';
+// import UpdateProduct from './Components/Admin/UpdateProduct';
+// import OrdersList from './Components/Admin/OrdersList';
+// import ProcessOrder from './Components/Admin/ProcessOrder';
+// import UsersList from './Components/Admin/UsersList';
+// import UpdateUser from './Components/Admin/UpdateUser';
+// import ProtectedRoute from './Components/Route/ProtectedRoute';
+// import ProductReviews from './Components/Admin/ProductReviews';
 function App() {
   const [state, setState] = useState({
     cartItems: localStorage.getItem("cartItems")
@@ -33,24 +46,24 @@ function App() {
       const { data } = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/singleProduct/${id}`
       );
+      console.log(data);
       const item = {
-        product: data.product._id,
-        name: data.product.name,
-        price: data.product.price,
-
-        image: data.product.images[0].url,
-        stock: data.product.stock,
+        product: data.products._id,
+        name: data.products.name,
+        price: data.products.price,
+        image: data.products.images[0].url,
+        stock: data.products.stock,
         quantity: quantity,
       };
- 
+
       const isItemExist = state.cartItems.find(
         (i) => i.product === item.product
       );
       console.log(isItemExist, state);
       // setState({
       //   ...state,
-      //   cartItems: [...state.cartItems, item],
-      // });
+      //   cartItems: [...state.cartItems, item]
+      // })
       if (isItemExist) {
         setState({
           ...state,
@@ -74,7 +87,6 @@ function App() {
       });
       // navigate('/')
     }
-    localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
   };
 
   const removeItemFromCart = async (id) => {
@@ -104,12 +116,19 @@ function App() {
           <Route path="/login" element={<Login />} caseSensitive={true} />
           <Route path="/" element={<Home />} caseSensitive={true} />
           <Route path="/me" element={<Profile />} exact="true" />
-          <Route path="/me/update" element={<UpdateProfile />} exact="true"/>
-          <Route path="/password/forgot" element={<ForgotPassword />} exact="true" />
-          <Route path="/password/reset/:token" element={<NewPassword />} exact="true" />
+          <Route path="/me/update" element={<UpdateProfile />} exact="true" />
+          <Route
+            path="/password/forgot"
+            element={<ForgotPassword />}
+            exact="true"
+          />
+          <Route
+            path="/password/reset/:token"
+            element={<NewPassword />}
+            exact="true"
+          />
           <Route path="/password/update" element={<UpdatePassword />} />
 
-          
           <Route
             path="/cart"
             element={
