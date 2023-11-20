@@ -1,25 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from './Components/Layout/Header'
-import Footer from './Components/Layout/Footer'
-import Home from './Components/Home'
-import ProductDetails from './Components/Product/ProductDetails'
-import Login from './Components/User/Login'
-import Register from './Components/User/Register';
-import Profile from './Components/User/Profile'
-import UpdateProfile from './Components/User/UpdateProfile';
-import ForgotPassword from './Components/User/ForgotPassword';
-import NewPassword from './Components/User/NewPassword';
-import UpdatePassword from './Components/User/UpdatePassword';
-import Cart from './Components/Cart/Cart';
-import { toast, ToastContainer } from 'react-toastify';
+import Header from "./Components/Layout/Header";
+import Footer from "./Components/Layout/Footer";
+import Home from "./Components/Home";
+import ProductDetails from "./Components/Product/ProductDetails";
+import Login from "./Components/User/Login";
+import Register from "./Components/User/Register";
+import Profile from "./Components/User/Profile";
+import UpdateProfile from "./Components/User/UpdateProfile";
+import ForgotPassword from "./Components/User/ForgotPassword";
+import NewPassword from "./Components/User/NewPassword";
+import UpdatePassword from "./Components/User/UpdatePassword";
+import Cart from "./Components/Cart/Cart";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from 'axios';
-import Shipping from './Components/Cart/Shipping';
-import ConfirmOrder from './Components/Cart/ConfirmOrder';
-import Payment from './Components/Cart/Payment';
-import OrderSuccess from './Components/Cart/OrderSuccess';
-import ListOrders from './Components/Order/ListOrders';
+import axios from "axios";
+import Shipping from "./Components/Cart/Shipping";
+import ConfirmOrder from "./Components/Cart/ConfirmOrder";
+import Payment from "./Components/Cart/Payment";
+import OrderSuccess from "./Components/Cart/OrderSuccess";
+import ListOrders from "./Components/Order/ListOrders";
+import Dashboard from "./Components/Admin/Dashboard";
 // import OrderDetails from './Components/Order/OrderDetails';
 // import Dashboard from './Components/Admin/Dashboard';
 // import NewProduct from './Components/Admin/NewProduct';
@@ -151,14 +152,35 @@ function App() {
             exact="true"
           />
 
-          <Route path="/shipping" element={<Shipping
-            shipping={state.shippingInfo}
-            saveShippingInfo={saveShippingInfo}
-          />}
+          <Route
+            path="/shipping"
+            element={
+              <Shipping
+                shipping={state.shippingInfo}
+                saveShippingInfo={saveShippingInfo}
+              />
+            }
           />
-          <Route path="/confirm" element={<ConfirmOrder cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
-          <Route path="/payment" element={<Payment cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
+          <Route
+            path="/confirm"
+            element={
+              <ConfirmOrder
+                cartItems={state.cartItems}
+                shippingInfo={state.shippingInfo}
+              />
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              <Payment
+                cartItems={state.cartItems}
+                shippingInfo={state.shippingInfo}
+              />
+            }
+          />
           <Route path="/success" element={<OrderSuccess />} />
+          <Route path="/admin/dashboard" element={<Dashboard />} />
         </Routes>
         <Footer />
       </Router>
