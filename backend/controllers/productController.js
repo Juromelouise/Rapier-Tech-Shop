@@ -1,7 +1,16 @@
 const Product = require("../models/product");
 const cloudinary = require("cloudinary");
-const APIFeatures = require('../utils/apiFeatures');
+const APIFeatures = require("../utils/apiFeatures");
 // const Order = require('../models/order')
+
+exports.getImage = async (req, res, next) => {
+  const imageProduct = await Product.find();
+  let products = imageProduct;
+  res.status(200).json({
+    success: true,
+    products,
+  });
+};
 
 exports.getProducts = async (req, res, next) => {
   const resPerPage = 4;
@@ -146,37 +155,39 @@ exports.updateProduct = async (req, res, next) => {
 };
 
 exports.createProductReview = async (req, res, next) => {
-	const { rating, comment, productId } = req.body;
-	const review = {
-		user: req.user._id,
-		name: req.user.name,
-		rating: Number(rating),
-		comment
-	}
-	const product = await Product.findById(productId);
-	const isReviewed = product.reviews.find(
-		r => r.user && (r.user.toString() === req.user._id.toString())
-	)
-	if (isReviewed) {
-		product.reviews.forEach(review => {
-			console.log(review)
-			if (review.user && (review.user.toString() === req.user._id.toString())) {
-				review.comment = comment;
-				review.rating = rating;
-			}
-		})
-	} else {
-		product.reviews.push(review);
-		product.numOfReviews = product.reviews.length
-	}
-	product.ratings = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length
-	await product.save({ validateBeforeSave: false });
-	if (!product)
-		return res.status(400).json({
-			success: false,
-			message: 'review not posted'
-		})
-	return res.status(200).json({
-		success: true
-	})
-}
+  const { rating, comment, productId } = req.body;
+  const review = {
+    user: req.user._id,
+    name: req.user.name,
+    rating: Number(rating),
+    comment,
+  };
+  const product = await Product.findById(productId);
+  const isReviewed = product.reviews.find(
+    (r) => r.user && r.user.toString() === req.user._id.toString()
+  );
+  if (isReviewed) {
+    product.reviews.forEach((review) => {
+      console.log(review);
+      if (review.user && review.user.toString() === req.user._id.toString()) {
+        review.comment = comment;
+        review.rating = rating;
+      }
+    });
+  } else {
+    product.reviews.push(review);
+    product.numOfReviews = product.reviews.length;
+  }
+  product.ratings =
+    product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+    product.reviews.length;
+  await product.save({ validateBeforeSave: false });
+  if (!product)
+    return res.status(400).json({
+      success: false,
+      message: "review not posted",
+    });
+  return res.status(200).json({
+    success: true,
+  });
+};
