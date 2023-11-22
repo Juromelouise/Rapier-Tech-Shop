@@ -80,9 +80,7 @@ const Home = () => {
     <div id="body">
       <div className="container container-fluid">
         <h1 id="products_heading">Latest Products</h1>
-        {products.map((product) => (
-          <Caroimage key={product._id} prod={product} col={4} />
-                    ))}
+          <Caroimage prod={products[0]} />
         <section id="products" className="container mt-5">
           <div className="row">
             {keyword ? (
