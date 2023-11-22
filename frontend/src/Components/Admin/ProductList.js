@@ -16,7 +16,7 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Product() {
+export default function ProductList() {
 
  const [orders, setOrder] = useState([])
   const orderss = async () => {
@@ -45,9 +45,9 @@ export default function Product() {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
+            <TableCell>Category</TableCell>
+            <TableCell>Price</TableCell>
             <TableCell>Payment Method</TableCell>
             <TableCell align="right">Sale Amount</TableCell>
           </TableRow>
