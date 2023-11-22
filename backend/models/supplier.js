@@ -16,7 +16,7 @@ const supplierSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter address"],
   },
-  images: [
+  logo: [
     {
       public_id: {
         type: String,

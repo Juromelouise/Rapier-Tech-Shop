@@ -12,7 +12,6 @@ const NewSupplier = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
     const [description, setDescription] = useState('');
-    const [category, setCategory] = useState('');
     const [stock, setStock] = useState(0);
     const [seller, setSeller] = useState('');
     const [images, setImages] = useState([]);
@@ -22,20 +21,7 @@ const NewSupplier = () => {
     const [success, setSuccess] = useState('')
     const [product, setProduct] = useState({})
 
-    const categories = [
-        'Electronics',
-        'Cameras',
-        'Laptops',
-        'Accessories',
-        'Headphones',
-        'Food',
-        "Books",
-        'Clothes/Shoes',
-        'Beauty/Health',
-        'Sports',
-        'Outdoor',
-        'Home'
-    ]
+
 
     let navigate = useNavigate()
     
@@ -46,7 +32,6 @@ const NewSupplier = () => {
         formData.set('name', name);
         formData.set('price', price);
         formData.set('description', description);
-        formData.set('category', category);
         formData.set('stock', stock);
         formData.set('seller', seller);
 
@@ -152,16 +137,6 @@ const NewSupplier = () => {
                                 <div className="form-group">
                                     <label htmlFor="description_field">Description</label>
                                     <textarea className="form-control" id="description_field" rows="8" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="category_field">Category</label>
-                                    <select className="form-control" id="category_field" value={category} onChange={(e) => setCategory(e.target.value)}>
-                                        {categories.map(category => (
-                                            <option key={category} value={category} >{category}</option>
-                                        ))}
-
-                                    </select>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="stock_field">Stock</label>

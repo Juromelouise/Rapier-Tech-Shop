@@ -57,7 +57,7 @@ export default function Orders() {
               <TableCell>{row.createdAt}</TableCell>
               {/* <TableCell>{row.name}</TableCell> */}
               <TableCell>{row.price}</TableCell>
-              <TableCell>{row.shippingInfo.address}</TableCell>
+              <TableCell>{row.shippingInfo.address}, {row.shippingInfo.city}, {row.shippingInfo.country}</TableCell>
               <TableCell>{row.paymentMethod}</TableCell>
               <TableCell align="right">{`$${row.totalPrice}`}</TableCell>
             </TableRow>
