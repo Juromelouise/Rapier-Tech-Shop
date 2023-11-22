@@ -10,8 +10,8 @@ function Title(props) {
   );
 }
 
-// Title.propTypes = {
-//   children: PropTypes.node,
-// };
+Title.propTypes = {
+  children: PropTypes.node,
+};
 
 export default Title;

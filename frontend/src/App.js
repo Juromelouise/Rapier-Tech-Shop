@@ -19,9 +19,9 @@ import Shipping from "./Components/Cart/Shipping";
 import ConfirmOrder from "./Components/Cart/ConfirmOrder";
 import Payment from "./Components/Cart/Payment";
 import OrderSuccess from "./Components/Cart/OrderSuccess";
-import ListOrders from "./Components/Order/ListOrders";
+// import ListOrders from "./Components/Order/ListOrders";
 import Dashboard from "./Components/Admin/Dashboard";
-import Orders from "./Components/Admin/Orders";
+import OrderList from "./Components/Admin/OrderList";
 // import OrderDetails from './Components/Order/OrderDetails';
 // import Dashboard from './Components/Admin/Dashboard';
 // import NewProduct from './Components/Admin/NewProduct';
@@ -182,7 +182,7 @@ function App() {
           />
           <Route path="/success" element={<OrderSuccess />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/orders" element={<Orders />} />
+          <Route path="/admin/orders" element={<OrderList />} />
         </Routes>
         <Footer />
       </Router>
