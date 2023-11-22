@@ -16,7 +16,7 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Orders() {
+export default function Product() {
 
  const [orders, setOrder] = useState([])
   const orderss = async () => {
