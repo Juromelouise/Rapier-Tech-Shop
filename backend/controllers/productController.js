@@ -5,10 +5,10 @@ const APIFeatures = require("../utils/apiFeatures");
 
 exports.getImage = async (req, res, next) => {
   const imageProduct = await Product.find();
-  let products = imageProduct;
+  let product = imageProduct;
   res.status(200).json({
     success: true,
-    products,
+    product,
   });
 };
 
