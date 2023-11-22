@@ -21,7 +21,7 @@ import Payment from "./Components/Cart/Payment";
 import OrderSuccess from "./Components/Cart/OrderSuccess";
 // import ListOrders from "./Components/Order/ListOrders";
 import Dashboard from "./Components/Admin/Dashboard";
-
+import SupplierList from "./Components/Admin/SupplierList"
 import ProductList from "./Components/Admin/ProductList";
 import OrderList from "./Components/Admin/OrderList";
 // import OrderDetails from './Components/Order/OrderDetails';
@@ -186,6 +186,7 @@ function App() {
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/orders" element={<OrderList />} />
           <Route path="/admin/products" element={<ProductList />} />
+          <Route path="/admin/supplier" element={<SupplierList />} />
         </Routes>
         <Footer />
       </Router>

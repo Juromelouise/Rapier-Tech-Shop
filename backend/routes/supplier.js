@@ -7,7 +7,12 @@ const {
   getSupplier,
 } = require("../controllers/supplierController");
 
-router.get("/supplier", getSupplier);
+const {
+  isAuthenticatedUser,
+  authorizeRoles,
+} = require("../middleware/auth");
+
+router.get("/admin/supplier", isAuthenticatedUser, authorizeRoles("admin"), getSupplier);
 router.get("/singleSupplier", getSinglesupplier);
 
 module.exports = router;
