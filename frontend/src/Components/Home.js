@@ -8,6 +8,7 @@ import Pagination from "react-js-pagination";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import Header from "./Layout/Header";
+import Caroimage from "./Layout/Caroimage"
 
 const categories = [
   'Laptop',
@@ -79,6 +80,7 @@ const Home = () => {
     <div id="body">
       <div className="container container-fluid">
         <h1 id="products_heading">Latest Products</h1>
+        <Caroimage/>
         <section id="products" className="container mt-5">
           <div className="row">
             {keyword ? (
