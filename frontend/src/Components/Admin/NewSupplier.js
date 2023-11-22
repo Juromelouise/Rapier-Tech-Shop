@@ -10,17 +10,14 @@ import 'react-toastify/dist/ReactToastify.css';
 const NewSupplier = () => {
 
     const [name, setName] = useState('');
-    const [price, setPrice] = useState(0);
-    const [description, setDescription] = useState('');
-    const [stock, setStock] = useState(0);
-    const [seller, setSeller] = useState('');
-    const [images, setImages] = useState([]);
+    const [number, setNumber] = useState('');
+    const [address, setAddress] = useState('');
+    const [logo, setLogo] = useState([]);
     const [imagesPreview, setImagesPreview] = useState([])
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(true)
     const [success, setSuccess] = useState('')
-    const [product, setProduct] = useState({})
-
+    const [supplier, setSupplier] = useState({})
 
 
     let navigate = useNavigate()
@@ -30,13 +27,11 @@ const NewSupplier = () => {
 
         const formData = new FormData();
         formData.set('name', name);
-        formData.set('price', price);
-        formData.set('description', description);
-        formData.set('stock', stock);
-        formData.set('seller', seller);
+        formData.set('number', number);
+        formData.set('address', address);
 
-        images.forEach(image => {
-            formData.append('images', image)
+        logo.forEach(image => {
+            formData.append('logo', image)
         })
         
         newProduct(formData)
@@ -70,10 +65,10 @@ const NewSupplier = () => {
                 }
             }
 
-            const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/admin/product/new`, formData, config)
+            const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/admin/new/supplier`, formData, config)
             setLoading(false)
             setSuccess(data.success)
-            setProduct(data.product)
+            setSupplier(data.supplier)
         } catch (error) {
             setError(error.response.data.message)
 
@@ -88,8 +83,8 @@ const NewSupplier = () => {
         }
 
         if (success) {
-            navigate('/admin/products');
-            toast.success('Product created successfully', {
+            navigate('/admin/supplier');
+            toast.success('Supplier added', {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
 
@@ -100,7 +95,7 @@ const NewSupplier = () => {
 
     return (
         <Fragment>
-            <MetaData title={'New Product'} />
+            <MetaData title={'New Supplier'} />
             <div className="row">
                 <div className="col-12 col-md-2">
                     <Sidebar />
