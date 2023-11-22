@@ -21,6 +21,8 @@ import Payment from "./Components/Cart/Payment";
 import OrderSuccess from "./Components/Cart/OrderSuccess";
 // import ListOrders from "./Components/Order/ListOrders";
 import Dashboard from "./Components/Admin/Dashboard";
+
+import ProductList from "./Components/Admin/ProductList";
 import OrderList from "./Components/Admin/OrderList";
 // import OrderDetails from './Components/Order/OrderDetails';
 // import Dashboard from './Components/Admin/Dashboard';
