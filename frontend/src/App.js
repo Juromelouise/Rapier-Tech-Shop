@@ -24,6 +24,7 @@ import Dashboard from "./Components/Admin/Dashboard";
 import SupplierList from "./Components/Admin/SupplierList"
 import ProductList from "./Components/Admin/ProductList";
 import OrderList from "./Components/Admin/OrderList";
+import NewSupplier from "./Components/Admin/NewSupplier";
 // import OrderDetails from './Components/Order/OrderDetails';
 // import Dashboard from './Components/Admin/Dashboard';
 // import NewProduct from './Components/Admin/NewProduct';
@@ -187,6 +188,7 @@ function App() {
           <Route path="/admin/orders" element={<OrderList />} />
           <Route path="/admin/products" element={<ProductList />} />
           <Route path="/admin/supplier" element={<SupplierList />} />
+          <Route path="/admin/supplier/new" element={<NewSupplier />} />
         </Routes>
         <Footer />
       </Router>

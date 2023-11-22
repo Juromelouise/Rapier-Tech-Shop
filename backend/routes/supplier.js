@@ -15,6 +15,6 @@ const {
 
 router.get("/admin/supplier", isAuthenticatedUser, authorizeRoles("admin"), getSupplier);
 router.get("/singleSupplier", getSinglesupplier);
-router.post("/admin/new/supplier", isAuthenticatedUser, authorizeRoles("admin"), newSupplier);
+router.post("/admin/new/supplier", isAuthenticatedUser, authorizeRoles("admin"),upload.array('images', 10), newSupplier);
 
 module.exports = router;
