@@ -30,7 +30,7 @@ const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
-        <Link to="/" style={{textDecoration: "none", fontWeight: "400" }}>
+        <Link to="/" style={{ textDecoration: "none", fontWeight: "400" }}>
           <div className="navbar-brand">
             <img id="LogoHeader" alt="Logo" src="../images/Logo.PNG" />
             <strong>Rapier Tech Shop</strong>
@@ -74,7 +74,14 @@ const Header = () => {
                     className="dropdown-menu"
                     aria-labelledby="dropDownMenuButton"
                   >
-                    <Link className="dropdown-item" to="/me">Profile</Link>
+                    {user && user.role === "admin" && (
+                      <Link className="dropdown-item" to="/admin/dashboard">
+                        Dashboard
+                      </Link>
+                    )}
+                    <Link className="dropdown-item" to="/me">
+                      Profile
+                    </Link>
                     <Link
                       className="dropdown-item text-danger"
                       to="/"
@@ -93,9 +100,11 @@ const Header = () => {
           </ul>
 
           <div className="Cartitem">
-            <Link to="/cart"><i className="bi bi-cart"></i></Link>
+            <Link to="/cart">
+              <i className="bi bi-cart"></i>
+            </Link>
           </div>
-          
+
           <Search />
         </div>
       </div>

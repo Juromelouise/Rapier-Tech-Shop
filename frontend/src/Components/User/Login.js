@@ -84,7 +84,7 @@ const Login = () => {
                                     />
                                 </div>
 
-                                <Link to="/password/forgot" className="float-right mb-4">Forgot Password?</Link>
+                                <Link to="/password/forgot" className="float-right mb-4" id='forgot'>Forgot Password?</Link>
 
                                 <button
                                     id="login_button"
@@ -94,7 +94,7 @@ const Login = () => {
                                     LOGIN
                                 </button>
 
-                                <Link to="/register" className="float-right mt-3">New User?</Link>
+                                <Link to="/register" className="float-right mt-3" id='new'>New User?</Link>
                             </form>
                         </div>
                     </div>
