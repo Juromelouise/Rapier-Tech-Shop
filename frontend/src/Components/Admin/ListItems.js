@@ -23,7 +23,8 @@ export const mainListItems = (
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="Orders" />
+      <Link to="/admin/orders">
+      <ListItemText primary="Orders" /></Link>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>

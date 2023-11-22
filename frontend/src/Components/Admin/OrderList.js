@@ -1,44 +1,43 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Title from './Title';
-import axios from 'axios'
-import { useState,useEffect } from 'react';
-import { getToken } from '../../utils/helpers';
-
-
+import * as React from "react";
+import Link from "@mui/material/Link";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Title from "./Title";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { getToken } from "../../utils/helpers";
 
 function preventDefault(event) {
   event.preventDefault();
 }
 
 export default function Orders() {
-
- const [orders, setOrder] = useState([])
+  const [orders, setOrder] = useState([]);
   const orderss = async () => {
     const config = {
       headers: {
-          // 'Content-Type': 'application/json',
-          'Authorization': `Bearer ${getToken()}`
-      }
-  }
-    try{
-    let res = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/orders/`, config)
-    setOrder(res.data)
-  }catch(error){
-    console.error('Error fetching orders:', error);
-  }
-  }
+        Authorization: `Bearer ${getToken()}`,
+      },
+    };
+    try {
+      let res = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/admin/orders/`,
+        config
+      );
+      setOrder(res.data.orders);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
 
-  useEffect(()=>{
-    orderss()
-  },[])
+  useEffect(() => {
+    orderss();
+  }, []);
 
-  console.log(orders)
+  console.log(orders);
   return (
     <React.Fragment>
       <Title>Recent Orders</Title>
@@ -53,19 +52,20 @@ export default function Orders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* {rows.map((row) => (
+          {orders.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
+              <TableCell>{row.createdAt}</TableCell>
+              {/* <TableCell>{row.name}</TableCell> */}
+              <TableCell>{row.price}</TableCell>
+              <TableCell>{row.shippingInfo.address}</TableCell>
               <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+              <TableCell align="right">{`$${row.totalPrice}`}</TableCell>
             </TableRow>
-          ))} */}
+          ))}
         </TableBody>
       </Table>
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        See more orders
+      <Link color="primary" href="/admin/dashboard" onClick={preventDefault} sx={{ mt: 3 }}>
+        Go Back to Dashboard
       </Link>
     </React.Fragment>
   );

@@ -185,6 +185,7 @@ function App() {
           <Route path="/success" element={<OrderSuccess />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/orders" element={<OrderList />} />
+          <Route path="/admin/products" element={<ProductList />} />
         </Routes>
         <Footer />
       </Router>
