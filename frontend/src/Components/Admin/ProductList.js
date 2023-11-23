@@ -11,11 +11,9 @@ import { useState, useEffect } from "react";
 import { getToken } from "../../utils/helpers";
 import { Link } from "react-router-dom";
 
-
-
-function preventDefault(event) {
-  event.preventDefault();
-}
+// function preventDefault(event) {
+//   event.preventDefault();
+// }
 
 export default function ProductList() {
 

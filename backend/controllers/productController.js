@@ -1,7 +1,18 @@
 const Product = require("../models/product");
 const cloudinary = require("cloudinary");
 const APIFeatures = require("../utils/apiFeatures");
+const Supplier = require('../models/supplier')
 // const Order = require('../models/order')
+
+exports.getSupplier = async (req, res, next) => {
+  const product = await Product.find().populate({
+    path: "seller",
+    model: Supplier
+  })
+  res.status(201).json({
+    product
+  })
+};
 
 exports.getImage = async (req, res, next) => {
   const imageProduct = await Product.find();
