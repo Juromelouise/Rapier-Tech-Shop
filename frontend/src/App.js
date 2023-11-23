@@ -26,9 +26,11 @@ import ProductList from "./Components/Admin/ProductList";
 import OrderList from "./Components/Admin/OrderList";
 import NewSupplier from "./Components/Admin/NewSupplier";
 import { getUser } from "./utils/helpers";
+import NewProduct from './Components/Admin/NewProduct';
+import UserList from './Components/Admin/UserList';
+import NewUser from './Components/Admin/NewUser';
 // import OrderDetails from './Components/Order/OrderDetails';
 // import Dashboard from './Components/Admin/Dashboard';
-// import NewProduct from './Components/Admin/NewProduct';
 // import ProductsList from './Components/Admin/ProductsList';
 // import UpdateProduct from './Components/Admin/UpdateProduct';
 // import OrdersList from './Components/Admin/OrdersList';
@@ -201,6 +203,9 @@ function App() {
           <Route path="/admin/products" element={<ProductList />} />
           <Route path="/admin/supplier" element={<SupplierList />} />
           <Route path="/admin/supplier/new" element={<NewSupplier />} />
+          <Route path="/admin/product/new" element={<NewProduct />} />
+          <Route path="/admin/user" element={<UserList />} />
+          <Route path="/admin/user/new" element={<NewUser />} />
         </Routes>
         <Footer />
       </Router>

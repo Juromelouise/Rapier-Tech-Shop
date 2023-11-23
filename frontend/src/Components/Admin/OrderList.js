@@ -40,33 +40,39 @@ export default function Orders() {
   console.log(orders);
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+      <Title>Orders</Title>
+      <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Order ID</TableCell>
+          <TableCell>Date</TableCell>
+          <TableCell>Items Price</TableCell>
+          <TableCell>Order Status</TableCell>
+          <TableCell>Total Price</TableCell>
+          <TableCell>User ID</TableCell>
+          <TableCell align="right">Action</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {orders.map((order) => (
+          <TableRow key={order._id}>
+            <TableCell>{order._id}</TableCell>
+            <TableCell>{new Date(order.createdAt).toLocaleString()}</TableCell>
+            <TableCell>{order.itemsPrice}</TableCell>
+            <TableCell>{order.orderStatus}</TableCell>
+            <TableCell>{order.totalPrice}</TableCell>
+            <TableCell>{order.user}</TableCell>
+            <TableCell align="right">
+              {/* Add any actions you want to perform for each order */}
+            </TableCell>
           </TableRow>
-        </TableHead>
-        <TableBody>
-          {orders.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.createdAt}</TableCell>
-              {/* <TableCell>{row.name}</TableCell> */}
-              <TableCell>{row.price}</TableCell>
-              <TableCell>{row.shippingInfo.address}, {row.shippingInfo.city}, {row.shippingInfo.country}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.totalPrice}`}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Link color="primary" href="/admin/dashboard" onClick={preventDefault} sx={{ mt: 3 }}>
-        Go Back to Dashboard
-      </Link>
+        ))}
+      </TableBody>
+    </Table>
+
+      {/* Additional details for each order */}
+      
     </React.Fragment>
   );
+
 }

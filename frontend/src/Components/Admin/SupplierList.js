@@ -44,7 +44,7 @@ export default function SupplierList() {
   console.log(supplier);
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>Suppliers</Title>
 
       <Table size="small">
         <TableHead>
@@ -66,7 +66,10 @@ export default function SupplierList() {
               <TableCell>{row.name}</TableCell>
               <TableCell>
                 {row.images.map((row) => (
-                  <img key={row.public_id} src={row.url} alt={row.public_id}/>
+                  <img key={row.public_id}
+                       src={row.url} 
+                       alt={row.public_id}
+                       style={{ width: '100px', height: 'auto' }}/>
                 ))}
               </TableCell>
               <TableCell>{row.number}</TableCell>

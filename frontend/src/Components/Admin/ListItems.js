@@ -31,7 +31,7 @@ export const mainListItems = (
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <Link to ="/admin/users">
+      <Link to ="/admin/user">
       <ListItemText primary="Users" style={{color: "black", textDecoration: "underline"}}/></Link>
     </ListItemButton>
     <ListItemButton>

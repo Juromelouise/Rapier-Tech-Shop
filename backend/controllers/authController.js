@@ -242,3 +242,50 @@ exports.updateUser = async (req, res, next) => {
       success: true
   })
 }
+
+exports.newUser = async (req, res, next) => {
+  console.log(req.body)
+  let images = [];
+
+  if (typeof req.body.images === "string") {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+
+  let imagesLinks = [];
+
+  for (let i = 0; i < images.length; i++) {
+    let imageDataUri = images[i];
+
+    try {
+      const result = await cloudinary.v2.uploader.upload(`${imageDataUri}`, {
+        folder: "user",
+        width: 150,
+        crop: "scale",
+      });
+
+      imagesLinks.push({
+        public_id: result.public_id,
+        url: result.secure_url,
+      });
+    } catch (error) {
+      // console.log(error);
+    }
+  }
+
+  req.body.images = imagesLinks;
+
+  const user = await User.create(req.body);
+  if (!user) {
+    return res.status(400).json({
+      success: false,
+      message: "User not created",
+    });
+  }
+
+  res.status(201).json({
+    success: true,
+    user,
+  });
+};
