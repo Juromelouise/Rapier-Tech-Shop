@@ -18,6 +18,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './ListItems';
+import NewSupplier from './NewSupplier';
+import SupplierList from './SupplierList';
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 
@@ -108,11 +110,6 @@ export default function Dashboard() {
             >
               Dashboard
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -132,7 +129,6 @@ export default function Dashboard() {
           <List component="nav">
             {mainListItems}
             <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
           </List>
         </Drawer>
         <Box
@@ -147,6 +143,7 @@ export default function Dashboard() {
             overflow: 'auto',
           }}
         >
+          <SupplierList/>
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           </Container>

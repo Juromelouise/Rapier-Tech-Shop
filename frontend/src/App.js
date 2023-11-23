@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Header from "./Components/Layout/Header";
 import Footer from "./Components/Layout/Footer";
 import Home from "./Components/Home";
@@ -25,6 +25,7 @@ import SupplierList from "./Components/Admin/SupplierList"
 import ProductList from "./Components/Admin/ProductList";
 import OrderList from "./Components/Admin/OrderList";
 import NewSupplier from "./Components/Admin/NewSupplier";
+import { getUser } from "./utils/helpers";
 // import OrderDetails from './Components/Order/OrderDetails';
 // import Dashboard from './Components/Admin/Dashboard';
 // import NewProduct from './Components/Admin/NewProduct';
@@ -37,6 +38,17 @@ import NewSupplier from "./Components/Admin/NewSupplier";
 // import ProtectedRoute from './Components/Route/ProtectedRoute';
 // import ProductReviews from './Components/Admin/ProductReviews';
 function App() {
+  const [user, setUser]=useState({})
+
+  const fetchUser = async ()=>{
+    setUser(getUser())
+  }
+
+  useEffect(()=>{
+    fetchUser()
+  },[])
+
+  console.log(user.role)
   const [state, setState] = useState({
     cartItems: localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
@@ -113,7 +125,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Header />
+      <Header/>
         <Routes>
           <Route path="/" element={<Home />} caseSensitive={true} />
           <Route path="/search/:keyword" element={<Home />} exact="true" />

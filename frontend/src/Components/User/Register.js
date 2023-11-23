@@ -83,7 +83,7 @@ const Register = () => {
         } catch (error) {
             setIsAuthenticated(false);
             setLoading(false);
-            setUser({});
+            setUser(null);
     
             // Check if the error has a response property and a data property
             if (error.response && error.response.data && error.response.data.message) {

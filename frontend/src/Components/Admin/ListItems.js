@@ -17,34 +17,36 @@ export const mainListItems = (
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <Link to="/admin/dashboard">
+      <ListItemText primary="Dashboard" style={{color: "black", textDecoration: "underline"}}/></Link>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
       <Link to="/admin/orders">
-      <ListItemText primary="Orders" /></Link>
+      <ListItemText primary="Orders" style={{color: "black", textDecoration: "underline"}}/></Link>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Customers" />
+      <Link to ="/admin/users">
+      <ListItemText primary="Users" style={{color: "black", textDecoration: "underline"}}/></Link>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
       <Link to = "/admin/supplier">
-      <ListItemText primary="Supplier"></ListItemText></Link>
+      <ListItemText primary="Supplier" style={{color: "black", textDecoration: "underline"}}></ListItemText></Link>
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
       <Link to = "/admin/products">
-      <ListItemText primary="Products"></ListItemText></Link>
+      <ListItemText primary="Products" style={{color: "black", textDecoration: "underline"}}></ListItemText></Link>
     </ListItemButton>
   </React.Fragment>
 );
