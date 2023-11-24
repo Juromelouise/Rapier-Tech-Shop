@@ -72,3 +72,18 @@ exports.newSupplier = async (req, res, next) => {
   });
 };
 
+exports.deleteSupplier = async (req, res, next) => {
+	const supplier = await Supplier.findByIdAndDelete(req.params.id);
+	if (!supplier) {
+		return res.status(404).json({
+			success: false,
+			message: 'Supplier Not Found'
+		})
+	}
+	// await product.remove();
+	res.status(200).json({
+		success: true,
+		message: 'Supplier Deleted'
+	})
+}
+

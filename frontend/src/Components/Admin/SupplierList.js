@@ -19,6 +19,11 @@ function preventDefault(event) {
 
 export default function SupplierList() {
   const [supplier, setSupplier] = useState([]);
+  const [error, setError] = useState('')
+  const [deleteError, setDeleteError] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [isDeleted, setIsDeleted] = useState(false)
+
   const supplies = async () => {
     const config = {
       headers: {
@@ -36,6 +41,31 @@ export default function SupplierList() {
       console.error("Error fetching orders:", error);
     }
   };
+
+  const deleteSupplierHandler = async (id) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${getToken()}`
+        }
+      };
+      await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/supplier/${id}`, config);
+
+      // Filter out the deleted supplier from the current state
+      const updatedSupplier = supplier.filter(supplier => supplier._id !== id);
+
+      // Update the state with the new supplier array
+      setSupplier(updatedSupplier);
+
+      // Set other state variables as needed
+      setIsDeleted(true);
+      setLoading(false);
+    } catch (error) {
+      setDeleteError(error.response.data.message);
+    }
+  };
+
 
   useEffect(() => {
     supplies();
@@ -55,8 +85,7 @@ export default function SupplierList() {
             <TableCell>Number</TableCell>
             <TableCell>Address</TableCell>
             <TableCell>Date</TableCell>
-            {/* <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell> */}
+            <TableCell align="right">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -67,14 +96,22 @@ export default function SupplierList() {
               <TableCell>
                 {row.images.map((row) => (
                   <img key={row.public_id}
-                       src={row.url} 
-                       alt={row.public_id}
-                       style={{ width: '100px', height: 'auto' }}/>
+                    src={row.url}
+                    alt={row.public_id}
+                    style={{ width: '100px', height: '100px' }} />
                 ))}
               </TableCell>
               <TableCell>{row.number}</TableCell>
               <TableCell>{row.address}</TableCell>
               <TableCell>{row.createdAt}</TableCell>
+              <TableCell>
+                <button
+                  className="btn btn-danger py-1 px-2 ml-2"
+                  onClick={() => deleteSupplierHandler(row._id)}
+                >
+                  <i className="fa fa-trash"></i>
+                </button>
+              </TableCell>
               {/* <TableCell align="right">{`$${row.amount}`}</TableCell> */}
             </TableRow>
           ))}
