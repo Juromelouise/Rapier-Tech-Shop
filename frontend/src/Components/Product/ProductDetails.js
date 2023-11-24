@@ -181,7 +181,7 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                   <p>
                     <strong>Seller</strong>
                   </p>
-                  <h3>{product.seller}</h3>
+                  <h3>{product.seller.name}</h3>
                 </div>
                 <div className="action">
                   <div className="stockCounter d-inline">

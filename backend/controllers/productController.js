@@ -44,22 +44,36 @@ exports.getProducts = async (req, res, next) => {
 };
 
 exports.getSingleProduct = async (req, res, next) => {
-  const products = await Product.findOne({ _id: req.params.id });
-  console.log(products);
-  if (!products) {
-    return res.status(404).json({
+  try {
+    const products = await Product.findOne({ _id: req.params.id }).populate('seller');
+    console.log(products);
+  
+    if (!products) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+  
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    // Handle any errors that might occur during the execution of the code
+    console.error(error);
+    res.status(500).json({
       success: false,
-      message: "Product not found",
+      message: "Internal Server Error",
     });
   }
-  res.status(200).json({
-    success: true,
-    products,
-  });
 };
 
 exports.deleteProduct = async (req, res, next) => {
-  const product = await Product.findByIdAndDelete({ _id: req.params.id });
+  const product = await Product.findByIdAndDelete({ _id: req.params.id }).populate({
+    path: "seller",
+    model: Supplier
+  });
   if (!product) {
     return res.status(404).json({
       success: false,

@@ -8,16 +8,16 @@ import Pagination from "react-js-pagination";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import Header from "./Layout/Header";
-import Caroimage from "./Layout/Caroimage"
+import Caroimage from "./Layout/Caroimage";
 
 const categories = [
-  'Laptop',
-  'Phone',
-  'Smartwatch',
-  'Speaker',
-  'Headphone',
-  'Earphone',
-  'Console'
+  "Laptop",
+  "Phone",
+  "Smartwatch",
+  "Speaker",
+  "Headphone",
+  "Earphone",
+  "Console",
 ];
 
 const Home = () => {
@@ -31,7 +31,6 @@ const Home = () => {
   const [price, setPrice] = useState([1, 1000]);
   const [category, setCategory] = useState("");
   let { keyword } = useParams();
-
   const createSliderWithTooltip = Slider.createSliderWithTooltip;
   const Range = createSliderWithTooltip(Slider.Range);
 
@@ -80,7 +79,7 @@ const Home = () => {
     <div id="body">
       <div className="container container-fluid">
         <h1 id="products_heading">Latest Products</h1>
-          <Caroimage prod={products[0]} />
+        <Caroimage prod={products[0]} />
         <section id="products" className="container mt-5">
           <div className="row">
             {keyword ? (
@@ -140,20 +139,21 @@ const Home = () => {
           </div>
         </section>
         {resPerPage <= count && (
-    <div className="d-flex justify-content-center mt-5">
-        <Pagination
-            activePage={currentPage}
-            itemsCountPerPage={resPerPage}
-            totalItemsCount={productsCount}
-            onChange={setCurrentPageNo}
-            nextPageText={'Next'}
-            prevPageText={'Prev'}
-            firstPageText={'First'}
-            lastPageText={'Last'}
-            itemClass="page-item"
-            linkClass="page-link"
-        />
-    </div>)}
+          <div className="d-flex justify-content-center mt-5">
+            <Pagination
+              activePage={currentPage}
+              itemsCountPerPage={resPerPage}
+              totalItemsCount={productsCount}
+              onChange={setCurrentPageNo}
+              nextPageText={"Next"}
+              prevPageText={"Prev"}
+              firstPageText={"First"}
+              lastPageText={"Last"}
+              itemClass="page-item"
+              linkClass="page-link"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
