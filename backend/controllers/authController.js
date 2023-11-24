@@ -245,48 +245,46 @@ exports.updateUser = async (req, res, next) => {
 }
 
 exports.newUser = async (req, res, next) => {
-  console.log(req.body)
-  let images = [];
+  try {
+    console.log(req.body);
 
-  if (typeof req.body.images === "string") {
-    images.push(req.body.images);
-  } else {
-    images = req.body.images;
-  }
-
-  let imagesLinks = [];
-
-  for (let i = 0; i < images.length; i++) {
-    let imageDataUri = images[i];
-
-    try {
-      const result = await cloudinary.v2.uploader.upload(`${imageDataUri}`, {
-        folder: "user",
+    const cloudinaryResult = await cloudinary.v2.uploader.upload(
+      req.body.avatar,
+      {
+        folder: "avatars",
         width: 150,
         crop: "scale",
-      });
+      }
+    );
 
-      imagesLinks.push({
-        public_id: result.public_id,
-        url: result.secure_url,
+    console.log(cloudinaryResult);
+
+    if (!cloudinaryResult || cloudinaryResult.error) {
+      return res.status(400).json({
+        success: false,
+        message: "Error uploading avatar to Cloudinary",
       });
-    } catch (error) {
-      // console.log(error);
     }
-  }
 
-  req.body.images = imagesLinks;
+    const user = await User.create(req.body);
 
-  const user = await User.create(req.body);
-  if (!user) {
-    return res.status(400).json({
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not created",
+      });
+    }
+
+    res.status(201).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
       success: false,
-      message: "User not created",
+      message: "Internal server error",
     });
   }
-
-  res.status(201).json({
-    success: true,
-    user,
-  });
 };
+

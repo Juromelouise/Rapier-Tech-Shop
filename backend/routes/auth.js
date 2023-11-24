@@ -14,7 +14,8 @@ const {
   loginUser,
   logout,
   updateProfile,
-  updatePassword
+  updatePassword,
+  newUser
 } = require("../controllers/authController");
 
 const { isAuthenticatedUser,authorizeRoles } = require("../middleware/auth");
@@ -30,7 +31,7 @@ router.put('/password/update', isAuthenticatedUser, updatePassword)
 router.put("/update/user/:id", isAuthenticatedUser, updateUser);
 router.put('/me/update', isAuthenticatedUser, upload.single("avatar"), updateProfile)
 
-
+router.post("/admin/new/user", isAuthenticatedUser, authorizeRoles("admin"), newUser);
 router.get("/admin/all/user", isAuthenticatedUser,authorizeRoles("admin"), allUsers);
 router.get("/user/details/:id", getUserDetails);
 //router.delete("/delete/user/:id", deleteUser);

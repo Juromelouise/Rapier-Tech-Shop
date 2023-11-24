@@ -17,6 +17,8 @@ const NewUser = () => {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState("");
   const [user, setUser] = useState({});
+  const [avatar, setAvatar] = useState('')
+  const [avatarPreview, setAvatarPreview] = useState('/images/default_avatar.jpg')
 
   let navigate = useNavigate();
 
@@ -27,10 +29,7 @@ const NewUser = () => {
     formData.set("name", name);
     formData.set("email", email);
     formData.set("password", password);
-
-    images.forEach((image) => {
-      formData.append("images", image);
-    });
+    formData.set('avatar', avatar);
 
     newUser(formData);
   };
@@ -171,7 +170,7 @@ const NewUser = () => {
                   id="login_button"
                   type="submit"
                   className="btn btn-block py-3"
-                  // disabled={loading ? true : false}
+                // disabled={loading ? true : false}
                 >
                   CREATE
                 </button>
