@@ -79,7 +79,6 @@ export default function SupplierList() {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Id</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Images</TableCell>
             <TableCell>Number</TableCell>
@@ -91,7 +90,6 @@ export default function SupplierList() {
         <TableBody>
           {supplier.map((row) => (
             <TableRow key={row._id}>
-              <TableCell>{row._id}</TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>
                 {row.images.map((row) => (
