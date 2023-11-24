@@ -163,32 +163,7 @@ const NewUser = () => {
                       height="52"
                     />
                   )}
-                </div> <div className="form-group">
-                  <label>Avatar</label>
-
-                  <div className="custom-file">
-                    <input
-                      type="file"
-                      name="avatar"
-                      className="custom-file-input"
-                      id="customAvatarFile"
-                      onChange={onAvatarChange}
-                    />
-                    <label className="custom-file-label" htmlFor="customAvatarFile">
-                      Choose Avatar
-                    </label>
-                  </div>
-
-                  {avatarPreview && (
-                    <img
-                      src={avatarPreview}
-                      alt="Avatar Preview"
-                      className="mt-3 mr-2"
-                      width="55"
-                      height="52"
-                    />
-                  )}
-                </div>
+                </div> 
                 <button
                   id="login_button"
                   type="submit"

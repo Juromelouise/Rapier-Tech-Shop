@@ -46,10 +46,9 @@ export default function Orders() {
         <TableRow>
           <TableCell>Order ID</TableCell>
           <TableCell>Date</TableCell>
-          <TableCell>Items Price</TableCell>
           <TableCell>Order Status</TableCell>
           <TableCell>Total Price</TableCell>
-          <TableCell>User ID</TableCell>
+          <TableCell>User Name</TableCell>
           <TableCell align="right">Action</TableCell>
         </TableRow>
       </TableHead>
@@ -58,10 +57,9 @@ export default function Orders() {
           <TableRow key={order._id}>
             <TableCell>{order._id}</TableCell>
             <TableCell>{new Date(order.createdAt).toLocaleString()}</TableCell>
-            <TableCell>{order.itemsPrice}</TableCell>
             <TableCell>{order.orderStatus}</TableCell>
             <TableCell>{order.totalPrice}</TableCell>
-            <TableCell>{order.user}</TableCell>
+            <TableCell>{order.user.name}</TableCell>
             <TableCell align="right">
               {/* Add any actions you want to perform for each order */}
             </TableCell>

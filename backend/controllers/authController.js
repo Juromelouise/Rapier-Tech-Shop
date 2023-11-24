@@ -246,19 +246,16 @@ exports.updateUser = async (req, res, next) => {
 
 exports.newUser = async (req, res, next) => {
   try {
-    console.log(req.body);
+    let avatar = req.body.avatar;
 
-    const cloudinaryResult = await cloudinary.v2.uploader.upload(
-      req.body.avatar,
-      {
-        folder: "avatars",
-        width: 150,
-        crop: "scale",
-      }
-    );
+    // Upload avatar to Cloudinary
+    const cloudinaryResult = await cloudinary.v2.uploader.upload(avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
 
-    console.log(cloudinaryResult);
-
+    // Check for successful upload
     if (!cloudinaryResult || cloudinaryResult.error) {
       return res.status(400).json({
         success: false,
@@ -266,8 +263,16 @@ exports.newUser = async (req, res, next) => {
       });
     }
 
-    const user = await User.create(req.body);
+    // Create user with the Cloudinary avatar URL
+    const user = await User.create({
+      ...req.body,
+      avatar: {
+        public_id: cloudinaryResult.public_id,
+        url: cloudinaryResult.secure_url,
+      },
+    });
 
+    // Check if user creation was successful
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -287,4 +292,5 @@ exports.newUser = async (req, res, next) => {
     });
   }
 };
+
 
