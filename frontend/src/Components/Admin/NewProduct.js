@@ -11,6 +11,7 @@ const NewProduct = () => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("")
   const [stock, setStock] = useState("");
   const [supplier, setSupplier] = useState([]);
   const [seller, setSeller] = useState("")
@@ -41,6 +42,7 @@ const NewProduct = () => {
     formData.set("category", category);
     formData.set("price", price);
     formData.set("stock", stock);
+    formData.set("description", description)
     formData.set("seller", seller);
 
     images.forEach((image) => {
@@ -48,8 +50,9 @@ const NewProduct = () => {
     });
 
     newProduct(formData);
-  };
 
+  };
+console.log(seller)
   const onChange = (e) => {
     const files = Array.from(e.target.files);
     setImagesPreview([]);
@@ -75,7 +78,8 @@ const NewProduct = () => {
         },
       };
     const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/supplier`, config)
-    console.log(data.supplier);
+    // console.log(data.supplier);
+    setSupplier(data.supplier)
   }
 useEffect(()=>{
     getSupplier()
@@ -110,7 +114,7 @@ useEffect(()=>{
     }
 
     if (success) {
-      navigate("/admin/product");
+      navigate("/admin/products");
       toast.success("Product Added", {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
@@ -141,6 +145,16 @@ useEffect(()=>{
                     className="form-control"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="description_field">Description</label>
+                  <textarea
+                    id="description_field"
+                    className="form-control"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                   />
                 </div>
 
@@ -184,7 +198,7 @@ useEffect(()=>{
 
                 <div className="mb-3">
                   <label htmlFor="category" className="form-label">
-                    S eller
+                    Seller
                   </label>
                   <select
                     className="form-control"
@@ -194,9 +208,9 @@ useEffect(()=>{
                     value={seller}
                     onChange={(e) => setSeller(e.target.value)}
                   >
-                    {categories.map((category) => (
-                      <option key={category._id} value={category._id}>
-                        {category.name}
+                    {supplier.map((suppliers) => (
+                      <option key={suppliers._id} value={suppliers._id}>
+                        {suppliers.name}
                       </option>
                     ))}
                   </select>
