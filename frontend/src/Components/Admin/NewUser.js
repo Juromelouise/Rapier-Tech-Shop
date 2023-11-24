@@ -34,23 +34,23 @@ const NewUser = () => {
     newUser(formData);
   };
 
-  const onChange = (e) => {
-    const files = Array.from(e.target.files);
-    setImagesPreview([]);
-    setImage([]);
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setImagesPreview((oldArray) => [...oldArray, reader.result]);
-          setImage((oldArray) => [...oldArray, reader.result]);
-        }
-      };
+  const onAvatarChange = (e) => {
+    const file = e.target.files[0]; // Get only the first file (single image)
+    const reader = new FileReader();
 
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatar(reader.result); // Set the avatar as the preview
+        setAvatarPreview(reader.result); // Set the avatar as the preview (if needed)
+      }
+    };
+
+    if (file) {
       reader.readAsDataURL(file);
-      // console.log(reader)
-    });
+      setAvatar(file); // Set the avatar as the file object
+    }
   };
+
   const newUser = async (formData) => {
     try {
       const config = {
@@ -139,32 +139,55 @@ const NewUser = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Images</label>
+                  <label>Avatar</label>
 
                   <div className="custom-file">
                     <input
                       type="file"
-                      name="images"
+                      name="avatar"
                       className="custom-file-input"
-                      id="customFile"
-                      onChange={onChange}
-                      multiple
+                      id="customAvatarFile"
+                      onChange={onAvatarChange}
                     />
-                    <label className="custom-file-label" htmlFor="customFile">
-                      Choose Images
+                    <label className="custom-file-label" htmlFor="customAvatarFile">
+                      Choose Avatar
                     </label>
                   </div>
 
-                  {imagesPreview.map((img) => (
+                  {avatarPreview && (
                     <img
-                      src={img}
-                      key={img}
-                      alt="Images Preview"
+                      src={avatarPreview}
+                      alt="Avatar Preview"
                       className="mt-3 mr-2"
                       width="55"
                       height="52"
                     />
-                  ))}
+                  )}
+                </div> <div className="form-group">
+                  <label>Avatar</label>
+
+                  <div className="custom-file">
+                    <input
+                      type="file"
+                      name="avatar"
+                      className="custom-file-input"
+                      id="customAvatarFile"
+                      onChange={onAvatarChange}
+                    />
+                    <label className="custom-file-label" htmlFor="customAvatarFile">
+                      Choose Avatar
+                    </label>
+                  </div>
+
+                  {avatarPreview && (
+                    <img
+                      src={avatarPreview}
+                      alt="Avatar Preview"
+                      className="mt-3 mr-2"
+                      width="55"
+                      height="52"
+                    />
+                  )}
                 </div>
                 <button
                   id="login_button"
