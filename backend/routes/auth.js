@@ -33,5 +33,6 @@ router.put('/me/update', isAuthenticatedUser, upload.single("avatar"), updatePro
 
 router.get("/admin/all/user", isAuthenticatedUser,authorizeRoles("admin"), allUsers);
 router.get("/user/details/:id", getUserDetails);
-router.delete("/delete/user/:id", deleteUser);
+//router.delete("/delete/user/:id", deleteUser);
+router.route('/admin/user/:id', isAuthenticatedUser, authorizeRoles('admin',)).delete(deleteUser);
 module.exports = router;

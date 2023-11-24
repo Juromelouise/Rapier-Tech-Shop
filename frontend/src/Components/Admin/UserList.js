@@ -19,6 +19,10 @@ function preventDefault(event) {
 export default function UserList() {
 
     const [user, setUsers] = useState([])
+    const [error, setError] = useState('')
+    const [deleteError, setDeleteError] = useState('')
+    const [loading, setLoading] = useState(true)
+    const [isDeleted, setIsDeleted] = useState(false)
     const users = async () => {
         const config = {
             headers: {
@@ -34,6 +38,30 @@ export default function UserList() {
             console.error('Error fetching user:', error);
         }
     }
+
+    const deleteUserHandler = async (id) => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${getToken()}`
+                }
+            };
+            await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/user/${id}`, config);
+
+            // Filter out the deleted supplier from the current state
+            const updatedUsers = user.filter(user => user._id !== id);
+
+            // Update the state with the new supplier array
+            setUsers(updatedUsers);
+
+            // Set other state variables as needed
+            setIsDeleted(true);
+            setLoading(false);
+        } catch (error) {
+            setDeleteError(error.response.data.message);
+        }
+    };
 
     useEffect(() => {
         users()
@@ -57,15 +85,25 @@ export default function UserList() {
                         <TableRow key={row._id}>
                             <TableCell>{row.name}</TableCell>
                             <TableCell>{row.avatar && (
-                                    <img
-                                        src={row.avatar.url}
-                                        alt={row.avatar.public_id}
-                                        style={{ width: '100px', height: '100px' }}
-                                    />
-                                )}
+                                <img
+                                    src={row.avatar.url}
+                                    alt={row.avatar.public_id}
+                                    style={{ width: '100px', height: '100px' }}
+                                />
+                            )}
                             </TableCell>
+
                             <TableCell>{row.email}</TableCell>
                             {/* <TableCell align="right">{`$${row.amount}`}</TableCell> */}
+
+                            <TableCell>
+                                <button
+                                    className="btn btn-danger py-1 px-2 ml-2"
+                                    onClick={() => deleteUserHandler(row._id)}
+                                >
+                                    <i className="fa fa-trash"></i>
+                                </button>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
