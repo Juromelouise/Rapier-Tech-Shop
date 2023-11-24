@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./Components/Layout/Header";
 import Footer from "./Components/Layout/Footer";
 import Home from "./Components/Home";
@@ -12,14 +12,13 @@ import ForgotPassword from "./Components/User/ForgotPassword";
 import NewPassword from "./Components/User/NewPassword";
 import UpdatePassword from "./Components/User/UpdatePassword";
 import Cart from "./Components/Cart/Cart";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import Shipping from "./Components/Cart/Shipping";
 import ConfirmOrder from "./Components/Cart/ConfirmOrder";
 import Payment from "./Components/Cart/Payment";
 import OrderSuccess from "./Components/Cart/OrderSuccess";
-// import ListOrders from "./Components/Order/ListOrders";
 import Dashboard from "./Components/Admin/Dashboard";
 import SupplierList from "./Components/Admin/SupplierList"
 import ProductList from "./Components/Admin/ProductList";
@@ -29,16 +28,7 @@ import { getUser } from "./utils/helpers";
 import NewProduct from './Components/Admin/NewProduct';
 import UserList from './Components/Admin/UserList';
 import NewUser from './Components/Admin/NewUser';
-// import OrderDetails from './Components/Order/OrderDetails';
-// import Dashboard from './Components/Admin/Dashboard';
-// import ProductsList from './Components/Admin/ProductsList';
-// import UpdateProduct from './Components/Admin/UpdateProduct';
-// import OrdersList from './Components/Admin/OrdersList';
-// import ProcessOrder from './Components/Admin/ProcessOrder';
-// import UsersList from './Components/Admin/UsersList';
-// import UpdateUser from './Components/Admin/UpdateUser';
-// import ProtectedRoute from './Components/Route/ProtectedRoute';
-// import ProductReviews from './Components/Admin/ProductReviews';
+
 function App() {
   const [user, setUser]=useState({})
 
