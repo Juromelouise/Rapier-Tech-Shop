@@ -1,5 +1,7 @@
 const Order = require('../models/order');
 const Product = require('../models/product');
+const mongoose = require('mongoose'); 
+const user = require('../models/user');
 
 exports.newOrder = async (req, res, next) => {
     const {
@@ -43,7 +45,10 @@ exports.getSingleOrder = async (req, res, next) => {
 }
 
 exports.myOrders = async (req, res, next) => {
-    const orders = await Order.find({ user: req.user.id })
+
+    // console.log(mongoose.Types.ObjectId(req.user._id))
+    const orders = await Order.where({ user: req.user._id })
+    console.log(req.user)
 
     res.status(200).json({
         success: true,
