@@ -76,6 +76,7 @@ export default function UserList() {
                     <TableRow>
                         <TableCell>Name</TableCell>
                         <TableCell>Profile Img.</TableCell>
+                        <TableCell>Role</TableCell>
                         <TableCell>Email</TableCell>
                         <TableCell align="right">Action</TableCell>
                     </TableRow>
@@ -92,10 +93,8 @@ export default function UserList() {
                                 />
                             )}
                             </TableCell>
-
+                            <TableCell>{row.role}</TableCell>
                             <TableCell>{row.email}</TableCell>
-                            {/* <TableCell align="right">{`$${row.amount}`}</TableCell> */}
-
                             <TableCell>
                                 <button
                                     className="btn btn-danger py-1 px-2 ml-2"

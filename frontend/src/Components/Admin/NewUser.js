@@ -11,14 +11,17 @@ const NewUser = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
   const [images, setImage] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState("");
   const [user, setUser] = useState({});
-  const [avatar, setAvatar] = useState('')
-  const [avatarPreview, setAvatarPreview] = useState('/images/default_avatar.jpg')
+  const [avatar, setAvatar] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState(
+    "/images/default_avatar.jpg"
+  );
 
   let navigate = useNavigate();
 
@@ -29,7 +32,8 @@ const NewUser = () => {
     formData.set("name", name);
     formData.set("email", email);
     formData.set("password", password);
-    formData.set('avatar', avatar);
+    formData.set("avatar", avatar);
+    formData.set("role", role);
 
     newUser(formData);
   };
@@ -40,14 +44,14 @@ const NewUser = () => {
 
     reader.onload = () => {
       if (reader.readyState === 2) {
-        setAvatar(reader.result); // Set the avatar as the preview
-        setAvatarPreview(reader.result); // Set the avatar as the preview (if needed)
+        setAvatar(reader.result);
+        setAvatarPreview(reader.result);
       }
     };
 
     if (file) {
       reader.readAsDataURL(file);
-      setAvatar(file); // Set the avatar as the file object
+      setAvatar(file);
     }
   };
 
@@ -91,9 +95,7 @@ const NewUser = () => {
     <Fragment>
       <MetaData title={"New User"} />
       <div className="row">
-        <div className="col-12 col-md-2">
-          {/* <Sidebar /> */}
-        </div>
+        <div className="col-12 col-md-2">{/* <Sidebar /> */}</div>
 
         <div className="col-12 col-md-10">
           <Fragment>
@@ -139,6 +141,19 @@ const NewUser = () => {
                 </div>
 
                 <div className="form-group">
+                  <label htmlFor="name_field">Role</label>
+                  <select
+                    id="name_field"
+                    className="form-control"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                  >
+                    <option value="user">Normal User</option>
+                    <option value="admin">Administrator</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
                   <label>Avatar</label>
 
                   <div className="custom-file">
@@ -149,7 +164,10 @@ const NewUser = () => {
                       id="customAvatarFile"
                       onChange={onAvatarChange}
                     />
-                    <label className="custom-file-label" htmlFor="customAvatarFile">
+                    <label
+                      className="custom-file-label"
+                      htmlFor="customAvatarFile"
+                    >
                       Choose Avatar
                     </label>
                   </div>
@@ -163,12 +181,12 @@ const NewUser = () => {
                       height="52"
                     />
                   )}
-                </div> 
+                </div>
                 <button
                   id="login_button"
                   type="submit"
                   className="btn btn-block py-3"
-                // disabled={loading ? true : false}
+                  // disabled={loading ? true : false}
                 >
                   CREATE
                 </button>

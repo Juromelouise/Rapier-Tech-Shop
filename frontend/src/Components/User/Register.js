@@ -74,7 +74,7 @@ const Register = () => {
         userData,
         config
       );
-
+      setIsAuthenticated(true);
       if (response && response.data && response.data.user) {
         // setSuccess(true);
       } else {
