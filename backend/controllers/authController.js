@@ -5,7 +5,7 @@ const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 
 exports.registerUser = async (req, res, next) => {
-  console.log(req.file)
+  console.log(req.file);
   const cloudinaryResult = await cloudinary.v2.uploader.upload(
     req.body.avatar,
     {
@@ -151,41 +151,41 @@ exports.updatePassword = async (req, res, next) => {
 
 exports.updateProfile = async (req, res, next) => {
   const newUserData = {
-      name: req.body.name,
-      email: req.body.email
-  }
+    name: req.body.name,
+    email: req.body.email,
+  };
 
   // Update avatar
-  if (req.body.avatar !== '') {
-      const user = await User.findById(req.user.id)
+  if (req.body.avatar !== "") {
+    const user = await User.findById(req.user.id);
 
-      const image_id = user.avatar.public_id;
-      const res = await cloudinary.v2.uploader.destroy(image_id);
+    const image_id = user.avatar.public_id;
+    const res = await cloudinary.v2.uploader.destroy(image_id);
 
-      const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
-          folder: 'avatars',
-          width: 150,
-          crop: "scale"
-      })
+    const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
 
-      newUserData.avatar = {
-          public_id: result.public_id,
-          url: result.secure_url
-      }
+    newUserData.avatar = {
+      public_id: result.public_id,
+      url: result.secure_url,
+    };
   }
 
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
-      new: true,
-      runValidators: true,
-  })
+    new: true,
+    runValidators: true,
+  });
   if (!user) {
-      return res.status(401).json({ message: 'User Not Updated' })
+    return res.status(401).json({ message: "User Not Updated" });
   }
 
   res.status(200).json({
-      success: true
-  })
-}
+    success: true,
+  });
+};
 
 exports.allUsers = async (req, res, next) => {
   const users = await User.find();
@@ -227,22 +227,22 @@ exports.deleteUser = async (req, res, next) => {
 };
 
 exports.updateUser = async (req, res, next) => {
+  console.log(req.body);
   const newUserData = {
-      name: req.body.name,
-      email: req.body.email,
-      role: req.body.role
-  }
+    name: req.body.name,
+    email: req.body.email,
+    role: req.body.role,
+  };
 
   const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
-      new: true,
-      runValidators: true,
-      // useFindAndModify: false
-  })
+    new: true,
+    runValidators: true,
+  });
 
   return res.status(200).json({
-      success: true
-  })
-}
+    success: true,
+  });
+};
 
 exports.newUser = async (req, res, next) => {
   try {
@@ -292,5 +292,3 @@ exports.newUser = async (req, res, next) => {
     });
   }
 };
-
-

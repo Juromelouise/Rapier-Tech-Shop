@@ -28,6 +28,7 @@ import { getUser } from "./utils/helpers";
 import NewProduct from './Components/Admin/NewProduct';
 import UserList from './Components/Admin/UserList';
 import NewUser from './Components/Admin/NewUser';
+import UpdateUser from './Components/Admin/UpdateUser'
 
 function App() {
   const [user, setUser]=useState({})
@@ -196,6 +197,7 @@ function App() {
           <Route path="/admin/product/new" element={<NewProduct />} />
           <Route path="/admin/user" element={<UserList />} />
           <Route path="/admin/user/new" element={<NewUser />} />
+          <Route path="/admin/user/update/:id" element={<UpdateUser />} />
         </Routes>
         <Footer />
       </Router>
