@@ -30,6 +30,7 @@ import UserList from './Components/Admin/UserList';
 import NewUser from './Components/Admin/NewUser';
 import UpdateUser from './Components/Admin/UpdateUser'
 import UpdateSupplier from './Components/Admin/UpdateSupplier';
+import UpdateProduct from './Components/Admin/UpdateProduct';
 
 
 function App() {
@@ -201,6 +202,7 @@ function App() {
           <Route path="/admin/user/new" element={<NewUser />} />
           <Route path="/admin/user/update/:id" element={<UpdateUser />} />
           <Route path="/admin/supplier/:id" element={<UpdateSupplier />} />
+          <Route path="/admin/product/:id" element={<UpdateProduct />} />
         </Routes>
         <Footer />
       </Router>

@@ -52,7 +52,7 @@ const NewProduct = () => {
     newProduct(formData);
 
   };
-console.log(seller)
+  console.log(seller)
   const onChange = (e) => {
     const files = Array.from(e.target.files);
     setImagesPreview([]);
@@ -73,17 +73,17 @@ console.log(seller)
 
   const getSupplier = async () => {
     const config = {
-        headers: {
-          Authorization: `Bearer ${getToken()}`
-        },
-      };
+      headers: {
+        Authorization: `Bearer ${getToken()}`
+      },
+    };
     const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/supplier`, config)
     // console.log(data.supplier);
     setSupplier(data.supplier)
   }
-useEffect(()=>{
+  useEffect(() => {
     getSupplier()
-},[])
+  }, [])
 
   const newProduct = async (formData) => {
     try {
@@ -248,7 +248,7 @@ useEffect(()=>{
                   id="login_button"
                   type="submit"
                   className="btn btn-block py-3"
-                  // disabled={loading ? true : false}
+                // disabled={loading ? true : false}
                 >
                   CREATE
                 </button>

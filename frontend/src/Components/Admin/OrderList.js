@@ -49,7 +49,7 @@ export default function Orders() {
           <TableCell>Order Status</TableCell>
           <TableCell>Total Price</TableCell>
           <TableCell>User Name</TableCell>
-          <TableCell align="right">Action</TableCell>
+          <TableCell>Action</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>

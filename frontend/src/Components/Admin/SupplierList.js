@@ -84,7 +84,7 @@ export default function SupplierList() {
             <TableCell>Number</TableCell>
             <TableCell>Address</TableCell>
             <TableCell>Date</TableCell>
-            <TableCell align="right">Action</TableCell>
+            <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

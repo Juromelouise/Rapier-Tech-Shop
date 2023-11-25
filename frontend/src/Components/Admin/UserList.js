@@ -82,7 +82,7 @@ export default function UserList() {
             <TableCell>Profile Img.</TableCell>
             <TableCell>Role</TableCell>
             <TableCell>Email</TableCell>
-            <TableCell align="right">Action</TableCell>
+            <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

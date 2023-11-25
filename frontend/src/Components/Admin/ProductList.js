@@ -11,9 +11,9 @@ import { useState, useEffect } from "react";
 import { getToken } from "../../utils/helpers";
 import { Link } from "react-router-dom";
 
- function preventDefault(event) {
-   event.preventDefault();
- }
+function preventDefault(event) {
+  event.preventDefault();
+}
 
 export default function ProductList() {
 
@@ -79,7 +79,7 @@ export default function ProductList() {
             <TableCell>Price</TableCell>
             <TableCell>Stock</TableCell>
             <TableCell>Image</TableCell>
-            <TableCell align="right">Action</TableCell>
+            <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -100,6 +100,9 @@ export default function ProductList() {
                 ))}
               </TableCell>
               <TableCell>
+                <Link to={`/admin/product/${product._id}`} className="btn btn-primary py-1 px-2">
+                  <i className="fa fa-pencil"></i>
+                </Link>
                 <button
                   className="btn btn-danger py-1 px-2 ml-2"
                   onClick={() => deleteProductHandler(row._id)}
@@ -109,7 +112,7 @@ export default function ProductList() {
               </TableCell>
               {/* <TableCell align="right">{`$${row.amount}`}</TableCell> */}
             </TableRow>
-            
+
           ))}
         </TableBody>
       </Table>
