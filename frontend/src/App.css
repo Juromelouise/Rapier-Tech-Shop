@@ -17,6 +17,86 @@
   }
 }
 
+/* ConfirmOrder.css */
+
+/* Styles for the Shipping Info section */
+.order-confirm {
+  display: block;
+  justify-content: center;
+  background-color: #f8f9fa;
+  margin-top: 100px;
+  margin-left: 50px;
+  padding: 20px;
+  margin-bottom: 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-confirm h4 {
+  color: #343a40;
+  font-size: 1.5rem;
+}
+
+.order-confirm p {
+  color: #495057;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+/* Styles for Cart Items section */
+.cart-item {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.cart-item a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Styles for Order Summary section */
+#order_summary {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#order_summary h4 {
+  color: #343a40;
+  font-size: 1.5rem;
+}
+
+.order-summary-values {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #007bff;
+}
+
+/* Button Styles */
+#checkout_btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+#checkout_btn:hover {
+  background-color: #0056b3;
+}
+
 .float-right:hover{
   color: blue;
 }

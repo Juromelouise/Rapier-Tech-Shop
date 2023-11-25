@@ -94,7 +94,6 @@ const Shipping = ({ shipping, saveShippingInfo }) => {
                                         {country.name}
                                     </option>
                                 ))}
-
                             </select>
                         </div>
 
@@ -108,7 +107,6 @@ const Shipping = ({ shipping, saveShippingInfo }) => {
                     </form>
                 </div>
             </div>
-
         </Fragment>
     )
 }
