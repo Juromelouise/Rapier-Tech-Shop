@@ -13,7 +13,7 @@ const UpdateSupplier = () => {
     const [name, setName] = useState("");
     const [number, setNumber] = useState("");
     const [address, setAddress] = useState("");
-    const [image, setImage] = useState([]);
+    // const [image, setImage] = useState([]);
     const [imagesPreview, setImagesPreview] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
@@ -71,7 +71,7 @@ const UpdateSupplier = () => {
             setName(supplier.name);
             setNumber(supplier.number);
             setAddress(supplier.address);
-            setImage(supplier.image);
+            setImages(supplier.image);
 
         }
         if (error) {
