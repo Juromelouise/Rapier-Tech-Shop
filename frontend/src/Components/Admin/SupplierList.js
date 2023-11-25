@@ -103,6 +103,10 @@ export default function SupplierList() {
               <TableCell>{row.address}</TableCell>
               <TableCell>{row.createdAt}</TableCell>
               <TableCell>
+                <Link to={`/admin/supplier/${row._id}`} className="btn btn-primary py-1 px-2">
+                  <i className="fa fa-pencil"></i>
+                </Link>
+
                 <button
                   className="btn btn-danger py-1 px-2 ml-2"
                   onClick={() => deleteSupplierHandler(row._id)}
