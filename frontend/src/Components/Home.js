@@ -45,36 +45,34 @@ const Home = () => {
     if (category) {
       link = `${process.env.REACT_APP_API}/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}`;
     }
-    console.log(link);
-    let res = await axios.get(link);
-    console.log(res);
-    setProducts(res.data.products);
-    setResPerPage(res.data.resPerPage);
-    setProductsCount(res.data.productsCount);
-    setFilteredProductsCount(res.data.filteredProductsCount);
-    setLoading(false);
+
+    try {
+      const res = await axios.get(link);
+      setProducts(res.data.products);
+      setResPerPage(res.data.resPerPage);
+      setProductsCount(res.data.productsCount);
+      setFilteredProductsCount(res.data.filteredProductsCount);
+      setLoading(false);
+    } catch (error) {
+      setError(error.response.data.message);
+      setLoading(false);
+    }
   };
+
   let count = productsCount;
 
   if (keyword) {
     count = filteredProductsCount;
   }
+
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
   }
 
-  // const loadUser = async () => {
-  //   try {
-  //     const { data } = await axios.get("/api/v1/me");
-  //   } catch (error) {
-  //     console.log(error.response.data.message);
-  //   }
-  // };
-
   useEffect(() => {
     getProducts(currentPage, keyword, price, category);
   }, [currentPage, keyword, price, category]);
-  // console.log(products)
+
   return (
     <div id="body">
       <div className="container container-fluid">
@@ -108,11 +106,8 @@ const Home = () => {
                       <ul className="pl-0">
                         {categories.map((category) => (
                           <li
-                            style={{
-                              cursor: "pointer",
-                              listStyleType: "none",
-                            }}
                             key={category}
+                            className="category-item"
                             onClick={() => setCategory(category)}
                           >
                             {category}

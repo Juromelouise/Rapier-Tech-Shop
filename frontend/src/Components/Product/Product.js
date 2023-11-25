@@ -9,6 +9,7 @@ const Product = ({product}) => {
 	              className="card-img-top mx-auto"
 				  alt="product"
 	              src={product.images[0].url}
+				  style={{objectFit: 'cover'}}
 	            />
 	            <div className="card-body d-flex flex-column">
 	              <h5 className="card-title">
@@ -17,7 +18,7 @@ const Product = ({product}) => {
 	              <div className="ratings mt-auto">
 	                <div className="rating-outer">
 	                  <div className="rating-inner" style={ {width: `${(product.ratings / 5) * 100}%`}}></div>
-	                </div>
+	                </div> 
 	                <span id="no_of_reviews">({product.numOfReviews} reviews)</span>
 	              </div>
 	              <p className="card-text">${product.price}</p>

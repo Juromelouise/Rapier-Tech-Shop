@@ -4,124 +4,130 @@ import { Carousel } from "react-bootstrap";
 import Loader from "../Layout/Loader";
 import MetaData from "../Layout/Metadata";
 import { getUser, getToken, successMsg, errMsg } from "../../utils/helpers";
-// import ListReviews from '../Review/ListReviews'
-// import { useAlert} from '@blaumaus/react-alert'
+import ListReviews from '../Review/ListReviews';
 import axios from "axios";
+// import StarRating from "../Review/StarRating"; // Assuming you have a component for star rating
 
 const ProductDetails = ({ cartItems, addItemToCart }) => {
-  const [loading, setLoading] = useState(true)
-  const [product, setProduct] = useState({})
-  const [error, setError] = useState('')
-  const [quantity, setQuantity] = useState(0)
-  const [user, setUser] = useState(getUser())
-  const [rating, setRating] = useState(0)
-  const [comment, setComment] = useState('')
+  const [loading, setLoading] = useState(true);
+  const [product, setProduct] = useState({});
+  const [error, setError] = useState('');
+  const [quantity, setQuantity] = useState(0);
+  const [user, setUser] = useState(getUser());
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
   const [errorReview, setErrorReview] = useState('');
-  const [success, setSuccess] = useState('')
+  const [success, setSuccess] = useState('');
 
-
-  let { id } = useParams()
-  // const alert = useAlert();
+  let { id } = useParams();
 
   const productDetails = async (id) => {
-      let link = `${process.env.REACT_APP_API}/api/v1/singleProduct/${id}`
-      console.log(link)
-      let res = await axios.get(link)
-      console.log(res)
-      if (!res)
-          setError('Product not found')
-      setProduct(res.data.products)
-      setLoading(false)
-  }
+    try {
+      let link = `${process.env.REACT_APP_API}/api/v1/singleProduct/${id}`;
+      const res = await axios.get(link);
+      if (!res.data) {
+        setError('Product not found');
+      }
+      setProduct(res.data.products);
+      setLoading(false);
+    } catch (error) {
+      setError(errMsg(error));
+      setLoading(false);
+    }
+  };
 
   const increaseQty = () => {
-      const count = document.querySelector('.count')
-      if (count.valueAsNumber >= product.stock) return;
-      const qty = count.valueAsNumber + 1;
-      setQuantity(qty)
-  }
+    const count = document.querySelector('.count');
+    if (count.valueAsNumber >= product.stock) return;
+    const qty = count.valueAsNumber + 1;
+    setQuantity(qty);
+  };
 
   const decreaseQty = () => {
-      const count = document.querySelector('.count')
-      if (count.valueAsNumber <= 1) return;
-      const qty = count.valueAsNumber - 1;
-      setQuantity(qty)
-  }
+    const count = document.querySelector('.count');
+    if (count.valueAsNumber <= 1) return;
+    const qty = count.valueAsNumber - 1;
+    setQuantity(qty);
+  };
+
   const addToCart = async () => {
-      await addItemToCart(id, quantity);
-  }
-  function setUserRatings() {
-      const stars = document.querySelectorAll('.star');
+    await addItemToCart(id, quantity);
+  };
+
+  const setUserRatings = () => {
+    const stars = document.querySelectorAll('.star');
+    stars.forEach((star, index) => {
+      star.starValue = index + 1;
+      ['click', 'mouseover', 'mouseout'].forEach(function (e) {
+        star.addEventListener(e, showRatings);
+      });
+    });
+
+    function showRatings(e) {
       stars.forEach((star, index) => {
-          star.starValue = index + 1;
-          ['click', 'mouseover', 'mouseout'].forEach(function (e) {
-              star.addEventListener(e, showRatings);
-          })
-      })
-      function showRatings(e) {
-          stars.forEach((star, index) => {
-              if (e.type === 'click') {
-                  if (index < this.starValue) {
-                      star.classList.add('orange');
-                      setRating(this.starValue)
-                  } else {
-                      star.classList.remove('orange')
-                  }
-              }
-              if (e.type === 'mouseover') {
-                  if (index < this.starValue) {
-                      star.classList.add('yellow');
-                  } else {
-                      star.classList.remove('yellow')
-                  }
-              }
-              if (e.type === 'mouseout') {
-                  star.classList.remove('yellow')
-              }
-          })
-      }
-  }
+        if (e.type === 'click') {
+          if (index < this.starValue) {
+            star.classList.add('orange');
+            setRating(this.starValue);
+          } else {
+            star.classList.remove('orange');
+          }
+        }
+
+        if (e.type === 'mouseover') {
+          if (index < this.starValue) {
+            star.classList.add('yellow');
+          } else {
+            star.classList.remove('yellow');
+          }
+        }
+
+        if (e.type === 'mouseout') {
+          star.classList.remove('yellow');
+        }
+      });
+    }
+  };
 
   const newReview = async (reviewData) => {
-      try {
-          const config = {
-              headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${getToken()}`
-              }
-          }
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getToken()}`
+        }
+      };
 
-          const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/review`, reviewData, config)
-          setSuccess(data.success)
-
-      } catch (error) {
-          setErrorReview(error.response.data.message)
-      }
-  }
+      const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/review`, reviewData, config);
+      setSuccess(data.success);
+    } catch (error) {
+      setErrorReview(error.response.data.message);
+    }
+  };
 
   const reviewHandler = () => {
-      const formData = new FormData();
-      formData.set('rating', rating);
-      formData.set('comment', comment);
-      formData.set('productId', id);
-      newReview(formData)
-
-  }
+    const formData = new FormData();
+    formData.set('rating', rating);
+    formData.set('comment', comment);
+    formData.set('productId', id);
+    newReview(formData);
+  };
 
   useEffect(() => {
-      productDetails(id)
-      if (errorReview) {
-          errMsg(errorReview)
-          setErrorReview('')
-      }
-      if (success) {
-          successMsg('Review posted successfully')
-          setSuccess(false)
+    productDetails(id);
 
-      }
+    if (errorReview) {
+      errMsg(errorReview);
+      setErrorReview('');
+    }
+
+    if (success) {
+      successMsg('Review posted successfully');
+      setSuccess(false);
+    }
   }, [id, error, errorReview, success]);
 
-  localStorage.setItem('cartItems', JSON.stringify(cartItems))
+  localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
   return (
     <Fragment>
@@ -160,10 +166,10 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                 </div>
                 <div className="half">
                   <div className="description">
-                    <div style={{textDecoration: "underline", fontWeight: "700"}}>Description</div>
+                    <div style={{ textDecoration: "underline", fontWeight: "700" }}>Description</div>
                     <p>{product.description}</p>
                   </div>
-                  
+
                   <p>Status: <span id="stock_status" className={product.stock > 0 ? 'greenColor' : 'redColor'} >{product.stock > 0 ? 'In Stock' : 'Out of Stock'}: {product.stock}</span></p>
                   <div className="reviews">
                     <div className="rating-outer">
@@ -174,6 +180,9 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                     </div>
                     <span>Reviews: {product.numOfReviews}</span>
                   </div>
+                  <span>
+                    {product.reviews}
+                  </span>
                 </div>
               </div>
               <div className="card__footer">
@@ -198,7 +207,6 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
                       value={quantity}
                       readOnly
                     />
-                    {/* <span className="btn btn-primary plus"> +</span> */}
                     <span
                       className="btn btn-primary plus"
                       onClick={increaseQty}
