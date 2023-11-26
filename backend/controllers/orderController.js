@@ -142,6 +142,35 @@ exports.allOrders = async (req, res, next) => {
   });
 };
 
+exports.deleteOrder = async (req, res, next) => {
+	const order = await Order.findByIdAndDelete(req.params.id);
+	if (!order) {
+		return res.status(404).json({
+			success: false,
+			message: 'Order Not Found'
+		})
+	}
+	// await order.remove();
+	res.status(200).json({
+		success: true,
+		message: 'Order Deleted'
+	})
+}
+
+exports.deleteOrder = async (req, res, next) => {
+	const order = await Order.findByIdAndDelete(req.params.id);
+	if (!order) {
+		return res.status(404).json({
+			success: false,
+			message: 'Order Not Found'
+		})
+	}
+	// await order.remove();
+	res.status(200).json({
+		success: true,
+		message: 'Order Deleted'
+	})
+}
 exports.updateOrder = async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
@@ -316,3 +345,25 @@ exports.salesPerMonth = async (req, res, next) => {
     salesPerMonth,
   });
 };
+
+
+exports.updateStatus = async (req, res, next) => {
+    const order = await Order.findById(req.params.id)
+
+    if (order.orderStatus === 'Delivered') {
+        return res.status(404).json({ message: `You have already delivered this order` })
+
+    }
+
+    order.orderItems.forEach(async item => {
+        await updateStock(item.product, item.quantity)
+    })
+
+    order.orderStatus = req.body.status
+    order.deliveredAt = Date.now()
+    await order.save()
+
+    res.status(200).json({
+        success: true,
+    })
+}
