@@ -5,6 +5,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Button from "@mui/material/Button"; // Import Button component from MUI
 import Title from "./Title";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -14,63 +15,92 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Orders() {
-  const [orders, setOrder] = useState([]);
-  const orderss = async () => {
+const Orders = () => {
+  const [orders, setOrders] = useState([]);
+
+  const fetchOrders = async () => {
     const config = {
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },
     };
+
     try {
-      let res = await axios.get(
+      const response = await axios.get(
         `${process.env.REACT_APP_API}/api/v1/admin/orders/`,
         config
       );
-      setOrder(res.data.orders);
+
+      setOrders(response.data.orders);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
   };
 
+  const handleUpdateStatus = async (orderId) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    };
+
+    try {
+      await axios.put(
+        `${process.env.REACT_APP_API}/api/v1/admin/order/${orderId}`,
+        { status: 'Delivered' },
+        config
+      );
+
+      // After updating the status, fetch the updated orders
+      fetchOrders();
+    } catch (error) {
+      console.error('Error updating order status:', error);
+    }
+  };
+
   useEffect(() => {
-    orderss();
+    fetchOrders();
   }, []);
 
-  console.log(orders);
   return (
     <React.Fragment>
       <Title>Orders</Title>
       <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Order ID</TableCell>
-          <TableCell>Date</TableCell>
-          <TableCell>Order Status</TableCell>
-          <TableCell>Total Price</TableCell>
-          <TableCell>User Name</TableCell>
-          <TableCell>Action</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {orders.map((order) => (
-          <TableRow key={order._id}>
-            <TableCell>{order._id}</TableCell>
-            <TableCell>{new Date(order.createdAt).toLocaleString()}</TableCell>
-            <TableCell>{order.orderStatus}</TableCell>
-            <TableCell>{order.totalPrice}</TableCell>
-            <TableCell>{order.user.name}</TableCell>
-            <TableCell align="right">
-              {/* Add any actions you want to perform for each order */}
-            </TableCell>
+        <TableHead>
+          <TableRow>
+            <TableCell>Order ID</TableCell>
+            <TableCell>Date</TableCell>
+            <TableCell>Order Status</TableCell>
+            <TableCell>Total Price</TableCell>
+            <TableCell>User Name</TableCell>
+            <TableCell>Action</TableCell>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-
-      {/* Additional details for each order */}
-      
+        </TableHead>
+        <TableBody>
+          {orders.map((order) => (
+            <TableRow key={order._id}>
+              <TableCell>{order._id}</TableCell>
+              <TableCell>{new Date(order.createdAt).toLocaleString()}</TableCell>
+              <TableCell>{order.orderStatus}</TableCell>
+              <TableCell>{order.totalPrice}</TableCell>
+              <TableCell>{order.user.name}</TableCell>
+              <TableCell>
+                {order.orderStatus !== "Delivered" && (
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => handleUpdateStatus(order._id)}
+                  >
+                    To Shipped
+                  </Button>
+                )}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </React.Fragment>
   );
+};
 
-}
+export default Orders;

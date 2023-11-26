@@ -243,3 +243,24 @@ exports.salesPerMonth = async (req, res, next) => {
         salesPerMonth
     })
 }
+
+exports.updateStatus = async (req, res, next) => {
+    const order = await Order.findById(req.params.id)
+
+    if (order.orderStatus === 'Delivered') {
+        return res.status(404).json({ message: `You have already delivered this order` })
+
+    }
+
+    order.orderItems.forEach(async item => {
+        await updateStock(item.product, item.quantity)
+    })
+
+    order.orderStatus = req.body.status
+    order.deliveredAt = Date.now()
+    await order.save()
+
+    res.status(200).json({
+        success: true,
+    })
+}
