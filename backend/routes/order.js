@@ -26,4 +26,5 @@ router.get('/admin/total-orders', totalOrders);
 router.get('/admin/total-sales', totalSales);
 router.get('/admin/customer-sales', customerSales);
 router.get('/admin/sales-per-month', salesPerMonth);
+router.delete('/admin/order/:id', isAuthenticatedUser, authorizeRoles('admin',),deleteOrder)
 module.exports = router;

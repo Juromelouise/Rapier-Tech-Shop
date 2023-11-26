@@ -17,6 +17,9 @@ function preventDefault(event) {
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
+  const [deleteError, setDeleteError] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [isDeleted, setIsDeleted] = useState(false)
 
   const fetchOrders = async () => {
     const config = {
@@ -36,6 +39,31 @@ const Orders = () => {
       console.error("Error fetching orders:", error);
     }
   };
+
+  const deleteOrderHandler = async (id) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${getToken()}`
+        }
+      };
+      await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/order/${id}`, config);
+
+      // Filter out the deleted supplier from the current state
+      const updatedOrder = orders.filter(orders => orders._id !== id);
+
+      // Update the state with the new supplier array
+      setOrders(updatedOrder);
+
+      // Set other state variables as needed
+      setIsDeleted(true);
+      setLoading(false);
+    } catch (error) {
+      setDeleteError(error.response.data.message);
+    }
+  };
+
 
   const handleUpdateStatus = async (orderId) => {
     const config = {
@@ -94,6 +122,12 @@ const Orders = () => {
                     To Shipped
                   </Button>
                 )}
+                <button
+                  className="btn btn-danger py-1 px-2 ml-2"
+                  onClick={() => deleteOrderHandler(order._id)}
+                >
+                  <i className="fa fa-trash"></i>
+                </button>
               </TableCell>
             </TableRow>
           ))}
