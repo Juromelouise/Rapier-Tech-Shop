@@ -28,26 +28,26 @@ exports.newOrder = async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        order
+        orders
     })
 }
 
 exports.getSingleOrder = async (req, res, next) => {
-    const order = await Order.findById(req.params.id).populate('user', 'name email')
+    const orders = await Order.findById(req.params.id).populate('user', 'name email')
 
-    if (!order) {
+    if (!orders) {
         return res.status(404).json({ message: `No Order found with this ID` })
     }
     res.status(200).json({
         success: true,
-        order
+        orders
     })
 }
 
 exports.myOrders = async (req, res, next) => {
 
     // console.log(mongoose.Types.ObjectId(req.user._id))
-    const orders = await Order.where({ user: req.user._id })
+    const orders = await Order.where({ user: req.user._id }).populate('user')
     console.log(req.user)
 
     res.status(200).json({

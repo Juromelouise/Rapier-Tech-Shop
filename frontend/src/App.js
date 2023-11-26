@@ -32,6 +32,7 @@ import UpdateUser from './Components/Admin/UpdateUser'
 import UpdateSupplier from './Components/Admin/UpdateSupplier';
 import UpdateProduct from './Components/Admin/UpdateProduct';
 import OrderDetails from './Components/Order/OrderDetails';
+import ListOrders from './Components/Order/ListOrders';
 
 
 
@@ -205,6 +206,7 @@ function App() {
           <Route path="/admin/user/update/:id" element={<UpdateUser />} />
           <Route path="/admin/supplier/:id" element={<UpdateSupplier />} />
           <Route path="/admin/product/:id" element={<UpdateProduct />} />
+          <Route path="/order/me" element={<ListOrders />} />
           <Route path="/order/:id" element={<OrderDetails />} />
         </Routes>
         <Footer />
