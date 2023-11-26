@@ -25,6 +25,12 @@ exports.newOrder = async (req, res, next) => {
         paidAt: Date.now(),
         user: req.user._id
     })
+    const message = ``
+    try{
+
+    }catch{
+        
+    }
 
     res.status(200).json({
         success: true,

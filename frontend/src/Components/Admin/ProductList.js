@@ -10,6 +10,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { getToken } from "../../utils/helpers";
 import { Link } from "react-router-dom";
+import { Row } from "react-bootstrap";
 
 function preventDefault(event) {
   event.preventDefault();
@@ -100,7 +101,7 @@ export default function ProductList() {
                 ))}
               </TableCell>
               <TableCell>
-                <Link to={`/admin/product/${product._id}`} className="btn btn-primary py-1 px-2">
+                <Link to={`/admin/product/${row._id}`} className="btn btn-primary py-1 px-2">
                   <i className="fa fa-pencil"></i>
                 </Link>
                 <button

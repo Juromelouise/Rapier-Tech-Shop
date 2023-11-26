@@ -13,6 +13,6 @@ router.get("/singleProduct/:id", getSingleProduct);
 router.route('/admin/product/:id', isAuthenticatedUser, authorizeRoles('admin',)).delete(deleteProduct);
 // router.post('/new/product',isAuthenticatedUser, upload.array('images', 10), newProduct)
 router.post("/admin/new/product", isAuthenticatedUser, authorizeRoles("admin"),upload.array('images', 10), newProduct);
-router.put('/update/product/:id',isAuthenticatedUser, updateProduct)
+router.put('/admin/update/product/:id',isAuthenticatedUser, authorizeRoles("admin"),upload.array('images', 10), updateProduct)
 
 module.exports = router;

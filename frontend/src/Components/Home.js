@@ -58,7 +58,7 @@ const Home = () => {
       setLoading(false);
     }
   };
-
+  console.log(products)
   let count = productsCount;
 
   if (keyword) {
