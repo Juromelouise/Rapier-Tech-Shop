@@ -39,9 +39,9 @@ const Payment = ({ cartItems, shippingInfo }) => {
       });
       navigate('/success');
     } catch (error) {
-      toast.error(error.response.data.message, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
+      // toast.error(error.response.data.message, {
+      //   position: toast.POSITION.BOTTOM_RIGHT,
+      // });
     }
   };
 

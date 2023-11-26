@@ -1,245 +1,318 @@
-const Order = require('../models/order');
-const Product = require('../models/product');
-const mongoose = require('mongoose'); 
-const user = require('../models/user');
+const Order = require("../models/order");
+const Product = require("../models/product");
+const mongoose = require("mongoose");
+const user = require("../models/user");
+const sendEmailUser = require("../utils/sendEmailUser");
+const sendEmailadmin = require("../utils/sendEmailadmin");
 
 exports.newOrder = async (req, res, next) => {
-    const {
-        orderItems,
-        shippingInfo,
-        itemsPrice,
-        taxPrice,
-        shippingPrice,
-        totalPrice,
-        paymentInfo
-    } = req.body;
 
-    const order = await Order.create({
-        orderItems,
-        shippingInfo,
-        itemsPrice,
-        taxPrice,
-        shippingPrice,
-        totalPrice,
-        paymentInfo,
-        paidAt: Date.now(),
-        user: req.user._id
-    })
-    const message = ``
-    try{
+  const {
+    orderItems,
+    shippingInfo,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+    paymentInfo,
+  } = req.body;
 
-    }catch{
-        
-    }
+  const orders = await Order.create({
+    orderItems,
+    shippingInfo,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+    paymentInfo,
+    paidAt: Date.now(),
+    user: req.user._id,
+  });
+const messageAdmin = `
+  <html>
+    <head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          padding: 20px;
+        }
+        h1 {
+          color: #333;
+        }
+        p {
+          margin-bottom: 10px;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>New Order Notification</h1>
+      <p>A new order transaction has been processed. Please review and take necessary actions:</p>
+      <p>Customer Email: ${req.user.email}</p>
+      <p>Thank you!</p>
+    </body>
+  </html>
+`;
 
-    res.status(200).json({
-        success: true,
-        orders
-    })
-}
+  const messageUser = `<html>
+    <head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          padding: 20px;
+        }
+        h1 {
+          color: #333;
+        }
+        p {
+          margin-bottom: 10px;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Transaction Confirmation</h1>
+      <p>Your transaction has been Proccessed. Please wait for the Administrator to approve and prepare your order.</p>
+      <p>Thank you for using our services!</p>
+    </body>
+  </html>
+`;
+  try {
+    await sendEmailUser({
+      email: req.user.email,
+      subject: "Order Transaction",
+      messageUser,
+    });
+  } catch (error) {
+    console.log(error)
+  }
+  try {
+    await sendEmailadmin({
+      email: `RapierTechShop@gmail.com`,
+      subject: "Order Transaction",
+      messageAdmin,
+    });
+  } catch (error) {
+    console.log(error)
+  }
+  res.status(200).json({
+    success: true,
+    orders,
+  });
+};
 
 exports.getSingleOrder = async (req, res, next) => {
-    const orders = await Order.findById(req.params.id).populate('user', 'name email')
+  const orders = await Order.findById(req.params.id).populate(
+    "user",
+    "name email"
+  );
 
-    if (!orders) {
-        return res.status(404).json({ message: `No Order found with this ID` })
-    }
-    res.status(200).json({
-        success: true,
-        orders
-    })
-}
+  if (!orders) {
+    return res.status(404).json({ message: `No Order found with this ID` });
+  }
+  res.status(200).json({
+    success: true,
+    orders,
+  });
+};
 
 exports.myOrders = async (req, res, next) => {
+  // console.log(mongoose.Types.ObjectId(req.user._id))
+  const orders = await Order.where({ user: req.user._id }).populate("user");
+  console.log(req.user);
 
-    // console.log(mongoose.Types.ObjectId(req.user._id))
-    const orders = await Order.where({ user: req.user._id }).populate('user')
-    console.log(req.user)
-
-    res.status(200).json({
-        success: true,
-        orders
-    })
-    console.log(req.body)
-}
+  res.status(200).json({
+    success: true,
+    orders,
+  });
+  console.log(req.body);
+};
 
 exports.allOrders = async (req, res, next) => {
-    const orders = await Order.find().populate('user')
+  const orders = await Order.find().populate("user");
 
-    let totalAmount = 0;
+  let totalAmount = 0;
 
-    orders.forEach(order => {
-        totalAmount += order.totalPrice
-    })
+  orders.forEach((order) => {
+    totalAmount += order.totalPrice;
+  });
 
-    res.status(200).json({
-        success: true,
-        totalAmount,
-        orders
-    })
-}
+  res.status(200).json({
+    success: true,
+    totalAmount,
+    orders,
+  });
+};
 
 exports.updateOrder = async (req, res, next) => {
-    const order = await Order.findById(req.params.id)
+  const order = await Order.findById(req.params.id);
 
-    if (order.orderStatus === 'Delivered') {
-        return res.status(404).json({ message: `You have already delivered this order` })
+  if (order.orderStatus === "Delivered") {
+    return res
+      .status(404)
+      .json({ message: `You have already delivered this order` });
+  }
 
-    }
+  order.orderItems.forEach(async (item) => {
+    await updateStock(item.product, item.quantity);
+  });
 
-    order.orderItems.forEach(async item => {
-        await updateStock(item.product, item.quantity)
-    })
+  order.orderStatus = req.body.status;
+  order.deliveredAt = Date.now();
+  await order.save();
 
-    order.orderStatus = req.body.status
-    order.deliveredAt = Date.now()
-    await order.save()
-
-    res.status(200).json({
-        success: true,
-    })
-}
+  res.status(200).json({
+    success: true,
+  });
+};
 
 async function updateStock(id, quantity) {
-    const product = await Product.findById(id);
-    product.stock = product.stock - quantity;
-    await product.save({ validateBeforeSave: false })
+  const product = await Product.findById(id);
+  product.stock = product.stock - quantity;
+  await product.save({ validateBeforeSave: false });
 }
 
 exports.deleteOrder = async (req, res, next) => {
-    const order = await Order.findById(req.params.id)
+  const order = await Order.findById(req.params.id);
 
-    if (!order) {
-        return res.status(404).json({ message: `No Order found with this ID` })
-    }
-    await order.remove()
+  if (!order) {
+    return res.status(404).json({ message: `No Order found with this ID` });
+  }
+  await order.remove();
 
-    res.status(200).json({
-        success: true
-    })
-}
+  res.status(200).json({
+    success: true,
+  });
+};
 
 exports.totalOrders = async (req, res, next) => {
-    const totalOrders = await Order.aggregate([
-        {
-            $group: {
-                _id: null,
-                count: { $sum: 1 }
-            }
-        }
-    ])
-    if (!totalOrders) {
-        return res.status(404).json({
-            message: 'error total orders',
-        })
-    }
-    res.status(200).json({
-        success: true,
-        totalOrders
-    })
-
-}
+  const totalOrders = await Order.aggregate([
+    {
+      $group: {
+        _id: null,
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+  if (!totalOrders) {
+    return res.status(404).json({
+      message: "error total orders",
+    });
+  }
+  res.status(200).json({
+    success: true,
+    totalOrders,
+  });
+};
 
 exports.totalSales = async (req, res, next) => {
-    const totalSales = await Order.aggregate([
-        {
-            $group: {
-                _id: null,
-                totalSales: { $sum: "$totalPrice" }
-            }
-        }
-    ])
-    if (!totalSales) {
-        return res.status(404).json({
-            message: 'error total sales',
-        })
-    }
-    res.status(200).json({
-        success: true,
-        totalSales
-    })
-}
+  const totalSales = await Order.aggregate([
+    {
+      $group: {
+        _id: null,
+        totalSales: { $sum: "$totalPrice" },
+      },
+    },
+  ]);
+  if (!totalSales) {
+    return res.status(404).json({
+      message: "error total sales",
+    });
+  }
+  res.status(200).json({
+    success: true,
+    totalSales,
+  });
+};
 
 exports.customerSales = async (req, res, next) => {
-    const customerSales = await Order.aggregate([
-        {
-            $lookup: {
-                from: 'users',
-                localField: 'user',
-                foreignField: '_id',
-                as: 'userDetails'
-            },
-        },
+  const customerSales = await Order.aggregate([
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "userDetails",
+      },
+    },
 
+    { $unwind: "$userDetails" },
 
-        { $unwind: "$userDetails" },
+    {
+      $group: {
+        _id: "$userDetails.name",
+        total: { $sum: "$totalPrice" },
+      },
+    },
 
-        {
-            $group: {
-                _id: "$userDetails.name",
-                total: { $sum: "$totalPrice" }
-            }
-        },
-
-        { $sort: { total: -1 } },
-
-    ])
-    console.log(customerSales)
-    if (!customerSales) {
-        return res.status(404).json({
-            message: 'error customer sales',
-        })
-    }
-    res.status(200).json({
-        success: true,
-        customerSales
-    })
-
-}
+    { $sort: { total: -1 } },
+  ]);
+  console.log(customerSales);
+  if (!customerSales) {
+    return res.status(404).json({
+      message: "error customer sales",
+    });
+  }
+  res.status(200).json({
+    success: true,
+    customerSales,
+  });
+};
 exports.salesPerMonth = async (req, res, next) => {
-    const salesPerMonth = await Order.aggregate([
-        {
-            $group: {
-                _id: {
-                    year: { $year: "$paidAt" },
-                    month: { $month: "$paidAt" }
-                },
-                total: { $sum: "$totalPrice" },
+  const salesPerMonth = await Order.aggregate([
+    {
+      $group: {
+        _id: {
+          year: { $year: "$paidAt" },
+          month: { $month: "$paidAt" },
+        },
+        total: { $sum: "$totalPrice" },
+      },
+    },
+
+    {
+      $addFields: {
+        month: {
+          $let: {
+            vars: {
+              monthsInString: [
+                ,
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                " Sept",
+                "Oct",
+                "Nov",
+                "Dec",
+              ],
             },
+            in: {
+              $arrayElemAt: ["$$monthsInString", "$_id.month"],
+            },
+          },
         },
+      },
+    },
+    { $sort: { "_id.month": 1 } },
+    {
+      $project: {
+        _id: 0,
+        month: 1,
+        total: 1,
+      },
+    },
+  ]);
+  if (!salesPerMonth) {
+    return res.status(404).json({
+      message: "error sales per month",
+    });
+  }
 
-        {
-            $addFields: {
-                month: {
-                    $let: {
-                        vars: {
-                            monthsInString: [, 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', ' Sept', 'Oct', 'Nov', 'Dec']
-                        },
-                        in: {
-                            $arrayElemAt: ['$$monthsInString', "$_id.month"]
-                        }
-                    }
-                }
-            }
-        },
-        { $sort: { "_id.month": 1 } },
-        {
-            $project: {
-                _id: 0,
-                month: 1,
-                total: 1,
-            }
-        }
-
-    ])
-    if (!salesPerMonth) {
-        return res.status(404).json({
-            message: 'error sales per month',
-        })
-    }
-
-    res.status(200).json({
-        success: true,
-        salesPerMonth
-    })
-}
+  res.status(200).json({
+    success: true,
+    salesPerMonth,
+  });
+};
