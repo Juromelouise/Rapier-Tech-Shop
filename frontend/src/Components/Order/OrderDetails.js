@@ -15,6 +15,7 @@ const OrderDetails = () => {
     const [order, setOrder] = useState({})
 
     const { shippingInfo, orderItems, paymentInfo, user, totalPrice, orderStatus } = order
+
     let { id } = useParams();
 
     const getOrderDetails = async (id) => {
@@ -28,6 +29,7 @@ const OrderDetails = () => {
             }
 
             const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/orders/me`, config)
+            console.log(data.orders)
             setOrder(data.orders)
             setLoading(false)
 
@@ -47,7 +49,9 @@ const OrderDetails = () => {
         }
     }, [error, id])
 
+    console.log(order.shippingInfo)
     const shippingDetails = shippingInfo && `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`
+    console.log(shippingDetails)
 
     const isPaid = paymentInfo && paymentInfo.status === 'succeeded' ? true : false
 

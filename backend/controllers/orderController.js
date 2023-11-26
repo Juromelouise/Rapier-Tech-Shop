@@ -54,6 +54,7 @@ exports.myOrders = async (req, res, next) => {
         success: true,
         orders
     })
+    console.log(req.body)
 }
 
 exports.allOrders = async (req, res, next) => {
