@@ -17,6 +17,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './ListItems';
 import SupplierList from './SupplierList';
 import Chart from './Chart';
+import Chart2 from './Chart2';
 
 
 
@@ -141,6 +142,7 @@ export default function Dashboard() {
         >
           Gadget Cout Supplied by the Supplier
           <Chart />
+          <Chart2 />
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           </Container>

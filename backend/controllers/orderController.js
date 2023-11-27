@@ -28,7 +28,7 @@ exports.newOrder = async (req, res, next) => {
     paidAt: Date.now(),
     user: req.user._id,
   });
-const messageAdmin = `
+  const messageAdmin = `
   <html>
     <head>
       <style>
@@ -143,33 +143,33 @@ exports.allOrders = async (req, res, next) => {
 };
 
 exports.deleteOrder = async (req, res, next) => {
-	const order = await Order.findByIdAndDelete(req.params.id);
-	if (!order) {
-		return res.status(404).json({
-			success: false,
-			message: 'Order Not Found'
-		})
-	}
-	// await order.remove();
-	res.status(200).json({
-		success: true,
-		message: 'Order Deleted'
-	})
+  const order = await Order.findByIdAndDelete(req.params.id);
+  if (!order) {
+    return res.status(404).json({
+      success: false,
+      message: 'Order Not Found'
+    })
+  }
+  // await order.remove();
+  res.status(200).json({
+    success: true,
+    message: 'Order Deleted'
+  })
 }
 
 exports.deleteOrder = async (req, res, next) => {
-	const order = await Order.findByIdAndDelete(req.params.id);
-	if (!order) {
-		return res.status(404).json({
-			success: false,
-			message: 'Order Not Found'
-		})
-	}
-	// await order.remove();
-	res.status(200).json({
-		success: true,
-		message: 'Order Deleted'
-	})
+  const order = await Order.findByIdAndDelete(req.params.id);
+  if (!order) {
+    return res.status(404).json({
+      success: false,
+      message: 'Order Not Found'
+    })
+  }
+  // await order.remove();
+  res.status(200).json({
+    success: true,
+    message: 'Order Deleted'
+  })
 }
 exports.updateOrder = async (req, res, next) => {
   const order = await Order.findById(req.params.id);
@@ -348,24 +348,24 @@ exports.salesPerMonth = async (req, res, next) => {
 
 
 exports.updateStatus = async (req, res, next) => {
-    const order = await Order.findById(req.params.id)
+  const order = await Order.findById(req.params.id)
 
-    if (order.orderStatus === 'Delivered') {
-        return res.status(404).json({ message: `You have already delivered this order` })
+  if (order.orderStatus === 'Delivered') {
+    return res.status(404).json({ message: `You have already delivered this order` })
 
-    }
+  }
 
-    order.orderItems.forEach(async item => {
-        await updateStock(item.product, item.quantity)
-    })
+  order.orderItems.forEach(async item => {
+    await updateStock(item.product, item.quantity)
+  })
 
-    order.orderStatus = req.body.status
-    order.deliveredAt = Date.now()
-    await order.save()
+  order.orderStatus = req.body.status
+  order.deliveredAt = Date.now()
+  await order.save()
 
-    res.status(200).json({
-        success: true,
-    })
+  res.status(200).json({
+    success: true,
+  })
 }
 
 exports.sumSupplier = async (req, res, next) => {
@@ -406,5 +406,40 @@ exports.sumSupplier = async (req, res, next) => {
     res.status(500).json({
       message: 'Internal Server Error',
     });
+  }
+};
+
+// Get sum of orders for each user
+exports.getUserOrderSum = async (req, res, next) => {
+  try {
+    const chartData = await Order.aggregate([
+      {
+        $group: {
+          _id: "$user",
+          totalAmount: { $sum: "$totalPrice" },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+      {
+        $project: {
+          userName: "$user.name",
+          totalAmount: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json(chartData);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
