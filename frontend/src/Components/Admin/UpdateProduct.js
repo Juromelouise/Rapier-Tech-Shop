@@ -262,5 +262,4 @@ const UpdateProduct = () => {
         </Fragment>
     )
 }
-
 export default UpdateProduct

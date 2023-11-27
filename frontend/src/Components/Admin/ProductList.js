@@ -61,15 +61,15 @@ const ProductsList = () => {
       });
       navigate('/admin/products');
     }
-  }, [error, deleteError, isDeleted]);
+  }, [error, deleteError, isDeleted]);;
 
   const deleteProduct = async (id) => {
     try {
       const config = {
         headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${getToken()}`
-        }
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${getToken()}`,
+        },
       };
       const { data } = await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/product/${id}`, config);
 
