@@ -145,7 +145,7 @@ const ProductsList = () => {
   return (
     <Fragment>
       <MetaData title={'All Products'} />
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex' }} >
         {/* Sidebar */}
         <List component="nav">
           {mainListItems}
@@ -157,13 +157,16 @@ const ProductsList = () => {
           <Fragment>
             <h2>All Products</h2>
             {loading ? <Loader /> : (
+              <div className="custom-mdb-table">
               <MDBDataTable
                 data={productsList()}
-                className="px-3"
+                className="custom-mdb-table"
                 bordered
                 striped
                 hover
+               
               />
+              </div>
             )}
             <Button
               component={Link}

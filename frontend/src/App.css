@@ -573,3 +573,56 @@ footer {
   object-fit: cover; /* Ensure images maintain aspect ratio and cover the container */
  
 }
+
+.edit-btn {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-right: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.edit-btn:hover {
+  background-color: rgb(237, 237, 23);
+  color: rgb(0, 0, 0);
+}
+
+.delete-btn {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-right: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: rgb(172, 0, 0);
+  color: rgb(255, 255, 255);
+}
+
+
+.custom-mdb-table thead th {
+  background-color: #021042;
+  color: white;
+}
+
+.custom-mdb-table thead th:hover {
+  background-color: #1F4959;
+  color: #ffffff;
+}
+/* Example: Change background color of table body */
+.custom-mdb-table tbody td {
+  background-color: whitesmoke;
+  color: black;
+}
+
+/* Example: Change background color of table rows on hover */
+.custom-mdb-table tbody td:hover {
+  background-color: #1F4959;
+  color: white;
+}
+
