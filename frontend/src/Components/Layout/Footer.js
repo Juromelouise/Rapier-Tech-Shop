@@ -11,6 +11,6 @@ const Footer = () => {
             </footer>
         </Fragment>
     )
-}
+} 
 
 export default Footer

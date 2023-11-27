@@ -11,17 +11,13 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
-// import Grid from '@mui/material/Grid';
-// import Paper from '@mui/material/Paper';
-// import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './ListItems';
-import NewSupplier from './NewSupplier';
 import SupplierList from './SupplierList';
-// import Chart from './Chart';
-// import Deposits from './Deposits';
+import Chart from './Chart';
+
 
 
 const drawerWidth = 240;
@@ -143,7 +139,8 @@ export default function Dashboard() {
             overflow: 'auto',
           }}
         >
-          <SupplierList/>
+          Gadget Cout Supplied by the Supplier
+          <Chart />
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           </Container>

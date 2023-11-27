@@ -1,19 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Carousel } from "react-bootstrap";
-import axios from "axios";
 
 const Caroimage = ({ prod }) => {
-  console.log(prod)
+  const imageHeight = "400px"; // Set your desired fixed height
+
   return (
-    <div>
-      <Carousel pause="hover">
-        {prod &&
-          prod.images.map((image, index) => (
+    <div className="caro-container" style={{ height: imageHeight }}>
+      {prod && prod.images.length > 0 ? (
+        <Carousel pause="hover">
+          {prod.images.map((image, index) => (
             <Carousel.Item key={index}>
-              <img className="d-block w-100" src={image.url} alt={prod.title} />
+              <img
+                className="d-block w-100 carousel-image"
+                src={image.url}
+                alt={prod.title}
+                style={{ height: "100%", objectFit: "cover" }}
+              />
             </Carousel.Item>
           ))}
-      </Carousel>
+        </Carousel>
+      ) : (
+        <p>No images available for this product.</p>
+      )}
     </div>
   );
 };
