@@ -13,12 +13,14 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 
+
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState('');
   const [deleteError, setDeleteError] = useState('');
   const [loading, setLoading] = useState(true);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   let navigate = useNavigate();
 
@@ -121,7 +123,6 @@ const ProductsList = () => {
           <Link to={`/admin/product/${product._id}`}>
           <button className="edit-btn">Edit</button>
           </Link>
-
           <Link
                 onClick={() => deleteProductHandler(product._id)}>
                 <button className="delete-btn">Delete</button>
@@ -151,7 +152,7 @@ const ProductsList = () => {
         {/* Main content */}
         <div className="col-12 col-md-10">
           <Fragment>
-            <h2 className="my-5">All Products</h2>
+            <p className="star">ALL PRODUCTS</p>
             {loading ? <Loader /> : (
               <div className="custom-mdb-table">
               <MDBDataTable
@@ -166,12 +167,24 @@ const ProductsList = () => {
             )}
             <Button
               component={Link}
-              to="/admin/supplier/new"
-              variant="contained"
-              color="primary"
-              sx={{ mt: 3 }}
+              to="/admin/product/new"
+              className="AddProduct-btn"
+              sx={{
+                mt: 3,
+                color: 'white',
+                backgroundColor: 'black',
+                transition: 'color 0.3s, background-color 0.3s', 
+                margin: '20px 30px',
+                padding: '15px',
+                '&:hover': {
+                  color: 'white', // Text color on hover
+                  backgroundColor: 'gray', // Background color on hover
+                },
+              }}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
             >
-              Add Supplier
+              Add Product
             </Button>
           </Fragment>
         </div>
