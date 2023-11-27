@@ -491,17 +491,16 @@ footer {
   align-items: stretch;
   min-height: 100vh;
   font-weight: normal;
-  
   margin-top: 0;
   height: 100%;
   left: 0;
   top: 0;
   z-index: 10;
+  
 }
 #sidebar {
   min-width: 100%;
   max-width: 100%;
-  background: rgb(9, 72, 150);
   color: #fff;
   transition: all 0.3s;
 }
@@ -524,7 +523,6 @@ footer {
   display: block;
   color: white;
   text-decoration: none;
-  
 }
 #sidebar ul li a:hover {
   color: #ffffff;

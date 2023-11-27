@@ -103,9 +103,8 @@ export default function UserList() {
               <TableCell>
                 <Link
                   to={`/admin/user/update/${row._id}`}
-                  className="btn btn-primary py-1 px-2"
                 >
-                  <i className="fa fa-pencil"></i>
+                  <button>Edit</button>
                 </Link>
                 <button
                   className="btn btn-danger py-1 px-2 ml-2"
