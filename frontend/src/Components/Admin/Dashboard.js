@@ -21,7 +21,7 @@ import Chart2 from './Chart2';
 
 
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -38,6 +38,8 @@ const AppBar = styled(MuiAppBar, {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    boxSizing: 'border-box',
+    backgroundColor: '#021042',
   }),
 }));
 
