@@ -31,6 +31,7 @@ export default function Chart1Component() {
 
   return (
     <ResponsiveContainer width="90%" height={600}>
+      <h2 style={{ textAlign: 'center' }}>Gadget Cout Supplied by the Supplier</h2>
       {loading ? (
         <Loader />
       ) : (

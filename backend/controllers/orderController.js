@@ -4,6 +4,10 @@ const mongoose = require("mongoose");
 const user = require("../models/user");
 const sendEmailUser = require("../utils/sendEmailUser");
 const sendEmailadmin = require("../utils/sendEmailadmin");
+const PDFDocument = require("pdfkit");
+const fs = require("fs");
+const path = require("path");
+const base64 = require("base64-js");
 
 exports.newOrder = async (req, res, next) => {
   const {
@@ -180,82 +184,8 @@ exports.deleteOrder = async (req, res, next) => {
   });
 };
 
-exports.totalOrders = async (req, res, next) => {
-  const totalOrders = await Order.aggregate([
-    {
-      $group: {
-        _id: null,
-        count: { $sum: 1 },
-      },
-    },
-  ]);
-  if (!totalOrders) {
-    return res.status(404).json({
-      message: "error total orders",
-    });
-  }
-  res.status(200).json({
-    success: true,
-    totalOrders,
-  });
-};
-
-exports.totalSales = async (req, res, next) => {
-  const totalSales = await Order.aggregate([
-    {
-      $group: {
-        _id: null,
-        totalSales: { $sum: "$totalPrice" },
-      },
-    },
-  ]);
-  if (!totalSales) {
-    return res.status(404).json({
-      message: "error total sales",
-    });
-  }
-  res.status(200).json({
-    success: true,
-    totalSales,
-  });
-};
-
-exports.customerSales = async (req, res, next) => {
-  const customerSales = await Order.aggregate([
-    {
-      $lookup: {
-        from: "users",
-        localField: "user",
-        foreignField: "_id",
-        as: "userDetails",
-      },
-    },
-
-    { $unwind: "$userDetails" },
-
-    {
-      $group: {
-        _id: "$userDetails.name",
-        total: { $sum: "$totalPrice" },
-      },
-    },
-
-    { $sort: { total: -1 } },
-  ]);
-  console.log(customerSales);
-  if (!customerSales) {
-    return res.status(404).json({
-      message: "error customer sales",
-    });
-  }
-  res.status(200).json({
-    success: true,
-    customerSales,
-  });
-};
-
 exports.salesPerMonth = async (req, res, next) => {
-  const salesPerMonth = await Order.aggregate([
+  const chartData = await Order.aggregate([
     {
       $group: {
         _id: {
@@ -303,7 +233,7 @@ exports.salesPerMonth = async (req, res, next) => {
       },
     },
   ]);
-  if (!salesPerMonth) {
+  if (!chartData) {
     return res.status(404).json({
       message: "error sales per month",
     });
@@ -311,7 +241,7 @@ exports.salesPerMonth = async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    salesPerMonth,
+    chartData,
   });
 };
 
@@ -329,7 +259,30 @@ exports.updateStatus = async (req, res, next) => {
 
     order.orderStatus = req.body.status;
     order.deliveredAt = Date.now();
-    await order.save();
+    await order.save(); 
+    const pdfBuffer = [];
+    const pdfDoc = new PDFDocument();
+    
+    pdfDoc.font("Helvetica");
+    pdfDoc.text("Rapier Tech Shop", { align: "center" });
+    pdfDoc.moveDown();
+    pdfDoc.text("Your order has been confirmed. Wait for the Delivery within 1 week");
+    pdfDoc.moveDown();
+    pdfDoc.text("Order Details:", { align: "center" });
+    
+    order.orderItems.forEach((item) => {
+      pdfDoc.text(`Product name: ${item.name}`);
+      pdfDoc.text(`Quantity: ${item.quantity}`);
+      pdfDoc.text(`Price: ${item.price}`);
+      pdfDoc.text(`Total Amount: ${order.totalPrice}`);
+      pdfDoc.moveDown();
+    });
+    
+    pdfDoc.on("data", chunk => pdfBuffer.push(chunk));
+    pdfDoc.on("end", async () => {
+      const pdfData = Buffer.concat(pdfBuffer);
+      const pdfBase64 = pdfData.toString("base64");
+    
 
     const messageUser = `
       <html>
@@ -354,38 +307,54 @@ exports.updateStatus = async (req, res, next) => {
             ${order.orderItems
               .map(
                 (item) => `
-                <li><strong>Product Name:</strong> ${item.name}</li>
-                <li><strong>Quantity:</strong> ${item.quantity}</li>
-                <li><strong>Price:</strong> ${item.price}</li>
-              `
+                  <li><strong>Product Name:</strong> ${item.name}</li>
+                  <li><strong>Quantity:</strong> ${item.quantity}</li>
+                  <li><strong>Price:</strong> ${item.price}</li>
+                `
               )
-              .join('')}
+              .join("")}
             <li><strong>Total Price:</strong> ${order.totalPrice}</li>
           </ul>
           <p>Thank you for using our services!</p>
+    
+          <!-- Download Button -->
+          <a href="data:application/pdf;base64,${pdfBase64}" download="order_receipt.pdf">
+            <button style="background-color: #4CAF50; /* Green */
+              border: none;
+              color: white;
+              padding: 15px 32px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+              margin: 4px 2px;
+              cursor: pointer;">Download Receipt</button>
+          </a>
         </body>
       </html>
     `;
-
-    // Ensure that sendEmailUser returns a Promise
     await sendEmailUser({
       email: req.user.email,
-      subject: 'Order Transaction',
+      subject: "Order Transaction",
       messageUser,
     });
 
     res.status(200).json({
       success: true,
+      order
     });
-  } catch (error) {
-    console.error('Error updating order status and sending email:', error);
+  });
+  
+  pdfDoc.end();
 
-    // Return a more detailed error response
-    res.status(500).json({
-      success: false,
-      error: `Internal Server Error: ${error.message}`,
-    });
-  }
+} catch (error) {
+  console.error("Error updating order status and sending email:", error);
+
+  res.status(500).json({
+    success: false,
+    error: `Internal Server Error: ${error.message}`,
+  });
+}
 };
 
 exports.sumSupplier = async (req, res, next) => {

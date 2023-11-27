@@ -6,9 +6,7 @@ const { newOrder,
 	    allOrders,
 	    updateOrder,
 	    deleteOrder,
-		totalOrders,
-		totalSales,
-		customerSales,
+		salesPerMonth,
 		updateStatus,
 		sumSupplier,
 		getUserOrderSum 
@@ -21,9 +19,7 @@ router.get('/orders/me', isAuthenticatedUser, myOrders);
 router.get('/admin/orders/', isAuthenticatedUser,authorizeRoles('admin'),  allOrders);
 router.route('/admin/order/:id').delete(isAuthenticatedUser,  deleteOrder);
 router.put('/admin/order/:id', isAuthenticatedUser, updateStatus)
-router.get('/admin/total-orders', totalOrders);
-router.get('/admin/total-sales', totalSales);
-router.get('/admin/customer-sales', customerSales);
+router.get('/admin/chart3',isAuthenticatedUser, salesPerMonth);
 router.get('/admin/chart1',isAuthenticatedUser, sumSupplier);
 router.delete('/admin/order/:id', isAuthenticatedUser, authorizeRoles('admin',),deleteOrder)
 router.get('/admin/chart2', isAuthenticatedUser, getUserOrderSum);

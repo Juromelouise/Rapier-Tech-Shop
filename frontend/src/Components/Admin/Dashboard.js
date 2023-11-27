@@ -18,6 +18,7 @@ import { mainListItems, secondaryListItems } from './ListItems';
 import SupplierList from './SupplierList';
 import Chart from './Chart';
 import Chart2 from './Chart2';
+import Chart3 from './Chart3';
 
 
 
@@ -142,9 +143,15 @@ export default function Dashboard() {
             overflow: 'auto',
           }}
         >
-          Gadget Cout Supplied by the Supplier
+        
           <Chart />
+          <br/>
+          <br/>
+          <hr/>
           <Chart2 />
+          <hr/>
+          <Chart3/>
+        
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           </Container>
