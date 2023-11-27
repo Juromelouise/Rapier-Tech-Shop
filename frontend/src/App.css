@@ -94,7 +94,7 @@
 }
 
 #checkout_btn:hover {
-  background-color: #0056b3;
+  background-color: #ffffff;
 }
 
 .float-right:hover{
@@ -104,10 +104,11 @@
 #login_button{
   margin-top: 100px;
   margin-right: 20px;
+  background-color: #021042;
+  color: #ffffff;
 }
-
 .App-header {
-  background-color: #282c34;
+  background-color: #071032;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -116,7 +117,9 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+.container-fluid{
+  background-color: #ffffff;
+}
 .App-link {
   color: #61dafb;
 }
@@ -135,6 +138,8 @@
   margin-right: 10px;
   margin-left: 20px;
   height: 40px;
+  background-color: #ffffff;
+  
 }
 
 .Cartitem {
@@ -146,11 +151,12 @@
 }
 
 #search_btn {
-  background-color: #febd69;
+  background-color: #021042;
+  color: #ffffff;
 }
 
 #body {
-  background-color: #FFFAF1;
+  background-color: #ffffff;
 }
 
 #products_heading {
@@ -414,7 +420,7 @@ footer {
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to bottom, #021042, #4abdac, #021042);
+  background: #071032;
   width: 100%;
   padding-top: 40px;
   color: #fff;
@@ -492,7 +498,7 @@ footer {
 }
 
 .footer-bottom {
-  background: #071032;
+  background: #000000;
   width: 100%;
   padding: 20px;
   padding-bottom: 40px;
@@ -532,7 +538,7 @@ footer {
 }
 
 .footer-menu ul li a {
-  color: #cfd2d6;
+  color: #ffffff;
   text-decoration: none;
 }
 
