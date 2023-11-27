@@ -119,6 +119,7 @@
 }
 .container-fluid{
   background-color: #ffffff;
+  margin-top: 40px;
 }
 .App-link {
   color: #61dafb;
@@ -161,6 +162,10 @@
 
 #products_heading {
   margin-top: 0px;
+  font-weight: 900;
+  font-size: 60px;
+  color: #000000;
+  letter-spacing: 8px;
 }
 .py-1 {
   margin-top: 30px;
@@ -203,7 +208,7 @@ main {
       color: #252525;
       font-family: sans-serif;
       font-weight: 600;
-      font-size: 20px;
+      font-size: 40px;
       text-transform: uppercase;
     }
 
@@ -556,12 +561,15 @@ footer {
 }
 
 .caro-container {
-  max-width: 600px; /* Adjust the maximum width as needed */
+  max-width: 800px; /* Adjust the maximum width as needed */
   margin: auto; /* Center the container */
+  
 }
 
 .carousel-image {
+  margin-top: 30px;
   border-radius: 8px; /* Add border-radius for rounded corners */
   max-height: 400px; /* Adjust the maximum height as needed */
   object-fit: cover; /* Ensure images maintain aspect ratio and cover the container */
+ 
 }

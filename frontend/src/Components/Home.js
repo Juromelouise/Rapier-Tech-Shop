@@ -77,7 +77,7 @@ const Home = () => {
   return (
     <div id="body">
       <div className="container container-fluid" id="homejs">
-        <h1 id="products_heading">Latest Products</h1>
+        <h1 id="products_heading">LATEST PRODUCT</h1>
         <Caroimage prod={products[0]} />
         <section id="products" className="container mt-5">
           <div className="row">
