@@ -119,12 +119,15 @@ const ProductsList = () => {
         stock: product.stock,
         actions: <Fragment>
 
-          <Link to={`/admin/product/${product._id}`} className="btn btn-primary py-1 px-2">
-            <i className="fa fa-pencil"></i>
+          <Link to={`/admin/product/${product._id}`}>
+          <button className="edit-btn">Edit</button>
           </Link>
-          <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteProductHandler(product._id)}>
-            <i className="fa fa-trash"></i>
-          </button>
+
+          <Link
+                onClick={() => deleteProductHandler(product._id)}>
+                <button className="delete-btn">Delete</button>
+                </Link>
+          
         </Fragment>
       });
     });
@@ -139,7 +142,7 @@ const ProductsList = () => {
   return (
     <Fragment>
       <MetaData title={'All Products'} />
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex' }} >
         {/* Sidebar */}
         <List component="nav">
           {mainListItems}
@@ -151,13 +154,16 @@ const ProductsList = () => {
           <Fragment>
             <h2 className="my-5">All Products</h2>
             {loading ? <Loader /> : (
+              <div className="custom-mdb-table">
               <MDBDataTable
                 data={productsList()}
-                className="px-3"
+                className="custom-mdb-table"
                 bordered
                 striped
                 hover
+               
               />
+              </div>
             )}
             <Button
               component={Link}

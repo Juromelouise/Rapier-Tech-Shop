@@ -106,12 +106,12 @@ export default function UserList() {
                 >
                   <button>Edit</button>
                 </Link>
-                <button
-                  className="btn btn-danger py-1 px-2 ml-2"
-                  onClick={() => deleteUserHandler(row._id)}
-                >
-                  <i className="fa fa-trash"></i>
-                </button>
+                
+                <Link
+                onClick={() => deleteUserHandler(row._id)}>
+                <button>Delete</button>
+                </Link>
+                  
               </TableCell>
             </TableRow>
           ))}
