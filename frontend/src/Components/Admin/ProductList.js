@@ -117,21 +117,17 @@ const ProductsList = () => {
         name: product.name,
         price: `$${product.price}`,
         stock: product.stock,
-        actions:  <Fragment>
-        <Link to={`/admin/product/${product._id}`} style={{ textDecoration: 'none' }}>
-          <Button variant="contained" color="primary">
-            Edit
-          </Button>
-        </Link>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => deleteProductHandler(product._id)}
-          style={{ marginLeft: '8px' }}
-        >
-          Delete
-        </Button>
-      </Fragment>
+        actions: <Fragment>
+          <Link to={`/admin/product/${product._id}`}>
+          <button className="edit-btn">Edit</button>
+          </Link>
+
+          <Link
+                onClick={() => deleteProductHandler(product._id)}>
+                <button className="delete-btn">Delete</button>
+                </Link>
+          
+        </Fragment>
       });
     });
 
@@ -155,7 +151,7 @@ const ProductsList = () => {
         {/* Main content */}
         <div className="col-12 col-md-10">
           <Fragment>
-            <h2>All Products</h2>
+            <h2 className="my-5">All Products</h2>
             {loading ? <Loader /> : (
               <div className="custom-mdb-table">
               <MDBDataTable

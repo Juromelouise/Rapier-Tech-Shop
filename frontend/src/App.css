@@ -387,7 +387,7 @@ main {
         transition: 200ms;
 
         &:hover {
-          background: #fff;
+          background-color: #fff;
           color: #115dd8;
         }
       }
@@ -586,7 +586,7 @@ footer {
 
 .edit-btn:hover {
   background-color: white;
-  color: rgb(0, 0, 0);
+  color: black;
 }
 
 .delete-btn {
