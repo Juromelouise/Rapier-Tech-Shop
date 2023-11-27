@@ -1,46 +1,28 @@
-import * as React from "react";
-// import Link from '@mui/material/Link';
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Title from "./Title";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { getToken } from "../../utils/helpers";
-import { Link } from "react-router-dom";
-import { Row } from "react-bootstrap";
+import React, { Fragment, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { MDBDataTable } from 'mdbreact';
+import MetaData from '../Layout/Metadata';
+import Loader from '../Layout/Loader';
+// import Sidebar from './SideBar';
+import { getToken } from '../../utils/helpers';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { mainListItems, secondaryListItems } from './ListItems';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
 
-function preventDefault(event) {
-  event.preventDefault();
-}
+const ProductsList = () => {
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState('');
+  const [deleteError, setDeleteError] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [isDeleted, setIsDeleted] = useState(false);
 
-export default function ProductList() {
+  let navigate = useNavigate();
 
-  const [product, setProduct] = useState([])
-  const [error, setError] = useState('')
-  const [deleteError, setDeleteError] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [isDeleted, setIsDeleted] = useState(false)
-
-  const products = async () => {
-    const config = {
-      headers: {
-        // 'Content-Type': 'application/json',
-        'Authorization': `Bearer ${getToken()}`
-      }
-    }
-    try {
-      let res = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/products/`, config)
-      console.log(res)
-      setProduct(res.data.products)
-    } catch (error) {
-      console.error('Error fetching product:', error);
-    }
-  }
-
-  const deleteProductHandler = async (id) => {
+  const getAdminProducts = async () => {
     try {
       const config = {
         headers: {
@@ -48,79 +30,149 @@ export default function ProductList() {
           'Authorization': `Bearer ${getToken()}`
         }
       };
-      await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/product/${id}`, config);
 
-      // Filter out the deleted supplier from the current state
-      const updatedProduct = product.filter(product => product._id !== id);
+      const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/products`, config);
+      console.log(data);
+      setProducts(data.products);
+      setLoading(false);
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+  };
 
-      // Update the state with the new supplier array
-      setProduct(updatedProduct);
+  useEffect(() => {
+    getAdminProducts();
 
-      // Set other state variables as needed
-      setIsDeleted(true);
+    if (error) {
+      toast.error(error, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    }
+
+    if (deleteError) {
+      toast.error(deleteError, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+    }
+
+    if (isDeleted) {
+      toast.success('Product deleted successfully', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
+      navigate('/admin/products');
+    }
+  }, [error, deleteError, isDeleted]);
+
+  const deleteProduct = async (id) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${getToken()}`
+        }
+      };
+      const { data } = await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/product/${id}`, config);
+
+      setIsDeleted(data.success);
       setLoading(false);
     } catch (error) {
       setDeleteError(error.response.data.message);
     }
   };
 
-  useEffect(() => {
-    products()
-  }, [])
+  const productsList = () => {
+    const data = {
+      columns: [
+        {
+          label: 'ID',
+          field: 'id',
+          sort: 'asc'
+        },
+        {
+          label: 'Name',
+          field: 'name',
+          sort: 'asc'
+        },
+        {
+          label: 'Price',
+          field: 'price',
+          sort: 'asc'
+        },
+        {
+          label: 'Stock',
+          field: 'stock',
+          sort: 'asc'
+        },
+        {
+          label: 'Actions',
+          field: 'actions',
+        },
+      ],
+      rows: []
+    };
 
-  // console.log(product)
+    products.forEach(product => {
+      data.rows.push({
+        id: product._id,
+        name: product.name,
+        price: `$${product.price}`,
+        stock: product.stock,
+        actions: <Fragment>
+
+          <Link to={`/admin/product/${product._id}`} className="btn btn-primary py-1 px-2">
+            <i className="fa fa-pencil"></i>
+          </Link>
+          <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteProductHandler(product._id)}>
+            <i className="fa fa-trash"></i>
+          </button>
+        </Fragment>
+      });
+    });
+
+    return data;
+  };
+
+  const deleteProductHandler = (id) => {
+    deleteProduct(id);
+  };
+
   return (
-    <React.Fragment>
-      <Title>Products</Title>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Category</TableCell>
-            <TableCell>Price</TableCell>
-            <TableCell>Stock</TableCell>
-            <TableCell>Image</TableCell>
-            <TableCell>Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {product.map((row) => (
-            <TableRow key={row._id}>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.category}</TableCell>
-              <TableCell>{row.price}</TableCell>
-              <TableCell>{row.stock}</TableCell>
-              <TableCell>
-                {row.images.map((image) => (
-                  <img
-                    key={image.public_id}
-                    src={image.url}
-                    alt={image.public_id}
-                    style={{ width: '100px', height: '100px' }}
-                  />
-                ))}
-              </TableCell>
-              <TableCell>
-                <Link to={`/admin/product/${row._id}`} className="btn btn-primary py-1 px-2">
-                  <i className="fa fa-pencil"></i>
-                </Link>
-                <button
-                  className="btn btn-danger py-1 px-2 ml-2"
-                  onClick={() => deleteProductHandler(row._id)}
-                >
-                  <i className="fa fa-trash"></i>
-                </button>
-              </TableCell>
-              {/* <TableCell align="right">{`$${row.amount}`}</TableCell> */}
-            </TableRow>
+    <Fragment>
+      <MetaData title={'All Products'} />
+      <div style={{ display: 'flex' }}>
+        {/* Sidebar */}
+        <List component="nav">
+          {mainListItems}
+          <Divider sx={{ my: 1 }} />
+        </List>
 
-          ))}
-        </TableBody>
-      </Table>
-      <Link to="/admin/product/new" sx={{ mt: 3 }}>
-        Add Product
-      </Link>
-    </React.Fragment>
-
+        {/* Main content */}
+        <div className="col-12 col-md-10">
+          <Fragment>
+            <h2 className="my-5">All Products</h2>
+            {loading ? <Loader /> : (
+              <MDBDataTable
+                data={productsList()}
+                className="px-3"
+                bordered
+                striped
+                hover
+              />
+            )}
+          </Fragment>
+        </div>
+        <Button
+          component={Link}
+          to="/admin/supplier/new"
+          variant="contained"
+          color="primary"
+          sx={{ mt: 3 }}
+        >
+          Add Supplier
+        </Button>
+      </div>
+    </Fragment>
   );
 }
+
+export default ProductsList;
