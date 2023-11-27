@@ -6,7 +6,6 @@ const sendEmailUser = require("../utils/sendEmailUser");
 const sendEmailadmin = require("../utils/sendEmailadmin");
 
 exports.newOrder = async (req, res, next) => {
-
   const {
     orderItems,
     shippingInfo,
@@ -53,37 +52,6 @@ exports.newOrder = async (req, res, next) => {
   </html>
 `;
 
-  const messageUser = `<html>
-    <head>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          padding: 20px;
-        }
-        h1 {
-          color: #333;
-        }
-        p {
-          margin-bottom: 10px;
-        }
-      </style>
-    </head>
-    <body>
-      <h1>Transaction Confirmation</h1>
-      <p>Your transaction has been Proccessed. Please wait for the Administrator to approve and prepare your order.</p>
-      <p>Thank you for using our services!</p>
-    </body>
-  </html>
-`;
-  try {
-    await sendEmailUser({
-      email: req.user.email,
-      subject: "Order Transaction",
-      messageUser,
-    });
-  } catch (error) {
-    console.log(error)
-  }
   try {
     await sendEmailadmin({
       email: `RapierTechShop@gmail.com`,
@@ -91,7 +59,7 @@ exports.newOrder = async (req, res, next) => {
       messageAdmin,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
   res.status(200).json({
     success: true,
@@ -147,30 +115,30 @@ exports.deleteOrder = async (req, res, next) => {
   if (!order) {
     return res.status(404).json({
       success: false,
-      message: 'Order Not Found'
-    })
+      message: "Order Not Found",
+    });
   }
   // await order.remove();
   res.status(200).json({
     success: true,
-    message: 'Order Deleted'
-  })
-}
+    message: "Order Deleted",
+  });
+};
 
 exports.deleteOrder = async (req, res, next) => {
   const order = await Order.findByIdAndDelete(req.params.id);
   if (!order) {
     return res.status(404).json({
       success: false,
-      message: 'Order Not Found'
-    })
+      message: "Order Not Found",
+    });
   }
   // await order.remove();
   res.status(200).json({
     success: true,
-    message: 'Order Deleted'
-  })
-}
+    message: "Order Deleted",
+  });
+};
 exports.updateOrder = async (req, res, next) => {
   const order = await Order.findById(req.params.id);
 
@@ -346,45 +314,96 @@ exports.salesPerMonth = async (req, res, next) => {
   });
 };
 
-
 exports.updateStatus = async (req, res, next) => {
-  const order = await Order.findById(req.params.id)
+  try {
+    const order = await Order.findById(req.params.id);
 
-  if (order.orderStatus === 'Delivered') {
-    return res.status(404).json({ message: `You have already delivered this order` })
+    if (order.orderStatus === 'Delivered') {
+      return res.status(404).json({ message: 'You have already delivered this order' });
+    }
 
+    order.orderItems.forEach(async (item) => {
+      await updateStock(item.product, item.quantity);
+    });
+
+    order.orderStatus = req.body.status;
+    order.deliveredAt = Date.now();
+    await order.save();
+
+    const messageUser = `
+      <html>
+        <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              padding: 20px;
+            }
+            h1 {
+              color: #333;
+            }
+            p {
+              margin-bottom: 10px;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>Transaction Confirmation</h1>
+          <p>Your transaction has been Confirmed</p>
+          <ul>
+            ${order.orderItems
+              .map(
+                (item) => `
+                <li><strong>Product Name:</strong> ${item.name}</li>
+                <li><strong>Quantity:</strong> ${item.quantity}</li>
+                <li><strong>Price:</strong> ${item.price}</li>
+              `
+              )
+              .join('')}
+            <li><strong>Total Price:</strong> ${order.totalPrice}</li>
+          </ul>
+          <p>Thank you for using our services!</p>
+        </body>
+      </html>
+    `;
+
+    // Ensure that sendEmailUser returns a Promise
+    await sendEmailUser({
+      email: req.user.email,
+      subject: 'Order Transaction',
+      messageUser,
+    });
+
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.error('Error updating order status and sending email:', error);
+
+    // Return a more detailed error response
+    res.status(500).json({
+      success: false,
+      error: `Internal Server Error: ${error.message}`,
+    });
   }
-
-  order.orderItems.forEach(async item => {
-    await updateStock(item.product, item.quantity)
-  })
-
-  order.orderStatus = req.body.status
-  order.deliveredAt = Date.now()
-  await order.save()
-
-  res.status(200).json({
-    success: true,
-  })
-}
+};
 
 exports.sumSupplier = async (req, res, next) => {
   try {
     const chartData = await Product.aggregate([
       {
         $lookup: {
-          from: 'suppliers',
-          localField: 'seller',
-          foreignField: '_id',
-          as: 'supplier',
+          from: "suppliers",
+          localField: "seller",
+          foreignField: "_id",
+          as: "supplier",
         },
       },
       {
-        $unwind: '$supplier',
+        $unwind: "$supplier",
       },
       {
         $group: {
-          _id: '$supplier.name',
+          _id: "$supplier.name",
           totalOrders: { $sum: 1 },
         },
       },
@@ -392,7 +411,7 @@ exports.sumSupplier = async (req, res, next) => {
 
     if (!chartData) {
       return res.status(404).json({
-        message: 'Error fetching chart data',
+        message: "Error fetching chart data",
       });
     }
 
@@ -402,9 +421,9 @@ exports.sumSupplier = async (req, res, next) => {
     });
     console.log(chartData);
   } catch (error) {
-    console.error('Error in Chart1 function:', error);
+    console.error("Error in Chart1 function:", error);
     res.status(500).json({
-      message: 'Internal Server Error',
+      message: "Internal Server Error",
     });
   }
 };
@@ -440,6 +459,6 @@ exports.getUserOrderSum = async (req, res, next) => {
 
     res.status(200).json(chartData);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
