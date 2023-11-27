@@ -1,14 +1,14 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
 import Loader from "../Layout/Loader";
 import MetaData from "../Layout/Metadata";
 import { getUser, getToken, successMsg, errMsg } from "../../utils/helpers";
 import ListReviews from '../Review/ListReviews';
 import axios from "axios";
-// import StarRating from "../Review/StarRating"; // Assuming you have a component for star rating
 
 const ProductDetails = ({ cartItems, addItemToCart }) => {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState({});
   const [error, setError] = useState('');
@@ -52,6 +52,8 @@ const ProductDetails = ({ cartItems, addItemToCart }) => {
 
   const addToCart = async () => {
     await addItemToCart(id, quantity);
+    console.log(id)
+    navigate(window.location.reload())
   };
 
   const setUserRatings = () => {

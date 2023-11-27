@@ -9,6 +9,7 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import Header from "./Layout/Header";
 import Caroimage from "./Layout/Caroimage";
+import { Button } from "react-bootstrap";
 
 const categories = [
   "Laptop",
@@ -58,7 +59,7 @@ const Home = () => {
       setLoading(false);
     }
   };
-  console.log(products)
+  console.log(products);
   let count = productsCount;
 
   if (keyword) {
@@ -75,8 +76,8 @@ const Home = () => {
 
   return (
     <div id="body">
-      <div className="container container-fluid">
-        <h1 id="products_heading">Latest Products</h1>
+      <div className="container container-fluid" id="homejs">
+        <h1 id="products_heading">LATEST PRODUCT</h1>
         <Caroimage prod={products[0]} />
         <section id="products" className="container mt-5">
           <div className="row">
