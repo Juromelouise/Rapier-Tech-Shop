@@ -10,6 +10,12 @@ import Title from "./Title";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { getToken } from "../../utils/helpers";
+import { mainListItems, secondaryListItems } from './ListItems';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+
 
 function preventDefault(event) {
   event.preventDefault();
@@ -92,47 +98,60 @@ const Orders = () => {
 
   return (
     <React.Fragment>
-      <Title>Orders</Title>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Order ID</TableCell>
-            <TableCell>Date</TableCell>
-            <TableCell>Order Status</TableCell>
-            <TableCell>Total Price</TableCell>
-            <TableCell>User Name</TableCell>
-            <TableCell>Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {orders.map((order) => (
-            <TableRow key={order._id}>
-              <TableCell>{order._id}</TableCell>
-              <TableCell>{new Date(order.createdAt).toLocaleString()}</TableCell>
-              <TableCell>{order.orderStatus}</TableCell>
-              <TableCell>{order.totalPrice}</TableCell>
-              <TableCell>{order.user.name}</TableCell>
-              <TableCell>
-                {order.orderStatus !== "Delivered" && (
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleUpdateStatus(order._id)}
-                  >
-                    To Shipped
-                  </Button>
-                )}
-                <button
-                  className="btn btn-danger py-1 px-2 ml-2"
-                  onClick={() => deleteOrderHandler(order._id)}
-                >
-                  <i className="fa fa-trash"></i>
-                </button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <div style={{ display: 'flex' }}>
+        {/* Navigation Bar */}
+        <List component="nav">
+          {mainListItems}
+          <Divider sx={{ my: 1 }} />
+        </List>
+
+        {/* Main content */}
+        <div style={{ flexGrow: 1, padding: '20px' }}>
+          <Title>Orders</Title>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Order ID</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Order Status</TableCell>
+                <TableCell>Total Price</TableCell>
+                <TableCell>User Name</TableCell>
+                <TableCell>Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {orders.map((order) => (
+                <TableRow key={order._id}>
+                  <TableCell>{order._id}</TableCell>
+                  <TableCell>
+                    {new Date(order.createdAt).toLocaleString()}
+                  </TableCell>
+                  <TableCell>{order.orderStatus}</TableCell>
+                  <TableCell>{order.totalPrice}</TableCell>
+                  <TableCell>{order.user.name}</TableCell>
+                  <TableCell>
+                    {order.orderStatus !== 'Delivered' && (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => handleUpdateStatus(order._id)}
+                      >
+                        To Shipped
+                      </Button>
+                    )}
+                    <button
+                      className="btn btn-danger py-1 px-2 ml-2"
+                      onClick={() => deleteOrderHandler(order._id)}
+                    >
+                      <i className="fa fa-trash"></i>
+                    </button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
     </React.Fragment>
   );
 };

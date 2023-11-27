@@ -6,37 +6,44 @@ import { getToken } from "../../utils/helpers";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  email: Yup.string().email("Invalid email format").required("Email is required"),
+  password: Yup.string().required("Password is required"),
+  role: Yup.string().required("Role is required"),
+});
 
 const NewUser = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
-  const [images, setImage] = useState([]);
-  const [imagesPreview, setImagesPreview] = useState([]);
+  const [avatar, setAvatar] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState("/images/default_avatar.jpg");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState("");
   const [user, setUser] = useState({});
-  const [avatar, setAvatar] = useState("");
-  const [avatarPreview, setAvatarPreview] = useState(
-    "/images/default_avatar.jpg"
-  );
-
   let navigate = useNavigate();
 
-  const submitHandler = (e) => {
-    e.preventDefault();
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+      role: "user",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      const formData = new FormData();
+      formData.set("name", values.name);
+      formData.set("email", values.email);
+      formData.set("password", values.password);
+      formData.set("avatar", avatar);
+      formData.set("role", values.role);
 
-    const formData = new FormData();
-    formData.set("name", name);
-    formData.set("email", email);
-    formData.set("password", password);
-    formData.set("avatar", avatar);
-    formData.set("role", role);
-
-    newUser(formData);
-  };
+      newUser(formData);
+    },
+  });
 
   const onAvatarChange = (e) => {
     const file = e.target.files[0]; // Get only the first file (single image)
@@ -76,6 +83,7 @@ const NewUser = () => {
       setError(error.message);
     }
   };
+
   useEffect(() => {
     if (error) {
       toast.error(error, {
@@ -95,14 +103,14 @@ const NewUser = () => {
     <Fragment>
       <MetaData title={"New User"} />
       <div className="row">
-        <div className="col-12 col-md-2">{/* <Sidebar /> */}</div>
+        <div className="col-12 col-md-2"></div>
 
         <div className="col-12 col-md-10">
           <Fragment>
             <div className="wrapper my-5">
               <form
                 className="shadow-lg"
-                onSubmit={submitHandler}
+                onSubmit={formik.handleSubmit}
                 encType="multipart/form-data"
               >
                 <h1 className="mb-4">Add User</h1>
@@ -113,9 +121,11 @@ const NewUser = () => {
                     type="text"
                     id="name_field"
                     className="form-control"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    {...formik.getFieldProps("name")}
                   />
+                  {formik.touched.name && formik.errors.name && (
+                    <div className="text-danger">{formik.errors.name}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -124,9 +134,11 @@ const NewUser = () => {
                     type="password"
                     id="password_field"
                     className="form-control"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    {...formik.getFieldProps("password")}
                   />
+                  {formik.touched.password && formik.errors.password && (
+                    <div className="text-danger">{formik.errors.password}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -135,9 +147,11 @@ const NewUser = () => {
                     type="text"
                     id="email_field"
                     className="form-control"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    {...formik.getFieldProps("email")}
                   />
+                  {formik.touched.email && formik.errors.email && (
+                    <div className="text-danger">{formik.errors.email}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -145,12 +159,14 @@ const NewUser = () => {
                   <select
                     id="name_field"
                     className="form-control"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
+                    {...formik.getFieldProps("role")}
                   >
                     <option value="user">Normal User</option>
                     <option value="admin">Administrator</option>
                   </select>
+                  {formik.touched.role && formik.errors.role && (
+                    <div className="text-danger">{formik.errors.role}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -182,11 +198,11 @@ const NewUser = () => {
                     />
                   )}
                 </div>
+
                 <button
                   id="login_button"
                   type="submit"
                   className="btn btn-block py-3"
-                  // disabled={loading ? true : false}
                 >
                   CREATE
                 </button>
@@ -198,4 +214,5 @@ const NewUser = () => {
     </Fragment>
   );
 };
+
 export default NewUser;
