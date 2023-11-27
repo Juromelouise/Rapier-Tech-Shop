@@ -37,6 +37,8 @@ const AppBar = styled(MuiAppBar, {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    boxSizing: 'border-box',
+    backgroundColor: '#021042',
   }),
 }));
 
