@@ -492,7 +492,7 @@ footer {
   align-items: stretch;
   min-height: 100vh;
   font-weight: normal;
-
+  
   margin-top: 0;
   height: 100%;
   left: 0;
@@ -502,7 +502,7 @@ footer {
 #sidebar {
   min-width: 100%;
   max-width: 100%;
-  background: #232f3e;
+  background: rgb(9, 72, 150);
   color: #fff;
   transition: all 0.3s;
 }
@@ -512,11 +512,11 @@ footer {
 
 #sidebar .sidebar-header {
   padding: 20px;
-  background: #232f3e;
+  background: #164278;
 }
 #sidebar ul.components {
   padding: 5px 0px;
-  border-bottom: 1px solid #232f3e;
+  border-bottom: 1px solid #1a5eb0;
 }
 
 #sidebar ul li a {
@@ -525,9 +525,10 @@ footer {
   display: block;
   color: white;
   text-decoration: none;
+  
 }
 #sidebar ul li a:hover {
-  color: #232f3e;
+  color: #ffffff;
   background: #fff;
 }
 
@@ -573,6 +574,7 @@ ul.CTAs a {
 #products_table .btn {
   padding: 0.2rem 0.5rem;
   margin-left: 0.4rem;
+  
 }
 
 /* Dashboard */
