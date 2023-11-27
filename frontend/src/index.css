@@ -32,7 +32,7 @@ nav {
 }
 
 #search_btn {
-  background-color: #febd69;
+  background-color: #021042;
 }
 
 .input-group {
@@ -47,7 +47,8 @@ nav {
 
 #login_btn,
 #view_btn {
-  background-color: #febd69;
+  background-color: #021042;
+  color: white;
   padding: 0.4rem 1.8rem;
   font-family: calibri;
 }
@@ -73,6 +74,9 @@ nav {
 
 .card {
   height: 100%;
+  background-color: #071032;
+  color: #ffffff;
+
 }
 
 .card-title a {
@@ -93,7 +97,7 @@ nav {
 }
 
 #view_btn {
-  background-color: #fa9c23;
+  background-color: #000000;
   color: white;
 }
 
@@ -468,16 +472,16 @@ footer {
 
 /* Pagination */
 .page-item.active .page-link {
-  background-color: #fa9c23;
-  border-color: #fa9c23;
+  background-color: #1f4959;
+  border-color: #ffffff;
 }
 
 .page-link {
-  color: #fa9c23;
+  color: #ffffff;
 }
 
 .page-link:hover {
-  color: #fa9c23;
+  color: #ffffff;
 }
 
 /* Admin Sidebar */
@@ -523,7 +527,7 @@ footer {
   text-decoration: none;
 }
 #sidebar ul li a:hover {
-  color: #232f3e;
+  color: #1F4959;
   background: #fff;
 }
 
@@ -534,7 +538,7 @@ footer {
 #sidebar ul li.active > a,
 a[aria-expanded='true'] {
   color: #fff;
-  background: #232f3e;
+  background: #1F4959;
 }
 a[data-toggle='collapse'] {
   position: relative;
