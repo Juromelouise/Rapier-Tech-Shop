@@ -575,7 +575,7 @@ footer {
 }
 
 .edit-btn {
-  background-color: black;
+  background-color: #1F4959;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -585,12 +585,12 @@ footer {
 }
 
 .edit-btn:hover {
-  background-color: rgb(237, 237, 23);
+  background-color: white;
   color: rgb(0, 0, 0);
 }
 
 .delete-btn {
-  background-color: black;
+  background-color: #1F4959;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -600,8 +600,8 @@ footer {
 }
 
 .delete-btn:hover {
-  background-color: rgb(172, 0, 0);
-  color: rgb(255, 255, 255);
+  background-color: white;
+  color: black;
 }
 
 
