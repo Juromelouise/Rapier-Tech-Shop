@@ -92,6 +92,12 @@ const Header = () => {
                             Dashboard
                           </Link>
                         )}
+                        <Link
+                          to="/order/me"
+                          className="dropdown-item"
+                        >
+                          My Orders
+                        </Link>
                         <Link className="dropdown-item" to="/me">
                           Profile
                         </Link>
@@ -117,6 +123,6 @@ const Header = () => {
       </div>
     </nav>
   );
-}
+};
 
 export default Header;

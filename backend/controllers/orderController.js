@@ -253,6 +253,7 @@ exports.customerSales = async (req, res, next) => {
     customerSales,
   });
 };
+
 exports.salesPerMonth = async (req, res, next) => {
   const salesPerMonth = await Order.aggregate([
     {
