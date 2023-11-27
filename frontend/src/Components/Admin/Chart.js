@@ -19,7 +19,6 @@ export default function Chart1Component() {
 
       const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/chart1`, config);
       setChartData(data.chartData);
-      console.log(data.chartData)
       setLoading(false);
     } catch (error) {
       setError(error.response?.data.message || 'An error occurred');
