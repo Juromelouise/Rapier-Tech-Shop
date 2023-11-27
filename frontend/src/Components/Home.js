@@ -9,6 +9,7 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import Header from "./Layout/Header";
 import Caroimage from "./Layout/Caroimage";
+import { Button } from "react-bootstrap";
 
 const categories = [
   "Laptop",
@@ -58,7 +59,7 @@ const Home = () => {
       setLoading(false);
     }
   };
-  console.log(products)
+  console.log(products);
   let count = productsCount;
 
   if (keyword) {
