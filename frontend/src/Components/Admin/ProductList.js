@@ -96,7 +96,7 @@ export default function ProductList() {
                     key={image.public_id}
                     src={image.url}
                     alt={image.public_id}
-                    style={{ width: '100px', height: 'auto' }}
+                    style={{ width: '100px', height: '100px' }}
                   />
                 ))}
               </TableCell>
