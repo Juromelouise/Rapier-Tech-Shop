@@ -17,10 +17,11 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './ListItems';
 import SupplierList from './SupplierList';
 import Chart from './Chart';
+import Chart2 from './Chart2';
 
 
 
-const drawerWidth = 240;
+const drawerWidth = 250;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -37,6 +38,8 @@ const AppBar = styled(MuiAppBar, {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    boxSizing: 'border-box',
+    backgroundColor: '#021042',
   }),
 }));
 
@@ -141,6 +144,7 @@ export default function Dashboard() {
         >
           Gadget Cout Supplied by the Supplier
           <Chart />
+          <Chart2 />
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           </Container>

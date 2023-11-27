@@ -34,6 +34,7 @@ import UpdateProduct from './Components/Admin/UpdateProduct';
 import OrderDetails from './Components/Order/OrderDetails';
 import ListOrders from './Components/Order/ListOrders';
 import Chart from './Components/Admin/Chart';
+import Chart2 from './Components/Admin/Chart2';
 
 
 
@@ -210,6 +211,7 @@ function App() {
           <Route path="/order/me" element={<ListOrders />} />
           <Route path="/order/:id" element={<OrderDetails />} />
           <Route path="/chart" element={<Chart />} />
+          <Route path="/chart2" element={<Chart2 />} />
         </Routes>
         <Footer />
       </Router>

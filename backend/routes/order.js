@@ -11,6 +11,7 @@ const { newOrder,
 		customerSales,
 		updateStatus,
 		sumSupplier,
+		getUserOrderSum 
 	} = require('../controllers/orderController')
 const { isAuthenticatedUser, authorizeRoles } = require('../middleware/auth')
 
@@ -25,4 +26,5 @@ router.get('/admin/total-sales', totalSales);
 router.get('/admin/customer-sales', customerSales);
 router.get('/admin/chart1',isAuthenticatedUser, sumSupplier);
 router.delete('/admin/order/:id', isAuthenticatedUser, authorizeRoles('admin',),deleteOrder)
+router.get('/admin/chart2', isAuthenticatedUser, getUserOrderSum);
 module.exports = router;
