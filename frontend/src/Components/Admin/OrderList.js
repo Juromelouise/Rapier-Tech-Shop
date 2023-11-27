@@ -84,7 +84,7 @@ const Orders = () => {
         { status: 'Delivered' },
         config
       );
-
+console.log('yey')
       // After updating the status, fetch the updated orders
       fetchOrders();
     } catch (error) {
