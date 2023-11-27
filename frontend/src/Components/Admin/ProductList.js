@@ -159,17 +159,17 @@ const ProductsList = () => {
                 hover
               />
             )}
+            <Button
+              component={Link}
+              to="/admin/supplier/new"
+              variant="contained"
+              color="primary"
+              sx={{ mt: 3 }}
+            >
+              Add Supplier
+            </Button>
           </Fragment>
         </div>
-        <Button
-          component={Link}
-          to="/admin/supplier/new"
-          variant="contained"
-          color="primary"
-          sx={{ mt: 3 }}
-        >
-          Add Supplier
-        </Button>
       </div>
     </Fragment>
   );
