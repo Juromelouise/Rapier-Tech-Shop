@@ -1,7 +1,5 @@
 const express = require('express')
 const router = express.Router();
-
-
 const { newOrder,
 		getSingleOrder,
 	    myOrders,
@@ -11,8 +9,8 @@ const { newOrder,
 		totalOrders,
 		totalSales,
 		customerSales,
-		salesPerMonth,
-		updateStatus
+		updateStatus,
+		sumSupplier,
 	} = require('../controllers/orderController')
 const { isAuthenticatedUser, authorizeRoles } = require('../middleware/auth')
 
@@ -25,6 +23,6 @@ router.put('/admin/order/:id', isAuthenticatedUser, updateStatus)
 router.get('/admin/total-orders', totalOrders);
 router.get('/admin/total-sales', totalSales);
 router.get('/admin/customer-sales', customerSales);
-router.get('/admin/sales-per-month', salesPerMonth);
+router.get('/admin/chart1',isAuthenticatedUser, sumSupplier);
 router.delete('/admin/order/:id', isAuthenticatedUser, authorizeRoles('admin',),deleteOrder)
 module.exports = router;

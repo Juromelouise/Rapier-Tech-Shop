@@ -33,6 +33,7 @@ import UpdateSupplier from './Components/Admin/UpdateSupplier';
 import UpdateProduct from './Components/Admin/UpdateProduct';
 import OrderDetails from './Components/Order/OrderDetails';
 import ListOrders from './Components/Order/ListOrders';
+import Chart from './Components/Admin/Chart';
 
 
 
@@ -208,6 +209,7 @@ function App() {
           <Route path="/admin/product/:id" element={<UpdateProduct />} />
           <Route path="/order/me" element={<ListOrders />} />
           <Route path="/order/:id" element={<OrderDetails />} />
+          <Route path="/chart" element={<Chart />} />
         </Routes>
         <Footer />
       </Router>

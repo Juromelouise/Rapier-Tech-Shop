@@ -409,6 +409,7 @@ main {
   color: #f8ce0b;
 }
 
+<<<<<<< HEAD
 footer {
   position: relative;
   bottom: 0;
@@ -546,3 +547,16 @@ footer {
     
   }
 }
+=======
+
+.caro-container {
+  max-width: 600px; /* Adjust the maximum width as needed */
+  margin: auto; /* Center the container */
+}
+
+.carousel-image {
+  border-radius: 8px; /* Add border-radius for rounded corners */
+  max-height: 400px; /* Adjust the maximum height as needed */
+  object-fit: cover; /* Ensure images maintain aspect ratio and cover the container */
+}
+>>>>>>> d9a8c56e69ad2a50d78e4661e0a6f8db427bb2f0

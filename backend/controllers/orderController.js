@@ -367,3 +367,44 @@ exports.updateStatus = async (req, res, next) => {
         success: true,
     })
 }
+
+exports.sumSupplier = async (req, res, next) => {
+  try {
+    const chartData = await Product.aggregate([
+      {
+        $lookup: {
+          from: 'suppliers',
+          localField: 'seller',
+          foreignField: '_id',
+          as: 'supplier',
+        },
+      },
+      {
+        $unwind: '$supplier',
+      },
+      {
+        $group: {
+          _id: '$supplier.name',
+          totalOrders: { $sum: 1 },
+        },
+      },
+    ]);
+
+    if (!chartData) {
+      return res.status(404).json({
+        message: 'Error fetching chart data',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      chartData,
+    });
+    console.log(chartData);
+  } catch (error) {
+    console.error('Error in Chart1 function:', error);
+    res.status(500).json({
+      message: 'Internal Server Error',
+    });
+  }
+};

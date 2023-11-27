@@ -1,26 +1,31 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MetaData from "../Layout/Metadata";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 // import Sidebar from "./SideBar";
 import { getToken } from "../../utils/helpers";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  description: Yup.string().required("Description is required"),
+  category: Yup.string().required("Category is required"),
+  price: Yup.number().required("Price is required"),
+  stock: Yup.number().required("Stock is required"),
+  seller: Yup.string().required("Seller is required"),
+});
+
 const NewProduct = () => {
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("")
-  const [stock, setStock] = useState("");
   const [supplier, setSupplier] = useState([]);
-  const [seller, setSeller] = useState("")
-  const [images, setImage] = useState([]);
-  const [imagesPreview, setImagesPreview] = useState([]);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState("");
   const [product, setProduct] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState([]);  
+  const [imagesPreview, setImagesPreview] = useState([]);
 
   const categories = [
     "Laptop",
@@ -34,56 +39,26 @@ const NewProduct = () => {
 
   let navigate = useNavigate();
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.set("name", name);
-    formData.set("category", category);
-    formData.set("price", price);
-    formData.set("stock", stock);
-    formData.set("description", description)
-    formData.set("seller", seller);
-
-    images.forEach((image) => {
-      formData.append("images", image);
-    });
-
-    newProduct(formData);
-
-  };
-  console.log(seller)
-  const onChange = (e) => {
-    const files = Array.from(e.target.files);
-    setImagesPreview([]);
-    setImage([]);
-    files.forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setImagesPreview((oldArray) => [...oldArray, reader.result]);
-          setImage((oldArray) => [...oldArray, reader.result]);
-        }
-      };
-
-      reader.readAsDataURL(file);
-      // console.log(reader)
-    });
-  };
-
   const getSupplier = async () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${getToken()}`
-      },
-    };
-    const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/supplier`, config)
-    // console.log(data.supplier);
-    setSupplier(data.supplier)
-  }
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      };
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/admin/supplier`,
+        config
+      );
+      setSupplier(data.supplier);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   useEffect(() => {
-    getSupplier()
-  }, [])
+    getSupplier();
+  }, []);
 
   const newProduct = async (formData) => {
     try {
@@ -106,6 +81,7 @@ const NewProduct = () => {
       setError(error.message);
     }
   };
+
   useEffect(() => {
     if (error) {
       toast.error(error, {
@@ -121,6 +97,52 @@ const NewProduct = () => {
     }
   }, [error, success]);
 
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      description: "",
+      category: "",
+      price: "",
+      stock: "",
+      seller: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      const formData = new FormData();
+      formData.set("name", values.name);
+      formData.set("category", values.category);
+      formData.set("price", values.price);
+      formData.set("stock", values.stock);
+      formData.set("description", values.description);
+      formData.set("seller", values.seller);
+
+      // Add your image handling logic here (images are not declared in the code)
+      images.forEach((image) => {
+        formData.append("images", image);
+      });
+
+      newProduct(formData);
+    },
+  });
+
+  const onChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImagesPreview([]);
+    setImages([]);
+    files.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImagesPreview((oldArray) => [...oldArray, reader.result]);
+          setImages((oldArray) => [...oldArray, reader.result]);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+
   return (
     <Fragment>
       <MetaData title={"New Product"} />
@@ -132,7 +154,7 @@ const NewProduct = () => {
             <div className="wrapper my-5">
               <form
                 className="shadow-lg"
-                onSubmit={submitHandler}
+                onSubmit={formik.handleSubmit}
                 encType="multipart/form-data"
               >
                 <h1 className="mb-4">Add Product</h1>
@@ -143,9 +165,11 @@ const NewProduct = () => {
                     type="text"
                     id="name_field"
                     className="form-control"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    {...formik.getFieldProps("name")}
                   />
+                  {formik.touched.name && formik.errors.name && (
+                    <div className="text-danger">{formik.errors.name}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -153,9 +177,11 @@ const NewProduct = () => {
                   <textarea
                     id="description_field"
                     className="form-control"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    {...formik.getFieldProps("description")}
                   />
+                  {formik.touched.description && formik.errors.description && (
+                    <div className="text-danger">{formik.errors.description}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -163,8 +189,7 @@ const NewProduct = () => {
                   <select
                     className="form-control"
                     id="category_field"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
+                    {...formik.getFieldProps("category")}
                   >
                     {categories.map((category) => (
                       <option key={category} value={category}>
@@ -172,6 +197,9 @@ const NewProduct = () => {
                       </option>
                     ))}
                   </select>
+                  {formik.touched.category && formik.errors.category && (
+                    <div className="text-danger">{formik.errors.category}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -180,9 +208,11 @@ const NewProduct = () => {
                     type="number"
                     id="number_field"
                     className="form-control"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
+                    {...formik.getFieldProps("price")}
                   />
+                  {formik.touched.price && formik.errors.price && (
+                    <div className="text-danger">{formik.errors.price}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -191,9 +221,11 @@ const NewProduct = () => {
                     type="number"
                     id="number_field"
                     className="form-control"
-                    value={stock}
-                    onChange={(e) => setStock(e.target.value)}
+                    {...formik.getFieldProps("stock")}
                   />
+                  {formik.touched.stock && formik.errors.stock && (
+                    <div className="text-danger">{formik.errors.stock}</div>
+                  )}
                 </div>
 
                 <div className="mb-3">
@@ -205,8 +237,7 @@ const NewProduct = () => {
                     id="category"
                     name="category"
                     required
-                    value={seller}
-                    onChange={(e) => setSeller(e.target.value)}
+                    {...formik.getFieldProps("seller")}
                   >
                     {supplier.map((suppliers) => (
                       <option key={suppliers._id} value={suppliers._id}>
@@ -214,6 +245,9 @@ const NewProduct = () => {
                       </option>
                     ))}
                   </select>
+                  {formik.touched.seller && formik.errors.seller && (
+                    <div className="text-danger">{formik.errors.seller}</div>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -244,6 +278,7 @@ const NewProduct = () => {
                     />
                   ))}
                 </div>
+
                 <button
                   id="login_button"
                   type="submit"
