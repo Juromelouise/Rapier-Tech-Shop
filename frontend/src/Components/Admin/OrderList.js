@@ -143,7 +143,7 @@ const Orders = () => {
                       className="btn btn-danger py-1 px-2 ml-2"
                       onClick={() => deleteOrderHandler(order._id)}
                     >
-                      <i className="fa fa-trash"></i>
+                      CANCEL ORDER
                     </button>
                   </TableCell>
                 </TableRow>

@@ -1,33 +1,23 @@
-import * as React from "react";
-// import Link from '@mui/material/Link';
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+import React, { Fragment, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { MDBDataTable } from "mdbreact";
 import Title from "./Title";
 import axios from "axios";
-import { useState, useEffect } from "react";
 import { getToken } from "../../utils/helpers";
-import { Link } from "react-router-dom";
-import List from '@mui/material/List';
-import { mainListItems } from './ListItems';
-
-function preventDefault(event) {
-  event.preventDefault();
-}
+import List from "@mui/material/List";
+import { mainListItems } from "./ListItems";
+import { Button, Typography } from "@mui/material";
 
 export default function SupplierList() {
   const [supplier, setSupplier] = useState([]);
-  const [error, setError] = useState('')
-  const [deleteError, setDeleteError] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [isDeleted, setIsDeleted] = useState(false)
+  const [error, setError] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [isDeleted, setIsDeleted] = useState(false);
 
   const supplies = async () => {
     const config = {
       headers: {
-        // 'Content-Type': 'application/json',
         Authorization: `Bearer ${getToken()}`,
       },
     };
@@ -37,8 +27,10 @@ export default function SupplierList() {
         config
       );
       setSupplier(res.data.supplier);
+      setLoading(false);
     } catch (error) {
-      console.error("Error fetching orders:", error);
+      console.error("Error fetching suppliers:", error);
+      setError("Error fetching suppliers");
     }
   };
 
@@ -46,19 +38,20 @@ export default function SupplierList() {
     try {
       const config = {
         headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${getToken()}`
-        }
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${getToken()}`,
+        },
       };
-      await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/supplier/${id}`, config);
+      await axios.delete(
+        `${process.env.REACT_APP_API}/api/v1/admin/supplier/${id}`,
+        config
+      );
 
-      // Filter out the deleted supplier from the current state
-      const updatedSupplier = supplier.filter(supplier => supplier._id !== id);
-
-      // Update the state with the new supplier array
+      const updatedSupplier = supplier.filter(
+        (supplier) => supplier._id !== id
+      );
       setSupplier(updatedSupplier);
 
-      // Set other state variables as needed
       setIsDeleted(true);
       setLoading(false);
     } catch (error) {
@@ -66,64 +59,104 @@ export default function SupplierList() {
     }
   };
 
-
   useEffect(() => {
     supplies();
   }, []);
 
-  console.log(supplier);
+  const data = {
+    columns: [
+      {
+        label: "Name",
+        field: "name",
+        sort: "asc",
+      },
+      {
+        label: "Images",
+        field: "images",
+        sort: "asc",
+      },
+      {
+        label: "Number",
+        field: "number",
+        sort: "asc",
+      },
+      {
+        label: "Address",
+        field: "address",
+        sort: "asc",
+      },
+      {
+        label: "Date",
+        field: "createdAt",
+        sort: "asc",
+      },
+      {
+        label: "Action",
+        field: "action",
+      },
+    ],
+    rows: supplier.map((row) => ({
+      name: row.name,
+      images: row.images.map((image) => (
+        <img
+          key={image.public_id}
+          src={image.url}
+          alt={image.public_id}
+          style={{ width: "100px", height: "100px" }}
+        />
+      )),
+      number: row.number,
+      address: row.address,
+      createdAt: row.createdAt,
+      action: (
+        <Fragment>
+          <Link
+            to={`/admin/supplier/${row._id}`}
+            style={{ textDecoration: "none" }}
+          >
+            <Button variant="contained" color="primary">
+              Edit
+            </Button>
+          </Link>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => deleteSupplierHandler(row._id)}
+            style={{ marginLeft: "8px" }}
+          >
+            Delete
+          </Button>
+        </Fragment>
+      ),
+    })),
+  };
+
   return (
-    <React.Fragment>
-      <Title>Suppliers</Title>
+    <div style={{ display: "flex" }}>
+      {/* Sidebar */}
+      <List component="nav">{mainListItems}</List>
 
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Images</TableCell>
-            <TableCell>Number</TableCell>
-            <TableCell>Address</TableCell>
-            <TableCell>Date</TableCell>
-            <TableCell>Action</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {supplier.map((row) => (
-            <TableRow key={row._id}>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>
-                {row.images.map((row) => (
-                  <img key={row.public_id}
-                    src={row.url}
-                    alt={row.public_id}
-                    style={{ width: '100px', height: '100px' }} />
-                ))}
-              </TableCell>
-              <TableCell>{row.number}</TableCell>
-              <TableCell>{row.address}</TableCell>
-              <TableCell>{row.createdAt}</TableCell>
-              <TableCell>
-                <Link to={`/admin/supplier/${row._id}`} className="btn btn-primary py-1 px-2">
-                  <i className="fa fa-pencil"></i>
-                </Link>
-
-                <button
-                  className="btn btn-danger py-1 px-2 ml-2"
-                  onClick={() => deleteSupplierHandler(row._id)}
-                >
-                  <i className="fa fa-trash"></i>
-                </button>
-              </TableCell>
-              {/* <TableCell align="right">{`$${row.amount}`}</TableCell> */}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      {/* <Link color="primary" onClick={preventDefault} sx={{ mt: 3 }}> */}
-      <Link to="/admin/supplier/new" sx={{ mt: 3 }}>
-        Add Supplier
-      </Link>
-      {/* </Link> */}
-    </React.Fragment>
+      {/* Main content */}
+      <div className="col-12 col-md-10">
+      <h2>All Supplier</h2>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <MDBDataTable
+            data={data}
+            searching={false}
+            bordered
+            striped
+            hover
+            responsive
+          />
+        )}
+        <Link to="/admin/supplier/new" style={{ marginTop: "1rem" }}>
+          <Button variant="contained" color="primary">
+            Add Supplier
+          </Button>
+        </Link>
+      </div>
+    </div>
   );
 }

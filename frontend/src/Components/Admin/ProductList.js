@@ -117,15 +117,21 @@ const ProductsList = () => {
         name: product.name,
         price: `$${product.price}`,
         stock: product.stock,
-        actions: <Fragment>
-
-          <Link to={`/admin/product/${product._id}`} className="btn btn-primary py-1 px-2">
-            <i className="fa fa-pencil"></i>
-          </Link>
-          <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteProductHandler(product._id)}>
-            <i className="fa fa-trash"></i>
-          </button>
-        </Fragment>
+        actions:  <Fragment>
+        <Link to={`/admin/product/${product._id}`} style={{ textDecoration: 'none' }}>
+          <Button variant="contained" color="primary">
+            Edit
+          </Button>
+        </Link>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => deleteProductHandler(product._id)}
+          style={{ marginLeft: '8px' }}
+        >
+          Delete
+        </Button>
+      </Fragment>
       });
     });
 
@@ -149,7 +155,7 @@ const ProductsList = () => {
         {/* Main content */}
         <div className="col-12 col-md-10">
           <Fragment>
-            <h2 className="my-5">All Products</h2>
+            <h2>All Products</h2>
             {loading ? <Loader /> : (
               <MDBDataTable
                 data={productsList()}
