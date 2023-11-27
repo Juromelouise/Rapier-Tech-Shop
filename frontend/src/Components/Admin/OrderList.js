@@ -139,10 +139,12 @@ const Orders = () => {
                         To Shipped
                       </Button>
                     )}
-                    <Link
-                onClick={() => deleteOrderHandler(order._id)}>
-                <button>Delete</button>
-                </Link>
+                    <button
+                      className="btn btn-danger py-1 px-2 ml-2"
+                      onClick={() => deleteOrderHandler(order._id)}
+                    >
+                      CANCEL ORDER
+                    </button>
                   </TableCell>
                 </TableRow>
               ))}
