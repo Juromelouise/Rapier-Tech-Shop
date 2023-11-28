@@ -110,22 +110,14 @@ export default function SupplierList() {
       createdAt: row.createdAt,
       action: (
         <Fragment>
-          <Link
-            to={`/admin/supplier/${row._id}`}
-            style={{ textDecoration: "none" }}
-          >
-            <Button variant="contained" color="primary">
-              Edit
-            </Button>
+          <Link to={`/admin/supplier/${row._id}`}>
+          <button className="edit-btn">Edit</button>
           </Link>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => deleteSupplierHandler(row._id)}
-            style={{ marginLeft: "8px" }}
-          >
-            Delete
-          </Button>
+          <Link
+                onClick={() => deleteSupplierHandler(row._id)}>
+                <button className="delete-btn">Delete</button>
+                </Link>
+          
         </Fragment>
       ),
     })),
@@ -142,9 +134,11 @@ export default function SupplierList() {
         {loading ? (
           <p>Loading...</p>
         ) : (
+          
           <MDBDataTable
             data={data}
             searching={false}
+            className="custom-mdb-table"
             bordered
             striped
             hover

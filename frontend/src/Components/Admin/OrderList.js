@@ -84,7 +84,7 @@ const Orders = () => {
         { status: 'Delivered' },
         config
       );
-console.log('yey')
+      console.log('yey')
       // After updating the status, fetch the updated orders
       fetchOrders();
     } catch (error) {
@@ -136,15 +136,17 @@ console.log('yey')
                         color="secondary"
                         onClick={() => handleUpdateStatus(order._id)}
                       >
-                        To Shipped
+                        CONFIRM
                       </Button>
                     )}
-                    <button
+                    {order.orderStatus === 'Processing' && 
+                    (<button
                       className="btn btn-danger py-1 px-2 ml-2"
                       onClick={() => deleteOrderHandler(order._id)}
                     >
                       CANCEL ORDER
                     </button>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

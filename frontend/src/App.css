@@ -618,6 +618,7 @@ footer {
 .custom-mdb-table tbody td {
   background-color: whitesmoke;
   color: black;
+  padding: 10px 80px;
 }
 
 /* Example: Change background color of table rows on hover */
