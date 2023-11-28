@@ -17,6 +17,7 @@ export default function UserList() {
   const [deleteError, setDeleteError] = useState('');
   const [loading, setLoading] = useState(true);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const getUsers = async () => {
     const config = {
@@ -105,18 +106,12 @@ export default function UserList() {
       action: (
         <Fragment>
           <Link to={`/admin/user/update/${row._id}`} style={{ textDecoration: 'none' }}>
-            <Button variant="contained" color="primary">
-              Edit
-            </Button>
+          <button className="edit-btn">Edit</button>
           </Link>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => deleteUserHandler(row._id)}
-            style={{ marginLeft: '8px' }}
-          >
-            Delete
-          </Button>
+          <Link
+                onClick={() => deleteUserHandler(row._id)}>
+                <button className="delete-btn">Delete</button>
+                </Link>
         </Fragment>
       ),
     })),
@@ -134,10 +129,11 @@ export default function UserList() {
 
         {/* Main content */}
         <div className="col-12 col-md-10">
-        <h2>All User</h2>
+        <p className="star">ALL USER</p>
           {loading ? (
             <Loader />
           ) : (
+            <div className="custom-mdb-table">
             <MDBDataTable
               data={data}
               searching={false}
@@ -145,13 +141,27 @@ export default function UserList() {
               striped
               hover
             />
+            </div>
           )}
           <Button
             component={Link}
             to="/admin/user/new"
             variant="contained"
             color="primary"
-            sx={{ mt: 3 }}
+            sx={{
+              mt: 3,
+              color: 'white',
+              backgroundColor: 'black',
+              transition: 'color 0.3s, background-color 0.3s', 
+              margin: '20px 30px',
+              padding: '15px',
+              '&:hover': {
+                color: 'white', // Text color on hover
+                backgroundColor: 'gray', // Background color on hover
+              },
+            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
             Add User
           </Button>

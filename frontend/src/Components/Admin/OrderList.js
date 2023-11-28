@@ -26,6 +26,7 @@ const Orders = () => {
   const [deleteError, setDeleteError] = useState('')
   const [loading, setLoading] = useState(true)
   const [isDeleted, setIsDeleted] = useState(false)
+  const [isHovered, setIsHovered] = useState(false);
 
   const fetchOrders = async () => {
     const config = {
@@ -107,21 +108,48 @@ const Orders = () => {
 
         {/* Main content */}
         <div style={{ flexGrow: 1, padding: '20px' }}>
-          <Title>Orders</Title>
+        <p className="star">ORDERS</p>
           <Table>
-            <TableHead>
+            <TableHead 
+            sx={{
+              mt: 3,
+              backgroundColor: '#021042',
+              transition: 'color 0.3s, background-color 0.3s', 
+              margin: '20px 30px',
+              padding: '15px',
+              color: 'white',
+              '&:hover': {
+                 // Text color on hover
+                backgroundColor: '#1F4959',
+                color: 'white' // Background color on hover
+              },
+            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
               <TableRow>
-                <TableCell>Order ID</TableCell>
-                <TableCell>Date</TableCell>
-                <TableCell>Order Status</TableCell>
-                <TableCell>Total Price</TableCell>
-                <TableCell>User Name</TableCell>
-                <TableCell>Action</TableCell>
+                <TableCell sx={{ color: 'white' }}>Order ID</TableCell>
+                <TableCell sx={{ color: 'white' }}>Date</TableCell>
+                <TableCell sx={{ color: 'white' }}>Order Status</TableCell>
+                <TableCell sx={{ color: 'white' }}>Total Price</TableCell>
+                <TableCell sx={{ color: 'white' }}>User Name</TableCell>
+                <TableCell sx={{ color: 'white' }}>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {orders.map((order) => (
-                <TableRow key={order._id}>
+                <TableRow 
+                key={order._id}
+                sx={{
+                  '&:hover': {
+                     // Text color on hover
+                    backgroundColor: 'gray',
+                    color: 'white' // Background color on hover
+                  },
+                }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
                   <TableCell>{order._id}</TableCell>
                   <TableCell>
                     {new Date(order.createdAt).toLocaleString()}

@@ -14,6 +14,7 @@ export default function SupplierList() {
   const [deleteError, setDeleteError] = useState("");
   const [loading, setLoading] = useState(true);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const supplies = async () => {
     const config = {
@@ -110,15 +111,19 @@ export default function SupplierList() {
       createdAt: row.createdAt,
       action: (
         <Fragment>
+          
           <Link to={`/admin/supplier/${row._id}`}>
           <button className="edit-btn">Edit</button>
           </Link>
+          <br/>
+          <br/> 
           <Link
                 onClick={() => deleteSupplierHandler(row._id)}>
                 <button className="delete-btn">Delete</button>
                 </Link>
           
         </Fragment>
+        
       ),
     })),
   };
@@ -130,7 +135,7 @@ export default function SupplierList() {
 
       {/* Main content */}
       <div className="col-12 col-md-10">
-      <h2>All Supplier</h2>
+      <p className="star">ALL SUPPLIER</p>
         {loading ? (
           <p>Loading...</p>
         ) : (
@@ -138,7 +143,7 @@ export default function SupplierList() {
           <MDBDataTable
             data={data}
             searching={false}
-            className="custom-mdb-table"
+            className="design"
             bordered
             striped
             hover
@@ -146,7 +151,26 @@ export default function SupplierList() {
           />
         )}
         <Link to="/admin/supplier/new" style={{ marginTop: "1rem" }}>
-          <Button variant="contained" color="primary">
+          <Button
+          
+          component={Link}
+              to="/admin/supplier/new"
+              className="que"
+              sx={{
+                mt: 3,
+                color: 'white',
+                backgroundColor: 'black',
+                transition: 'color 0.3s, background-color 0.3s', 
+                margin: '20px 30px',
+                padding: '15px',
+                '&:hover': {
+                  color: 'white', // Text color on hover
+                  backgroundColor: 'gray', // Background color on hover
+                },
+              }}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
             Add Supplier
           </Button>
         </Link>

@@ -28,7 +28,6 @@ const ProductsList = () => {
     try {
       const config = {
         headers: {
-          'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${getToken()}`
         }
       };
@@ -38,7 +37,7 @@ const ProductsList = () => {
       setProducts(data.products);
       setLoading(false);
     } catch (error) {
-      setError(error.response.data.message);
+      // setError(error.response.data.message);
     }
   };
 

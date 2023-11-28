@@ -4,11 +4,18 @@ const APIFeatures = require("../utils/apiFeatures");
 const Supplier = require('../models/supplier')
 // const Order = require('../models/order')
 
+exports.adminData = async (req, res, next) => {
+const products = await Product.find()
+console.log(products)
+
+res.status(201).json({
+  success: true,
+  products
+})
+}
+
 exports.getSupplier = async (req, res, next) => {
-  const product = await Product.find().populate({
-    path: "seller",
-    model: Supplier
-  })
+  const product = await Product.find()
   res.status(201).json({
     product
   })
@@ -47,14 +54,14 @@ exports.getSingleProduct = async (req, res, next) => {
   try {
     const products = await Product.findOne({ _id: req.params.id }).populate('seller');
     console.log(products);
-  
+
     if (!products) {
       return res.status(404).json({
         success: false,
         message: "Product not found",
       });
     }
-  
+
     res.status(200).json({
       success: true,
       products,

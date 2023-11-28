@@ -604,6 +604,20 @@ footer {
   color: black;
 }
 
+.confirm-btn {
+  background-color: #1F4959;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin-right: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.confirm-btn:hover {
+  background-color: white;
+  color: black;
+}
 
 .custom-mdb-table thead th {
   background-color: #021042;
@@ -634,5 +648,36 @@ footer {
 }
 
 
+.design thead th {
+  background-color: #021042;
+  color: white;
+}
 
+.design thead th:hover {
+  background-color: #1F4959;
+  color: #ffffff;
+}
+/* Example: Change background color of table body */
+.design tbody td {
+  background-color: whitesmoke;
+  color: black;
+  padding: 25px;
+  align-items: center;
+}
+
+/* Example: Change background color of table rows on hover */
+.design tbody td:hover {
+  background-color: #1F4959;
+  color: white;
+}
+
+.que{
+  background-color: black;
+  color: white;
+}
+
+.que:hover{
+  background-color: gray;
+  color: white;
+}
 
